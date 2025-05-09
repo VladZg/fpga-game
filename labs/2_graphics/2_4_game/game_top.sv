@@ -192,20 +192,20 @@ module game_top
 
     game_sprite_top
     #(
-        .SPRITE_WIDTH  ( 8 ),
-        .SPRITE_HEIGHT ( 8 ),
+        .SPRITE_WIDTH  ( 16 ),
+        .SPRITE_HEIGHT ( 16 ),
 
         .DX_WIDTH      ( 2 ),
         .DY_WIDTH      ( 3 ),
 
-        .ROW_0 ( 32'h000cc000 ),
-        .ROW_1 ( 32'h00cccc00 ),
-        .ROW_2 ( 32'h0cceecc0 ),
-        .ROW_3 ( 32'hcccccccc ),
-        .ROW_4 ( 32'hcc0cc0cc ),
-        .ROW_5 ( 32'hcc0cc0cc ),
-        .ROW_6 ( 32'hcc0cc0cc ),
-        .ROW_7 ( 32'hcc0cc0cc ),
+        .ROW_0 ( 64'h000cc000000cc000 ),
+        .ROW_1 ( 64'h00cccc0000cccc00 ),
+        .ROW_2 ( 64'h0cceecc00cceecc0 ),
+        .ROW_3 ( 64'hcccccccccccccccc ),
+        .ROW_4 ( 64'hcc0cc0cccc0cc0cc ),
+        .ROW_5 ( 64'hcc0cc0cccc0cc0cc ),
+        .ROW_6 ( 64'hcc0cc0cccc0cc0cc ),
+        .ROW_7 ( 64'hcc0cc0cccc0cc0cc ),
 
         .screen_width
         (screen_width),
