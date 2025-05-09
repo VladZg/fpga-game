@@ -106,10 +106,6 @@ module game_top
         .ROW_14 ( 64'hfffffff0ffffffff ),
         .ROW_15 ( 64'hfffffff0ffffffff ),
 
-        // .ROW_0  ( 64'h00000bb9b9b00000 ),
-        // .ROW_1  ( 64'h000fffbb9b9bb000 ),
-
-
         .screen_width
         (screen_width),
 
