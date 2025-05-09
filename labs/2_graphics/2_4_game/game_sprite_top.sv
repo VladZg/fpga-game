@@ -53,6 +53,8 @@ module game_sprite_top
     input  [DY_WIDTH        - 1:0] sprite_write_dy,
 
     input                          sprite_enable_update,
+    input                          is_meteor,
+    input                          shoot,
 
     output [w_x             - 1:0] sprite_x,
     output [w_y             - 1:0] sprite_y,
@@ -97,6 +99,7 @@ module game_sprite_top
         .sprite_write_dy       ( sprite_write_dy       ),
 
         .sprite_enable_update  ( sprite_enable_update  ),
+        .is_meteor  ( is_meteor  ),
 
         .sprite_x              ( sprite_x              ),
         .sprite_y              ( sprite_y              )

@@ -96,6 +96,7 @@ module lab_top
 
         .launch_key       ( | key                ),
         .left_right_keys  ( { key [3], key [0] } ),
+        .shoot  ( key [1] | key [2] ),
 
         .display_on       (   display_on         ),
 

@@ -3,7 +3,7 @@
 module game_sprite_control
 #(
     parameter DX_WIDTH      = 2,  // X speed width in bits
-              DY_WIDTH      = 0,  // Y speed width in bits
+              DY_WIDTH      = 2,  // Y speed width in bits
 
               screen_width  = 640,
               screen_height = 480,
@@ -30,6 +30,8 @@ module game_sprite_control
     input  [ DY_WIDTH - 1:0] sprite_write_dy,
 
     input                    sprite_enable_update,
+    input                    is_meteor,
+    input                    shoot,
 
     output [w_x       - 1:0] sprite_x,
     output [w_y       - 1:0] sprite_y
@@ -61,9 +63,17 @@ module game_sprite_control
         end
         else if (sprite_enable_update && strobe_to_update_xy)
         begin
-            // Add with signed-extended dx and dy
+            if (is_meteor) begin
+                // Add with signed-extended dx and dy
+                y <= y + 1;
+            end else begin
+                // Add with signed-extended dx and dy
+                x <= x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx };
+            end
 
-            x <= x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx };
+            if (shoot) begin
+
+            end
         end
 
     always_ff @ (posedge clk or posedge rst)
