@@ -2,17 +2,25 @@
 
 module game_sprite_display
 #(
-    parameter SPRITE_WIDTH  = 8,
-              SPRITE_HEIGHT = 8,
+    parameter SPRITE_WIDTH  = 16,
+              SPRITE_HEIGHT = 16
 
-              ROW_0         = 32'h000cc000,
-              ROW_1         = 32'h000cc000,
-              ROW_2         = 32'h000cc000,
-              ROW_3         = 32'hcccccccc,
-              ROW_4         = 32'hcccccccc,
-              ROW_5         = 32'h000cc000,
-              ROW_6         = 32'h000cc000,
-              ROW_7         = 32'h000cc000,
+              ROW_0         = 64'h000cc000000cc000,
+              ROW_1         = 64'h000cc000000cc000,
+              ROW_2         = 64'h000cc000000cc000,
+              ROW_3         = 64'hcccccccccccccccc,
+              ROW_4         = 64'hcccccccccccccccc,
+              ROW_5         = 64'h000cc000000cc000,
+              ROW_6         = 64'h000cc000000cc000,
+              ROW_7         = 64'h000cc000000cc000,
+              ROW_8         = 64'h000cc000000cc000,
+              ROW_9         = 64'h000cc000000cc000,
+              ROW_10        = 64'h000cc000000cc000,
+              ROW_11        = 64'h000cc000000cc000,
+              ROW_12        = 64'h000cc000000cc000,
+              ROW_13        = 64'h000cc000000cc000,
+              ROW_14        = 64'h000cc000000cc000,
+              ROW_15        = 64'h000cc000000cc000,
 
               screen_width  = 640,
               screen_height = 480,
@@ -111,28 +119,46 @@ module game_sprite_display
 
     always_comb
         case (row_index)
-        3'd0: row = ROW_0;
-        3'd1: row = ROW_1;
-        3'd2: row = ROW_2;
-        3'd3: row = ROW_3;
-        3'd4: row = ROW_4;
-        3'd5: row = ROW_5;
-        3'd6: row = ROW_6;
-        3'd7: row = ROW_7;
+        3'd0:  row = ROW_0;
+        3'd1:  row = ROW_1;
+        3'd2:  row = ROW_2;
+        3'd3:  row = ROW_3;
+        3'd4:  row = ROW_4;
+        3'd5:  row = ROW_5;
+        3'd6:  row = ROW_6;
+        3'd7:  row = ROW_7;
+        3'd8:  row = ROW_8;
+        3'd9:  row = ROW_9;
+        3'd10: row = ROW_10;
+        3'd11: row = ROW_11;
+        3'd12: row = ROW_12;
+        3'd13: row = ROW_13;
+        3'd14: row = ROW_14;
+        3'd15: row = ROW_15;
+
         endcase
 
     logic [ERGB_WIDTH - 1:0] ergb;
 
     always_comb
         case (column_index)
-        3'd0: ergb = row [31:28];
-        3'd1: ergb = row [27:24];
-        3'd2: ergb = row [23:20];
-        3'd3: ergb = row [19:16];
-        3'd4: ergb = row [15:12];
-        3'd5: ergb = row [11: 8];
-        3'd6: ergb = row [ 7: 4];
-        3'd7: ergb = row [ 3: 0];
+        3'd0:  ergb = row [63:60];
+        3'd1:  ergb = row [59:56];
+        3'd2:  ergb = row [55:52];
+        3'd3:  ergb = row [51:48];
+        3'd4:  ergb = row [47:44];
+        3'd5:  ergb = row [43:40];
+        3'd6:  ergb = row [39:36];
+        3'd7:  ergb = row [35:32];
+        3'd8:  ergb = row [31:28];
+        3'd9:  ergb = row [27:24];
+        3'd10: ergb = row [23:20];
+        3'd11: ergb = row [19:16];
+        3'd12: ergb = row [15:12];
+        3'd13: ergb = row [11: 8];
+        3'd14: ergb = row [ 7: 4];
+        3'd15: ergb = row [ 3: 0];
+
         endcase
 
     //------------------------------------------------------------------------
