@@ -95,7 +95,7 @@ module lab_top
         .rst              (   rst                ),
 
         .launch_key       ( | key                ),
-        .left_right_keys  ( { key [1], key [0] } ),
+        .left_right_keys  ( { key [3], key [0] } ),
 
         .display_on       (   display_on         ),
 

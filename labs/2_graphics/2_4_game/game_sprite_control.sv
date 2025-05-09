@@ -3,7 +3,7 @@
 module game_sprite_control
 #(
     parameter DX_WIDTH      = 2,  // X speed width in bits
-              DY_WIDTH      = 2,  // Y speed width in bits
+              DY_WIDTH      = 0,  // Y speed width in bits
 
               screen_width  = 640,
               screen_height = 480,
@@ -64,7 +64,6 @@ module game_sprite_control
             // Add with signed-extended dx and dy
 
             x <= x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx };
-            y <= y + { { w_y - DY_WIDTH { dy [DY_WIDTH - 1] } }, dy };
         end
 
     always_ff @ (posedge clk or posedge rst)
