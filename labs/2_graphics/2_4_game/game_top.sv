@@ -341,4 +341,21 @@ module game_top
         .end_of_game_timer_running     ( end_of_game_timer_running     )
     );
 
+    always_comb begin
+        red   = {w_red{1'b1}};
+        green = {w_green{1'b1}};
+        blue  = {w_blue{1'b1}};
+
+        if ( x >= screen_width  / 4
+        && x <  screen_width  * 3 / 4
+        && y >= screen_height / 4
+        && y <  screen_height * 3 / 4 ) 
+        begin
+            red   = {w_red{1'b0}};
+            green = {w_green{1'b0}};
+            blue  = {w_blue{1'b0}};
+        end
+    end
+
+
 endmodule
