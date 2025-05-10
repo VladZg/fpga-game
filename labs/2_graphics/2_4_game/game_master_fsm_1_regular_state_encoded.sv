@@ -7,16 +7,28 @@ module game_master_fsm_1_regular_state_encoded
 
     input      launch_key,
 
-    output logic sprite_target_write_xy,
+    output logic sprite_target_write_xy_1,
+    output logic sprite_target_write_xy_2,
+    output logic sprite_target_write_xy_3,
+
     output logic sprite_torpedo_write_xy,
 
-    output logic sprite_target_write_dxy,
+    output logic sprite_target_write_dxy_1,
+    output logic sprite_target_write_dxy_2,
+    output logic sprite_target_write_dxy_3,
+
     output logic sprite_torpedo_write_dxy,
 
-    output logic sprite_target_enable_update,
+    output logic sprite_target_enable_update_1,
+    output logic sprite_target_enable_update_2,
+    output logic sprite_target_enable_update_3,
+
     output logic sprite_torpedo_enable_update,
 
-    input      sprite_target_within_screen,
+    input      sprite_target_within_screen_1,
+    input      sprite_target_within_screen_2,
+    input      sprite_target_within_screen_3,
+
     input      sprite_torpedo_within_screen,
 
     input      collision,
@@ -35,13 +47,22 @@ module game_master_fsm_1_regular_state_encoded
     logic [1:0] state;
     logic [1:0] d_state;
 
-    logic d_sprite_target_write_xy;
+    logic d_sprite_target_write_xy_1;
+    logic d_sprite_target_write_xy_2;
+    logic d_sprite_target_write_xy_3;
+
     logic d_sprite_torpedo_write_xy;
 
-    logic d_sprite_target_write_dxy;
+    logic d_sprite_target_write_dxy_1;
+    logic d_sprite_target_write_dxy_2;
+    logic d_sprite_target_write_dxy_3;
+
     logic d_sprite_torpedo_write_dxy;
 
-    logic d_sprite_target_enable_update;
+    logic d_sprite_target_enable_update_1;
+    logic d_sprite_target_enable_update_2;
+    logic d_sprite_target_enable_update_3;
+
     logic d_sprite_torpedo_enable_update;
 
     logic d_end_of_game_timer_start;
@@ -50,9 +71,11 @@ module game_master_fsm_1_regular_state_encoded
     //------------------------------------------------------------------------
 
     wire end_of_game
-        =   ~ sprite_target_within_screen
+        =   ~ sprite_target_within_screen_1
           | ~ sprite_torpedo_within_screen
-          |   collision;
+          | ~ sprite_target_within_screen_2
+          | ~ sprite_target_within_screen_3
+          |  collision;
 
     //------------------------------------------------------------------------
 
@@ -60,14 +83,23 @@ module game_master_fsm_1_regular_state_encoded
     begin
         d_state = state;
 
-        d_sprite_target_write_xy        = 1'b0;
-        d_sprite_torpedo_write_xy       = 1'b0;
+        d_sprite_target_write_xy_1        = 1'b0;
+        d_sprite_target_write_xy_2        = 1'b0;
+        d_sprite_target_write_xy_3        = 1'b0;
 
-        d_sprite_target_write_dxy       = 1'b0;
-        d_sprite_torpedo_write_dxy      = 1'b0;
+        d_sprite_torpedo_write_xy         = 1'b0;
 
-        d_sprite_target_enable_update   = 1'b0;
-        d_sprite_torpedo_enable_update  = 1'b0;
+        d_sprite_target_write_dxy_1       = 1'b0;
+        d_sprite_target_write_dxy_2       = 1'b0;
+        d_sprite_target_write_dxy_3       = 1'b0;
+
+        d_sprite_torpedo_write_dxy        = 1'b0;
+
+        d_sprite_target_enable_update_1   = 1'b0;
+        d_sprite_target_enable_update_2   = 1'b0;
+        d_sprite_target_enable_update_3   = 1'b0;
+
+        d_sprite_torpedo_enable_update    = 1'b0;
 
         d_end_of_game_timer_start       = 1'b0;
         d_game_won                      = game_won;
@@ -78,10 +110,12 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_START:
         begin
-            d_sprite_target_write_xy        = 1'b1;
+            d_sprite_target_write_xy_1        = 1'b1;
+            d_sprite_target_write_xy_2        = 1'b1;
             d_sprite_torpedo_write_xy       = 1'b1;
 
-            d_sprite_target_write_dxy       = 1'b1;
+            d_sprite_target_write_dxy_1       = 1'b1;
+            d_sprite_target_write_dxy_2       = 1'b1;
 
             d_game_won                      = 1'b0;
 
@@ -90,7 +124,8 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_AIM:
         begin
-            d_sprite_target_enable_update   = 1'b1;
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
 
             if (end_of_game)
             begin
@@ -108,7 +143,9 @@ module game_master_fsm_1_regular_state_encoded
         begin
             d_sprite_torpedo_write_dxy      = 1'b1;
 
-            d_sprite_target_enable_update   = 1'b1;
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+
             d_sprite_torpedo_enable_update  = 1'b1;
 
             if (collision)
@@ -144,13 +181,19 @@ module game_master_fsm_1_regular_state_encoded
         begin
             state                         <= STATE_START;
 
-            sprite_target_write_xy        <= 1'b0;
+            sprite_target_write_xy_1        <= 1'b0;
+            sprite_target_write_xy_2        <= 1'b0;
+
             sprite_torpedo_write_xy       <= 1'b0;
 
-            sprite_target_write_dxy       <= 1'b0;
+            sprite_target_write_dxy_1       <= 1'b0;
+            sprite_target_write_dxy_2       <= 1'b0;
+
             sprite_torpedo_write_dxy      <= 1'b0;
 
-            sprite_target_enable_update   <= 1'b0;
+            sprite_target_enable_update_1   <= 1'b0;
+            sprite_target_enable_update_2   <= 1'b0;
+
             sprite_torpedo_enable_update  <= 1'b0;
 
             end_of_game_timer_start       <= 1'b0;
@@ -160,13 +203,19 @@ module game_master_fsm_1_regular_state_encoded
         begin
             state                         <= d_state;
 
-            sprite_target_write_xy        <= d_sprite_target_write_xy;
+            sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
+            sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
+
             sprite_torpedo_write_xy       <= d_sprite_torpedo_write_xy;
 
-            sprite_target_write_dxy       <= d_sprite_target_write_dxy;
+            sprite_target_write_dxy_1       <= d_sprite_target_write_dxy_1;
+            sprite_target_write_dxy_2       <= d_sprite_target_write_dxy_2;
+
             sprite_torpedo_write_dxy      <= d_sprite_torpedo_write_dxy;
 
-            sprite_target_enable_update   <= d_sprite_target_enable_update;
+            sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
+            sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
+
             sprite_torpedo_enable_update  <= d_sprite_torpedo_enable_update;
 
             end_of_game_timer_start       <= d_end_of_game_timer_start;

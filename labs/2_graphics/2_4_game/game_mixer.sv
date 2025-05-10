@@ -5,8 +5,12 @@ module game_mixer
     input                                clk,
     input                                rst,
 
-    input                                sprite_target_rgb_en,
-    input        [`GAME_RGB_WIDTH - 1:0] sprite_target_rgb,
+    input                                sprite_target_rgb_en_1,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_target_rgb_1,
+    input                                sprite_target_rgb_en_2,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_target_rgb_2,
+    input                                sprite_target_rgb_en_3,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_target_rgb_3,
 
     input                                sprite_torpedo_rgb_en,
     input        [`GAME_RGB_WIDTH - 1:0] sprite_torpedo_rgb,
@@ -25,8 +29,12 @@ module game_mixer
             rgb <= { 1'b1, ~ game_won, random };
         else if (sprite_torpedo_rgb_en)
             rgb <= sprite_torpedo_rgb;
-        else if (sprite_target_rgb_en)
-            rgb <= sprite_target_rgb;
+        else if (sprite_target_rgb_en_1)
+            rgb <= sprite_target_rgb_1;
+        else if (sprite_target_rgb_en_2)
+            rgb <= sprite_target_rgb_2;
+        else if (sprite_target_rgb_en_3)
+            rgb <= sprite_target_rgb_3;
         else
             rgb <= 3'b000;
 
