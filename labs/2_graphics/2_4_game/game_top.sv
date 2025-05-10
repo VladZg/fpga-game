@@ -1,4 +1,4 @@
-`include "game_config.svh"
+include "game_config.svh"
 
 module game_top
 # (
@@ -8,8 +8,8 @@ module game_top
                screen_width  = 640,
                screen_height = 480,
 
-               w_x           = $clog2 ( screen_width  ),
-               w_y           = $clog2 ( screen_height ),
+               w_x           = $clog2(screen_width),
+               w_y           = $clog2(screen_height),
 
                strobe_to_update_xy_counter_width = 20
 )
@@ -25,8 +25,19 @@ module game_top
     input  [w_x             - 1:0] x,
     input  [w_y             - 1:0] y,
 
-    output [`GAME_RGB_WIDTH - 1:0] rgb
+    output [GAME_RGB_WIDTH - 1:0] rgb
 );
+
+    //------------------------------------------------------------------------
+    localparam int sq_size = 100;
+    localparam int sq_x0   = (screen_width  - sq_size) / 2;
+    localparam int sq_y0   = (screen_height - sq_size) / 2;
+
+    wire bg_en = display_on;
+    wire [GAME_RGB_WIDTH-1:0] bg_rgb = {GAME_RGB_WIDTH{1'b1}};
+    wire square = (x >= sq_x0 && x < sq_x0 + sq_size &&
+                   y >= sq_y0 && y < sq_y0 + sq_size);
+    wire [GAME_RGB_WIDTH-1:0] bg_final = square ? {GAME_RGB_WIDTH{1'b0}} : bg_rgb;
 
     //------------------------------------------------------------------------
 
