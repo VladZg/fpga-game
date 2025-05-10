@@ -107,32 +107,32 @@ module lab_top
 
     wire [w_x * 2 - 1:0] x_2 = x * x;
 
-    // These additional wires are needed
-    // because some graphics interfaces have up to 10 bits per color channel
+    wire [10:0] x11 = 11'(x);
+    wire [ 9:0] y10 = 10'(y);
 
-    wire [10:0] x11 = 11' (x);
-    wire [ 9:0] y10 = 10' (y);
+    wire center_square =
+           x >= screen_width  / 4
+        && x <  screen_width  * 3 / 4
+        && y >= screen_height / 4
+        && y <  screen_height * 3 / 4;
 
     always_comb
     begin
-        red   = '0;
-        green = '0;
-        blue  = '0;
+        red   = { w_red   { rgb[2] } };
+        green = { w_green { rgb[1] } };
+        blue  = { w_blue  { rgb[0] } };
 
-        if (   x >= screen_width  / 2
-             & x <  screen_width  * 2 / 3
-             & y >= screen_height / 2
-             & y <  screen_height * 2 / 3 )
+        if (rgb == 3'b000 && center_square)
         begin
-            if (key [0])
-                green = '1;
-            else
-                green = x11 [$left (x11) - 1 -: w_green];
+            red   = '0;
+            green = '1;
+            blue  = '0;
         end
     end
 
-    assign red   = { w_red   { rgb [2] } };
-    assign green = { w_green { rgb [1] } };
-    assign blue  = { w_blue  { rgb [0] } };
+
+    // assign red   = { w_red   { rgb [2] } };
+    // assign green = { w_green { rgb [1] } };
+    // assign blue  = { w_blue  { rgb [0] } };
 
 endmodule
