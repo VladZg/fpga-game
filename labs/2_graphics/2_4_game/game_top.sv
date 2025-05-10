@@ -249,6 +249,44 @@ module game_top
         .rgb                   ( sprite_torpedo_rgb            )
     );
 
+    // wire [w_x * 2 - 1:0] x_2 = x * x;
+
+    // // These additional wires are needed
+    // // because some graphics interfaces have up to 10 bits per color channel
+
+    // wire [10:0] x11 = 11' (x);
+    // wire [ 9:0] y10 = 10' (y);
+
+    // always_comb
+    // begin
+    //     red   = '0;
+    //     green = '0;
+    //     blue  = '0;
+
+    //     if (   x >= screen_width  / 2
+    //          & x <  screen_width  * 2 / 3
+    //          & y >= screen_height / 2
+    //          & y <  screen_height * 2 / 3 )
+    //     begin
+    //         if (key [0])
+    //             green = '1;
+    //         else
+    //             green = x11 [$left (x11) - 1 -: w_green];
+    //     end
+
+    //     `ifdef YOSYS
+    //     if (x * x  + 2 * y * y  < screen_width * screen_width / 4)  // Ellipse
+    //     `else
+    //     if (x ** 2 + 2 * y ** 2 < (screen_width / 2) ** 2)  // Ellipse
+    //     `endif
+    //     begin
+    //         red = x11 [$left (x11) - 1 -: w_red];
+    //     end
+
+    //     if (x_2 [w_x +: w_y] < y)  // Parabola
+    //         blue = key [1] ? '1 : y10 [$left (y10) -: w_blue];
+    // end
+
     //------------------------------------------------------------------------
 
     wire collision;
@@ -299,6 +337,10 @@ module game_top
         .clk                           ( clk                           ),
         .rst                           ( rst                           ),
 
+        .display_on                    (display_on                     ), 
+        .x                             (x                              ),          
+        .y                             (y                              ),          
+
         .sprite_target_rgb_en          ( sprite_target_rgb_en          ),
         .sprite_target_rgb             ( sprite_target_rgb             ),
 
@@ -340,23 +382,5 @@ module game_top
 
         .end_of_game_timer_running     ( end_of_game_timer_running     )
     );
-
-    always_comb begin
-        if (sprite_target_rgb_en)
-            rgb = sprite_target_rgb;
-
-        else if (sprite_torpedo_rgb_en)
-            rgb = sprite_torpedo_rgb;
-
-        else if ( x >= screen_width  / 4
-               && x <  screen_width  * 3 / 4
-               && y >= screen_height / 4
-               && y <  screen_height * 3 / 4 ) begin
-            rgb = { `GAME_RGB_WIDTH{1'b0} };
-        end
-
-        else
-            rgb = { `GAME_RGB_WIDTH{1'b1} };
-    end
 
 endmodule
