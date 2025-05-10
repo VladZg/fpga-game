@@ -105,19 +105,31 @@ module lab_top
         .rgb              (   rgb                )
     );
 
-    localparam int sq_size = 100;
-    localparam int sq_x0   = (screen_width - sq_size) / 2;
-    localparam int sq_y0   = (screen_height - sq_size) / 2;
+    wire [w_x * 2 - 1:0] x_2 = x * x;
 
-    wire bg_en = display_on;
-    wire [`GAME_RGB_WIDTH-1:0] bg_rgb   = {`GAME_RGB_WIDTH{1'b1}};
-    wire square = (x >= sq_x0 && x < sq_x0 + sq_size &&
-                   y >= sq_y0 && y < sq_y0 + sq_size);
-    wire [`GAME_RGB_WIDTH-1:0] bg_final = square ? {`GAME_RGB_WIDTH{1'b0}} : bg_rgb;
+    // These additional wires are needed
+    // because some graphics interfaces have up to 10 bits per color channel
 
-    wire [`GAME_RGB_WIDTH-1:0] final_rgb = bg_en
-        ? rgb != 0 ? rgb : bg_final
-        : {`GAME_RGB_WIDTH{1'b0}};
+    wire [10:0] x11 = 11' (x);
+    wire [ 9:0] y10 = 10' (y);
+
+    always_comb
+    begin
+        red   = '0;
+        green = '0;
+        blue  = '0;
+
+        if (   x >= screen_width  / 2
+             & x <  screen_width  * 2 / 3
+             & y >= screen_height / 2
+             & y <  screen_height * 2 / 3 )
+        begin
+            if (key [0])
+                green = '1;
+            else
+                green = x11 [$left (x11) - 1 -: w_green];
+        end
+    end
 
     assign red   = { w_red   { rgb [2] } };
     assign green = { w_green { rgb [1] } };
