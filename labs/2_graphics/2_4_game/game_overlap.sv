@@ -18,6 +18,16 @@ module game_overlap
     input      [w_y      - 1:0] top_1,
     input      [w_y      - 1:0] bottom_1,
 
+    input      [w_x      - 1:0] left_1_2,
+    input      [w_x      - 1:0] right_1_2,
+    input      [w_y      - 1:0] top_1_2,
+    input      [w_y      - 1:0] bottom_1_2,
+
+    input      [w_x      - 1:0] left_1_3,
+    input      [w_x      - 1:0] right_1_3,
+    input      [w_y      - 1:0] top_1_3,
+    input      [w_y      - 1:0] bottom_1_3,
+
     input      [w_x      - 1:0] left_2,
     input      [w_x      - 1:0] right_2,
     input      [w_y      - 1:0] top_2,
@@ -33,6 +43,12 @@ module game_overlap
             overlap <= ! (    right_1  < left_2
                            || right_2  < left_1
                            || bottom_1 < top_2
-                           || bottom_2 < top_1  );
+                           || bottom_2 < top_1  ) || ! (    right_1_2  < left_2
+                           || right_2  < left_1_2
+                           || bottom_1_2 < top_2
+                           || bottom_2 < top_1_2  ) || ! (    right_1_3  < left_2
+                           || right_2  < left_1_3
+                           || bottom_1_3 < top_2
+                           || bottom_2 < top_1_3  );
 
 endmodule
