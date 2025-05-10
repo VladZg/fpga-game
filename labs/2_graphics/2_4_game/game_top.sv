@@ -332,7 +332,12 @@ module game_top
 
     wire game_won;
 
-    game_mixer mixer
+    game_mixer #(
+        .screen_width  (screen_width),
+        .screen_height (screen_height),
+        .w_x           (w_x),
+        .w_y           (w_y)
+    ) mixer
     (
         .clk                           ( clk                           ),
         .rst                           ( rst                           ),
