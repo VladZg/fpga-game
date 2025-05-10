@@ -105,6 +105,20 @@ module lab_top
         .rgb              (   rgb                )
     );
 
+    localparam int sq_size = 100;
+    localparam int sq_x0   = (screen_width - sq_size) / 2;
+    localparam int sq_y0   = (screen_height - sq_size) / 2;
+
+    wire bg_en = display_on;
+    wire [`GAME_RGB_WIDTH-1:0] bg_rgb   = {`GAME_RGB_WIDTH{1'b1}};
+    wire square = (x >= sq_x0 && x < sq_x0 + sq_size &&
+                   y >= sq_y0 && y < sq_y0 + sq_size);
+    wire [`GAME_RGB_WIDTH-1:0] bg_final = square ? {`GAME_RGB_WIDTH{1'b0}} : bg_rgb;
+
+    wire [`GAME_RGB_WIDTH-1:0] final_rgb = bg_en
+        ? rgb != 0 ? rgb : bg_final
+        : {`GAME_RGB_WIDTH{1'b0}};
+
     assign red   = { w_red   { rgb [2] } };
     assign green = { w_green { rgb [1] } };
     assign blue  = { w_blue  { rgb [0] } };

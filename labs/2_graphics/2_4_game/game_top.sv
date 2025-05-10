@@ -1,4 +1,4 @@
-include "game_config.svh"
+`include "game_config.svh"
 
 module game_top
 # (
@@ -8,8 +8,8 @@ module game_top
                screen_width  = 640,
                screen_height = 480,
 
-               w_x           = $clog2(screen_width),
-               w_y           = $clog2(screen_height),
+               w_x           = $clog2 ( screen_width  ),
+               w_y           = $clog2 ( screen_height ),
 
                strobe_to_update_xy_counter_width = 20
 )
@@ -25,19 +25,8 @@ module game_top
     input  [w_x             - 1:0] x,
     input  [w_y             - 1:0] y,
 
-    output [GAME_RGB_WIDTH - 1:0] rgb
+    output [`GAME_RGB_WIDTH - 1:0] rgb
 );
-
-    //------------------------------------------------------------------------
-    localparam int sq_size = 100;
-    localparam int sq_x0   = (screen_width  - sq_size) / 2;
-    localparam int sq_y0   = (screen_height - sq_size) / 2;
-
-    wire bg_en = display_on;
-    wire [GAME_RGB_WIDTH-1:0] bg_rgb = {GAME_RGB_WIDTH{1'b1}};
-    wire square = (x >= sq_x0 && x < sq_x0 + sq_size &&
-                   y >= sq_y0 && y < sq_y0 + sq_size);
-    wire [GAME_RGB_WIDTH-1:0] bg_final = square ? {GAME_RGB_WIDTH{1'b0}} : bg_rgb;
 
     //------------------------------------------------------------------------
 
@@ -260,44 +249,6 @@ module game_top
         .rgb                   ( sprite_torpedo_rgb            )
     );
 
-    // wire [w_x * 2 - 1:0] x_2 = x * x;
-
-    // // These additional wires are needed
-    // // because some graphics interfaces have up to 10 bits per color channel
-
-    // wire [10:0] x11 = 11' (x);
-    // wire [ 9:0] y10 = 10' (y);
-
-    // always_comb
-    // begin
-    //     red   = '0;
-    //     green = '0;
-    //     blue  = '0;
-
-    //     if (   x >= screen_width  / 2
-    //          & x <  screen_width  * 2 / 3
-    //          & y >= screen_height / 2
-    //          & y <  screen_height * 2 / 3 )
-    //     begin
-    //         if (key [0])
-    //             green = '1;
-    //         else
-    //             green = x11 [$left (x11) - 1 -: w_green];
-    //     end
-
-    //     `ifdef YOSYS
-    //     if (x * x  + 2 * y * y  < screen_width * screen_width / 4)  // Ellipse
-    //     `else
-    //     if (x ** 2 + 2 * y ** 2 < (screen_width / 2) ** 2)  // Ellipse
-    //     `endif
-    //     begin
-    //         red = x11 [$left (x11) - 1 -: w_red];
-    //     end
-
-    //     if (x_2 [w_x +: w_y] < y)  // Parabola
-    //         blue = key [1] ? '1 : y10 [$left (y10) -: w_blue];
-    // end
-
     //------------------------------------------------------------------------
 
     wire collision;
@@ -343,19 +294,10 @@ module game_top
 
     wire game_won;
 
-    game_mixer #(
-        .screen_width  (screen_width),
-        .screen_height (screen_height),
-        .w_x           (w_x),
-        .w_y           (w_y)
-    ) mixer
+    game_mixer mixer
     (
         .clk                           ( clk                           ),
         .rst                           ( rst                           ),
-
-        .display_on                    (display_on                     ), 
-        .x                             (x                              ),          
-        .y                             (y                              ),          
 
         .sprite_target_rgb_en          ( sprite_target_rgb_en          ),
         .sprite_target_rgb             ( sprite_target_rgb             ),
