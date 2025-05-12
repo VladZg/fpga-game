@@ -12,6 +12,9 @@ module game_mixer
     input                                sprite_target_rgb_en_3,
     input        [`GAME_RGB_WIDTH - 1:0] sprite_target_rgb_3,
 
+    input                                sprite_bullet_rgb_en,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_bullet_rgb,
+
     input                                sprite_torpedo_rgb_en,
     input        [`GAME_RGB_WIDTH - 1:0] sprite_torpedo_rgb,
 
@@ -35,6 +38,8 @@ module game_mixer
             rgb <= sprite_target_rgb_2;
         else if (sprite_target_rgb_en_3)
             rgb <= sprite_target_rgb_3;
+        else if (sprite_bullet_rgb_en)
+            rgb <= sprite_bullet_rgb;
         else
             rgb <= 3'b000;
 
