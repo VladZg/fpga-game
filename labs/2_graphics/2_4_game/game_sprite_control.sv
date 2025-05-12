@@ -31,7 +31,7 @@ module game_sprite_control
 
     input                    sprite_enable_update,
     input                    is_meteor,
-    input                    shoot,
+    input                    is_bullet,
 
     output [w_x       - 1:0] sprite_x,
     output [w_y       - 1:0] sprite_y
@@ -63,16 +63,14 @@ module game_sprite_control
         end
         else if (sprite_enable_update && strobe_to_update_xy)
         begin
-            if (is_meteor) begin
-                // Add with signed-extended dx and dy
-                y <= y + 1;
+            // if (is_bullet) begin
+            //     y <= y - 1;
+            // end
+             if (is_meteor) begin
+                y <= y + 3;
             end else begin
                 // Add with signed-extended dx and dy
                 x <= x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx };
-            end
-
-            if (shoot) begin
-
             end
         end
 

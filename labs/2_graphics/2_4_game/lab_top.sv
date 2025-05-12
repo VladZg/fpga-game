@@ -96,7 +96,7 @@ module lab_top
 
         .launch_key       ( | key                ),
         .left_right_keys  ( { key [3], key [0] } ),
-        .shoot  ( key [1] | key [2] ),
+        .shoot  ( key [1] ),
 
         .display_on       (   display_on         ),
 
@@ -105,6 +105,8 @@ module lab_top
 
         .rgb              (   rgb                )
     );
+
+
 
     assign red   = { w_red   { rgb [2] } };
     assign green = { w_green { rgb [1] } };
