@@ -229,7 +229,7 @@ module game_master_fsm_1_regular_state_encoded
         if (rst)
         begin
             state                           <= STATE_START_GAME;
-            score                           <= 4'b0;
+            score                           <= 0;
 
             sprite_target_write_xy_1        <= 1'b0;
             sprite_target_write_xy_2        <= 1'b0;
