@@ -388,14 +388,8 @@ module game_top
     wire                          sprite_heart_rgb_en;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_rgb;
 
-    always_comb begin
-        sprite_heart_write_x  = '0;
-        sprite_heart_write_y  = '0;
-        sprite_heart_write_dx = '0;
-        sprite_heart_write_dy = '0;
-    end
-    assign sprite_heart_write_xy  = 1'b1;
-    assign sprite_heart_write_dxy = 1'b1;
+    assign sprite_heart_write_x  = 1;
+    assign sprite_heart_write_y  = 1;
 
     game_sprite_top
     #(
@@ -406,20 +400,20 @@ module game_top
         .DY_WIDTH      ( 1 ),
 
         .ROW_0  ( 64'h0000000000000000 ),
-        .ROW_1  ( 64'h00f0000ff0000f00 ),
-        .ROW_2  ( 64'h0f9ff0fbbf0ff9f0 ),
-        .ROW_3  ( 64'h0fbbaf9999fabbf0 ),
-        .ROW_4  ( 64'h0fb9aaaaaaaa9bf0 ),
-        .ROW_5  ( 64'h00fa99affa99af00 ),
-        .ROW_6  ( 64'h00fa9aaeeaa9af00 ),
-        .ROW_7  ( 64'h0faa9a0cc0a9aaf0 ),
-        .ROW_8  ( 64'h0f9a9ac00ca9a9f0 ),
-        .ROW_9  ( 64'h0fb99acccca99bf0 ),
-        .ROW_10 ( 64'h00fb9aaccaa9bf00 ),
-        .ROW_11 ( 64'h000f9a9aa9a9f000 ),
-        .ROW_12 ( 64'h0000fa9999fd0000 ),
-        .ROW_13 ( 64'h00000fbffbf00000 ),
-        .ROW_14 ( 64'h000000f00f000000 ),
+        .ROW_1  ( 64'h0000000000ff0ff0 ),
+        .ROW_2  ( 64'h000000000fccfc90 ),
+        .ROW_3  ( 64'h000000000fccccbf ),
+        .ROW_4  ( 64'h00fff000fffcccf0 ),
+        .ROW_5  ( 64'h0fcccf0fcccfcf00 ),
+        .ROW_6  ( 64'hfcccccfccbbcf000 ),
+        .ROW_7  ( 64'hfcccccccccbcf000 ),
+        .ROW_8  ( 64'hfcccccccccccf000 ),
+        .ROW_9  ( 64'h0fcccccccccf0000 ),
+        .ROW_10 ( 64'h00fcccccccf00000 ),
+        .ROW_11 ( 64'h000fcccccf000000 ),
+        .ROW_12 ( 64'h0000fcccf0000000 ),
+        .ROW_13 ( 64'h00000fcf00000000 ),
+        .ROW_14 ( 64'h000000f000000000 ),
         .ROW_15 ( 64'h0000000000000000 ),
 
         .screen_width
