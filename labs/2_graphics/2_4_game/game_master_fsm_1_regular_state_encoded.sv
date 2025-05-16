@@ -44,10 +44,12 @@ module game_master_fsm_1_regular_state_encoded
     input      end_of_game_timer_running
 );
 
-    localparam [1:0] STATE_START  = 0,
-                     STATE_AIM    = 1,
-                     STATE_SHOOT  = 2,
-                     STATE_END    = 3;
+    localparam [2:0] STATE_START_GAME   = 0,
+                     STATE_START_ROUND  = 1,
+                     STATE_AIM          = 2,
+                     STATE_SHOOT        = 3,
+                     STATE_END_ROUND    = 4,
+                     STATE_END_GAME     = 5;
 
     logic [1:0] state;
     logic [1:0] d_state;
@@ -75,18 +77,23 @@ module game_master_fsm_1_regular_state_encoded
 
     logic d_end_of_game_timer_start;
     logic d_game_won;
+    logic d_round_won;
 
     logic d_shoot;
+    logic [3:0] score;
 
     //------------------------------------------------------------------------
 
-    wire end_of_game
-        =   ~ sprite_target_within_screen_1
-          | ~ sprite_torpedo_within_screen
-          | ~ sprite_target_within_screen_2
-          | ~ sprite_target_within_screen_3
-          | ~ sprite_bullet_within_screen
-          |  collision | collision_bullet;
+    wire game_end = collision;
+
+    wire round_won = collision_bullet;
+
+    wire round_end =
+          ~sprite_target_within_screen_1
+        | ~sprite_target_within_screen_2
+        | ~sprite_target_within_screen_3
+        | ~sprite_torpedo_within_screen
+        | ~sprite_bullet_within_screen
 
     //------------------------------------------------------------------------
 
@@ -118,12 +125,21 @@ module game_master_fsm_1_regular_state_encoded
         d_end_of_game_timer_start         = 1'b0;
         d_shoot                           = 1'b0;
         d_game_won                        = game_won;
+        d_round_won                       = 1'b0;
 
         //--------------------------------------------------------------------
 
         case (state)
 
-        STATE_START:
+        STATE_START_GAME:
+        begin
+            d_game_won                        = 1'b0;
+            d_round_won                       = 1'b0;
+
+            d_state = STATE_START_ROUND;
+        end
+
+        STATE_START_ROUND:
         begin
             d_sprite_target_write_xy_1        = 1'b1;
             d_sprite_target_write_xy_2        = 1'b1;
@@ -136,7 +152,7 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_write_dxy_2       = 1'b1;
             d_sprite_target_write_dxy_3       = 1'b1;
 
-            d_game_won                        = 1'b0;
+            d_round_won                       = 1'b0;
 
             d_state = STATE_AIM;
         end
@@ -147,13 +163,12 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-
-            if (end_of_game)
+            if (game_end)
             begin
                 d_end_of_game_timer_start   = 1'b1;
-
-                d_state = STATE_END;
+                d_state = STATE_END_GAME;
             end
+
             else if (launch_key)
             begin
                 d_state = STATE_SHOOT;
@@ -173,27 +188,34 @@ module game_master_fsm_1_regular_state_encoded
 
             d_sprite_torpedo_enable_update  = 1'b1;
 
-            if (collision || collision_bullet)
-                d_game_won = 1'b1;
-
-            if (end_of_game)
+            if (round_won)
+            begin
+                score = score + 1;
+                d_state = STATE_END_ROUND;
+            end
+            else if (round_end)
+                d_state = STATE_START_ROUND;
+            else if (game_end)
             begin
                 d_end_of_game_timer_start   = 1'b1;
-
-                d_state = STATE_END;
+                d_state = STATE_END_GAME;
             end
+
         end
 
-        STATE_END:
+        STATE_END_ROUND:
         begin
-            // TODO: Investigate why it needs collision detection here
-            // and not in previous state
+            if (score == 4'd10)
+                d_state = STATE_END_GAME;
+            else
+                d_state = STATE_START_ROUND;
+        end
 
-            if (collision || collision_bullet)
-                d_game_won = 1'b1;
-
-            if (! end_of_game_timer_running)
+        STATE_END_GAME:
+        begin
+            if (!end_of_game_timer_running)
                 d_state = STATE_START;
+
         end
 
         endcase
@@ -204,7 +226,8 @@ module game_master_fsm_1_regular_state_encoded
     always_ff @ (posedge clk or posedge rst)
         if (rst)
         begin
-            state                           <= STATE_START;
+            state                           <= STATE_START_GAME;
+            score                           <= 4'b0;
 
             sprite_target_write_xy_1        <= 1'b0;
             sprite_target_write_xy_2        <= 1'b0;

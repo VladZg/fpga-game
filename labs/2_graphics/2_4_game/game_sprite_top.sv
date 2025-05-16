@@ -130,7 +130,7 @@ module game_sprite_top
         .ROW_14                ( ROW_14                ),
         .ROW_15                ( ROW_15                ),
 
-        
+
 
         .screen_width
         (screen_width),
