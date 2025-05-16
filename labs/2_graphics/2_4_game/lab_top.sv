@@ -69,7 +69,7 @@ module lab_top
     //------------------------------------------------------------------------
 
        assign led        = '0;
-       assign abcdefgh   = '0;
+    //    assign abcdefgh   = '0;
     //    assign digit      = '0;
     // assign red        = '0;
     // assign green      = '0;
@@ -141,6 +141,18 @@ module lab_top
     end
 
     assign digit    = w_digit'(score);
+
+    typedef enum bit [7:0]
+    {
+        F     = 8'b1000_1110,
+        P     = 8'b1100_1110,
+        G     = 8'b1011_1100,
+        A     = 8'b1110_1110,
+        space = 8'b0000_0000
+    }
+    seven_seg_encoding_e;
+
+    assign abcdefgh = key [0] ? P : F;
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
