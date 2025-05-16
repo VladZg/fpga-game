@@ -55,6 +55,7 @@ module game_sprite_top
     input                          sprite_enable_update,
     input                          is_meteor,
     input                          is_bullet,
+    input                          shoot,
 
     output [w_x             - 1:0] sprite_x,
     output [w_y             - 1:0] sprite_y,
@@ -101,6 +102,7 @@ module game_sprite_top
         .sprite_enable_update  ( sprite_enable_update  ),
         .is_meteor  ( is_meteor  ),
         .is_bullet  ( is_bullet  ),
+        .shoot      ( shoot      ),
 
         .sprite_x              ( sprite_x              ),
         .sprite_y              ( sprite_y              )

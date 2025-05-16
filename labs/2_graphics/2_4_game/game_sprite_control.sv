@@ -32,6 +32,7 @@ module game_sprite_control
     input                    sprite_enable_update,
     input                    is_meteor,
     input                    is_bullet,
+    input                    shoot,
 
     output [w_x       - 1:0] sprite_x,
     output [w_y       - 1:0] sprite_y
@@ -49,24 +50,30 @@ module game_sprite_control
 
     logic [ DX_WIDTH - 1:0] dx;
     logic [ DY_WIDTH - 1:0] dy;
+    logic                   bullet_is_shot;
 
     always_ff @ (posedge clk or posedge rst)
         if (rst)
         begin
             x  <= 1'b0;
             y  <= 1'b0;
+            bullet_is_shot <= 1'b0;
         end
         else if (sprite_write_xy)
         begin
             x  <= sprite_write_x;
             y  <= sprite_write_y;
+            bullet_is_shot <= bullet_is_shot | (is_bullet & shoot);
         end
         else if (sprite_enable_update && strobe_to_update_xy)
         begin
-            // if (is_bullet) begin
-            //     y <= y - 1;
-            // end
-             if (is_meteor) begin
+            bullet_is_shot <= bullet_is_shot | (is_bullet & shoot);
+
+            if (bullet_is_shot) begin
+                y <= y - 1;
+                x <= x;
+            end
+            if (is_meteor) begin
                 y <= y + 3;
             end else begin
                 // Add with signed-extended dx and dy
