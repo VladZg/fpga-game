@@ -95,7 +95,8 @@ module lab_top
         .rst              (   rst                ),
 
         .launch_key       ( | key                ),
-        .left_right_keys  ( { key [1], key [0] } ),
+        .left_right_keys  ( { key [3], key [0] } ),
+        .shoot  ( key [1] ),
 
         .display_on       (   display_on         ),
 
@@ -105,8 +106,38 @@ module lab_top
         .rgb              (   rgb                )
     );
 
-    assign red   = { w_red   { rgb [2] } };
-    assign green = { w_green { rgb [1] } };
-    assign blue  = { w_blue  { rgb [0] } };
+    localparam frame_left   = screen_width * 3 / 10;
+    localparam frame_right  = screen_width * 7 / 10;
+    localparam frame_top    = 1;
+    localparam frame_bottom = screen_height - 1;
+
+    wire on_frame = ((x == frame_left || x == frame_right - 1)  && 
+                     (y >= frame_top  && y < frame_bottom) || 
+                     (y == frame_top  || y == frame_bottom - 1) && 
+                     (x >= frame_left && x < frame_right)
+    );
+
+    always_comb begin
+        red   = '0;
+        green = '0;
+        blue  = '0;
+
+        if (on_frame) begin
+            red   = { w_red   { 1'b1 } };
+            green = { w_green { 1'b1 } };
+            blue  = { w_blue  { 1'b1 } };
+        end
+
+        if (rgb != 3'b000) begin
+            red   = { w_red   { rgb[2] } };
+            green = { w_green { rgb[1] } };
+            blue  = { w_blue  { rgb[0] } };
+        end
+    end
+
+
+    // assign red   = { w_red   { rgb [2] } };
+    // assign green = { w_green { rgb [1] } };
+    // assign blue  = { w_blue  { rgb [0] } };
 
 endmodule

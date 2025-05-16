@@ -1,0 +1,132 @@
+03_synthesize_for_fpga.bash: Found Quartus in one of the standard locations:
+QUARTUS_ROOTDIR=/home/etoandruwa/intelFPGA_lite/23.1std/quartus
+PATH=/home/etoandruwa/.dotnet:/home/etoandruwa/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/etoandruwa/intelFPGA_lite/23.1std/quartus/bin
+quartus_full_real_path=/home/etoandruwa/intelFPGA_lite/23.1std/quartus/bin/quartus
+Info: *******************************************************************
+Info: Running Quartus Prime Shell
+Info: Command: quartus_sh --no_banner --flow compile fpga_project
+Info: Quartus(args): compile fpga_project
+Info: Project Name = /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/run/fpga_project
+Info: Revision Name = fpga_project
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+    Info: Processing started: Sat May 10 00:18:48 2025
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off fpga_project -c fpga_project
+Info (20032): Parallel compilation is enabled and will use up to 4 processors
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_timer.sv
+    Info (12023): Found entity 1: game_timer File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_timer.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_control.sv
+    Info (12023): Found entity 1: game_sprite_control File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_control.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_1_regular_state_encoded.sv
+    Info (12023): Found entity 1: game_master_fsm_1_regular_state_encoded File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_1_regular_state_encoded.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_2_special_style_one_hot.sv
+    Info (12023): Found entity 1: game_master_fsm_2_special_style_one_hot File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_2_special_style_one_hot.sv Line: 3
+Error (10170): Verilog HDL syntax error at game_top.sv(177) near text: "2";  expecting "endmodule". Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv Line: 177
+Error (10112): Ignored design unit "game_top" at game_top.sv(3) due to previous errors File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv Line: 3
+Info (12021): Found 0 design units, including 0 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_mixer.sv
+    Info (12023): Found entity 1: game_mixer File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_mixer.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/lab_top.sv
+    Info (12023): Found entity 1: lab_top File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/lab_top.sv Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_strobe.sv
+    Info (12023): Found entity 1: game_strobe File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_strobe.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_overlap.sv
+    Info (12023): Found entity 1: game_overlap File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_overlap.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_3_special_style_signals_from_state.sv
+    Info (12023): Found entity 1: game_master_fsm_3_special_style_signals_from_state File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_master_fsm_3_special_style_signals_from_state.sv Line: 64
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display_pipelined.sv
+    Info (12023): Found entity 1: game_sprite_display_pipelined File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display_pipelined.sv Line: 3
+Warning (10335): Unrecognized synthesis attribute "tools" at game_sprite_display.sv(105) File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display.sv Line: 105
+Warning (10335): Unrecognized synthesis attribute "well" at game_sprite_display.sv(105) File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display.sv Line: 105
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display.sv
+    Info (12023): Found entity 1: game_sprite_display File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_display.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_random.sv
+    Info (12023): Found entity 1: game_random File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_random.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_top.sv
+    Info (12023): Found entity 1: game_sprite_top File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_sprite_top.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/boards/omdazz/board_specific_top.sv
+    Info (12023): Found entity 1: board_specific_top File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/boards/omdazz/board_specific_top.sv Line: 16
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/hub75e_led_matrix.sv
+    Info (12023): Found entity 1: hub75e_led_matrix File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/hub75e_led_matrix.sv Line: 1
+Info (12021): Found 0 design units, including 0 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/inmp441_mic_i2s_receiver_new.sv
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/inmp441_mic_i2s_receiver_alt.sv
+    Info (12023): Found entity 1: inmp441_mic_i2s_receiver_alt File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/inmp441_mic_i2s_receiver_alt.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_480_272.sv
+    Info (12023): Found entity 1: lcd_480_272 File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_480_272.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/digilent_pmod_mic3_spi_receiver.sv
+    Info (12023): Found entity 1: digilent_pmod_mic3_spi_receiver File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/digilent_pmod_mic3_spi_receiver.sv Line: 3
+Info (12021): Found 2 design units, including 2 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tb_lcd_display.sv
+    Info (12023): Found entity 1: tb_lcd_480_272 File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tb_lcd_display.sv Line: 3
+    Info (12023): Found entity 2: tb_lcd_display File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tb_lcd_display.sv Line: 67
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_virtual_switches.sv
+    Info (12023): Found entity 1: tm1638_virtual_switches File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_virtual_switches.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_480_272_ml6485.sv
+    Info (12023): Found entity 1: lcd_480_272_ml6485 File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_480_272_ml6485.sv Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_using_graphics.sv
+    Info (12023): Found entity 1: virtual_tm1638_using_graphics File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_using_graphics.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/imitate_reset_on_power_up.sv
+    Info (12023): Found entity 1: imitate_reset_on_power_up File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/imitate_reset_on_power_up.sv Line: 3
+Info (12021): Found 2 design units, including 2 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_board.sv
+    Info (12023): Found entity 1: tm1638_board_controller File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_board.sv Line: 20
+    Info (12023): Found entity 2: tm1638_sio File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_board.sv Line: 299
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/inmp441_mic_i2s_receiver.sv
+    Info (12023): Found entity 1: inmp441_mic_i2s_receiver File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/inmp441_mic_i2s_receiver.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/i2s_audio_out.sv
+    Info (12023): Found entity 1: i2s_audio_out File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/i2s_audio_out.sv Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_registers.sv
+    Info (12023): Found entity 1: tm1638_registers File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/tm1638_registers.sv Line: 15
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/vga.sv
+    Info (12023): Found entity 1: vga File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/vga.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/audio_pwm.sv
+    Info (12023): Found entity 1: audio_pwm File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/audio_pwm.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_800_480.sv
+    Info (12023): Found entity 1: lcd_800_480 File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/lcd_800_480.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/slow_clk_gen.sv
+    Info (12023): Found entity 1: slow_clk_gen File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/peripherals/slow_clk_gen.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/seven_segment_display.sv
+    Info (12023): Found entity 1: seven_segment_display File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/seven_segment_display.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/strobe_gen.sv
+    Info (12023): Found entity 1: strobe_gen File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/strobe_gen.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/counter_with_enable.sv
+    Info (12023): Found entity 1: counter_with_enable File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/counter_with_enable.sv Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/shift_reg.sv
+    Info (12023): Found entity 1: shift_reg File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/common/shift_reg.sv Line: 5
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 2 warnings
+    Error: Peak virtual memory: 329 megabytes
+    Error: Processing ended: Sat May 10 00:18:58 2025
+    Error: Elapsed time: 00:00:10
+    Error: Total CPU time (on all processors): 00:00:33
+Error (293001): Quartus Prime Full Compilation was unsuccessful. 4 errors, 2 warnings
+Error: Flow compile (for project /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/run/fpga_project) was not successful
+Error: ERROR: Error(s) found while running an executable. See report file(s) for error message(s). Message log indicates which executable was run last.
+
+Error (23031): Evaluation of Tcl script /home/etoandruwa/intelFPGA_lite/23.1std/quartus/common/tcl/internal/qsh_flow.tcl unsuccessful
+Error: Quartus Prime Shell was unsuccessful. 11 errors, 2 warnings
+    Error: Peak virtual memory: 460 megabytes
+    Error: Processing ended: Sat May 10 00:18:59 2025
+    Error: Elapsed time: 00:00:13
+    Error: Total CPU time (on all processors): 00:00:34
+Error (10170): Verilog HDL syntax error at game_top.sv(177) near text: "2";  expecting "endmodule". Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv Line: 177
+Error (10112): Ignored design unit "game_top" at game_top.sv(3) due to previous errors File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv Line: 3
+Info (12021): Found 0 design units, including 0 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_top.sv
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_mixer.sv
+    Info (12023): Found entity 1: game_mixer File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/game_mixer.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/lab_top.sv
+    Info (12023): Found entity 1: lab_top File: /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/lab_top.sv Line: 4
+--
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 2 warnings
+    Error: Peak virtual memory: 329 megabytes
+    Error: Processing ended: Sat May 10 00:18:58 2025
+    Error: Elapsed time: 00:00:10
+    Error: Total CPU time (on all processors): 00:00:33
+Error (293001): Quartus Prime Full Compilation was unsuccessful. 4 errors, 2 warnings
+Error: Flow compile (for project /home/etoandruwa/Desktop/RT-Verilog/fpga-game/labs/2_graphics/2_4_game/run/fpga_project) was not successful
+Error: ERROR: Error(s) found while running an executable. See report file(s) for error message(s). Message log indicates which executable was run last.
+
+Error (23031): Evaluation of Tcl script /home/etoandruwa/intelFPGA_lite/23.1std/quartus/common/tcl/internal/qsh_flow.tcl unsuccessful
+Error: Quartus Prime Shell was unsuccessful. 11 errors, 2 warnings
+    Error: Peak virtual memory: 460 megabytes
+    Error: Processing ended: Sat May 10 00:18:59 2025
+    Error: Elapsed time: 00:00:13
+    Error: Total CPU time (on all processors): 00:00:34

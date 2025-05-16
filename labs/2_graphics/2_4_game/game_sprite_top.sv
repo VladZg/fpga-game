@@ -2,20 +2,28 @@
 
 module game_sprite_top
 #(
-    parameter SPRITE_WIDTH  = 8,
-              SPRITE_HEIGHT = 8,
+    parameter SPRITE_WIDTH  = 16,
+              SPRITE_HEIGHT = 16,
 
               DX_WIDTH      = 2,  // X speed width in bits
               DY_WIDTH      = 2,  // Y speed width in bits
 
-              ROW_0         = 32'h000cc000,
-              ROW_1         = 32'h000cc000,
-              ROW_2         = 32'h000cc000,
-              ROW_3         = 32'hcccccccc,
-              ROW_4         = 32'hcccccccc,
-              ROW_5         = 32'h000cc000,
-              ROW_6         = 32'h000cc000,
-              ROW_7         = 32'h000cc000,
+              ROW_0         = 64'h0000000000000000,
+              ROW_1         = 64'h00f0000ff0000f00,
+              ROW_2         = 64'h0f9ff0fbbf0ff9f0,
+              ROW_3         = 64'h0fbbaf9999fabbf0,
+              ROW_4         = 64'h0fb9aaaaaaaa9bf0,
+              ROW_5         = 64'h00fa99affa99af00,
+              ROW_6         = 64'h00fa9aaeeaa9af00,
+              ROW_7         = 64'h0faa9a0cc0a9aaf0,
+              ROW_8         = 64'h0f9a9ac00ca9a9f0,
+              ROW_9         = 64'h0fb99acccca99bf0,
+              ROW_10        = 64'h00fb9aaccaa9bf00,
+              ROW_11        = 64'h000f9a9aa9a9f000,
+              ROW_12        = 64'h0000fa9999fd0000,
+              ROW_13        = 64'h00000fbffbf00000,
+              ROW_14        = 64'h000000f00f000000,
+              ROW_15        = 64'h0000000000000000,
 
               screen_width  = 640,
               screen_height = 480,
@@ -45,6 +53,9 @@ module game_sprite_top
     input  [DY_WIDTH        - 1:0] sprite_write_dy,
 
     input                          sprite_enable_update,
+    input                          is_meteor,
+    input                          is_bullet,
+    input                          shoot,
 
     output [w_x             - 1:0] sprite_x,
     output [w_y             - 1:0] sprite_y,
@@ -89,6 +100,9 @@ module game_sprite_top
         .sprite_write_dy       ( sprite_write_dy       ),
 
         .sprite_enable_update  ( sprite_enable_update  ),
+        .is_meteor  ( is_meteor  ),
+        .is_bullet  ( is_bullet  ),
+        .shoot      ( shoot      ),
 
         .sprite_x              ( sprite_x              ),
         .sprite_y              ( sprite_y              )
@@ -107,6 +121,16 @@ module game_sprite_top
         .ROW_5                 ( ROW_5                 ),
         .ROW_6                 ( ROW_6                 ),
         .ROW_7                 ( ROW_7                 ),
+        .ROW_8                 ( ROW_8                 ),
+        .ROW_9                 ( ROW_9                 ),
+        .ROW_10                ( ROW_10                ),
+        .ROW_11                ( ROW_11                ),
+        .ROW_12                ( ROW_12                ),
+        .ROW_13                ( ROW_13                ),
+        .ROW_14                ( ROW_14                ),
+        .ROW_15                ( ROW_15                ),
+
+        
 
         .screen_width
         (screen_width),
