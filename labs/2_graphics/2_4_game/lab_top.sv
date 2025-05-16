@@ -105,59 +105,38 @@ module lab_top
 
         .rgb              (   rgb                )
     );
-
-
-    logic [63:0] sprite [0:15] = '{
-        64'h0000000000000000,
-        64'h0000000000ff0ff0,
-        64'h000000000fccfc90,
-        64'h000000000fccccbf,
-        64'h00fff000fffcccf0,
-        64'h0fcccf0fcccfcf00,
-        64'hfcccccfccbbcf000,
-        64'hfcccccccccbcf000,
-        64'hfcccccccccccf000,
-        64'h0fcccccccccf0000,
-        64'h00fcccccccf00000,
-        64'h000fcccccf000000,
-        64'h0000fcccf0000000,
-        64'h00000fcf00000000,
-        64'h000000f000000000,
-        64'h0000000000000000
-    };
-
-    // --- Спрайт 16×16 в левом верхнем углу (используем младшие 16 бит каждой строки) ---
-    logic [63:0] sprite [0:15] = '{
-        64'h0000000000000000,
-        64'h0000000000ff0ff0,
-        64'h000000000fccfc90,
-        64'h000000000fccccbf,
-        64'h00fff000fffcccf0,
-        64'h0fcccf0fcccfcf00,
-        64'hfcccccfccbbcf000,
-        64'hfcccccccccbcf000,
-        64'hfcccccccccccf000,
-        64'h0fcccccccccf0000,
-        64'h00fcccccccf00000,
-        64'h000fcccccf000000,
-        64'h0000fcccf0000000,
-        64'h00000fcf00000000,
-        64'h000000f000000000,
-        64'h0000000000000000
-    };
-
-    wire in_sprite_bounds  = (x < 16) && (y < 16);
-    wire sprite_pixel_on   = in_sprite_bounds && sprite[y][63 - x];
-
-    localparam frame_left   = screen_width  / 4;
-    localparam frame_right  = screen_width  * 3 / 4;
-    localparam frame_top    = screen_height / 4;
-    localparam frame_bottom = screen_height * 3 / 4;
+    
+    localparam frame_left   = screen_width  * 3 / 10;
+    localparam frame_right  = screen_width  * 7 / 10;
+    localparam frame_top    = 1;
+    localparam frame_bottom = screen_height - 1;
 
     wire on_frame = (
-           (x == frame_left  || x == frame_right - 1) && (y >= frame_top && y < frame_bottom)
-        || (y == frame_top   || y == frame_bottom - 1) && (x >= frame_left && x < frame_right)
+           ((x == frame_left  || x == frame_right - 1) && (y >= frame_top  && y < frame_bottom))
+        || ((y == frame_top   || y == frame_bottom - 1) && (x >= frame_left && x < frame_right))
     );
+
+    logic [63:0] sprite [0:15] = '{
+        64'h0000000000000000,
+        64'h0000000000ff0ff0,
+        64'h000000000fccfc90,
+        64'h000000000fccccbf,
+        64'h00fff000fffcccf0,
+        64'h0fcccf0fcccfcf00,
+        64'hfcccccfccbbcf000,
+        64'hfcccccccccbcf000,
+        64'hfcccccccccccf000,
+        64'h0fcccccccccf0000,
+        64'h00fcccccccf00000,
+        64'h000fcccccf000000,
+        64'h0000fcccf0000000,
+        64'h00000fcf00000000,
+        64'h000000f000000000,
+        64'h0000000000000000
+    };
+
+    wire in_sprite_bounds = (x < 16) && (y < 16);
+    wire sprite_pixel_on  = in_sprite_bounds && sprite[y][63 - x];
 
     always_comb begin
         red   = '0;
