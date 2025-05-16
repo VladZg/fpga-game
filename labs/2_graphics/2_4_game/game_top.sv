@@ -210,23 +210,6 @@ module game_top
         .ROW_14 ( 64'h0009999999999000 ),
         .ROW_15 ( 64'h0000099999900000 ),
 
-        .ROW_0  ( 64'h0000000000000000 ),
-        .ROW_1  ( 64'h0000000000ff0ff0 ),
-        .ROW_2  ( 64'h000000000fccfc90 ),
-        .ROW_3  ( 64'h000000000fccccbf ),
-        .ROW_4  ( 64'h00fff000fffcccf0 ),
-        .ROW_5  ( 64'h0fcccf0fcccfcf00 ),
-        .ROW_6  ( 64'hfcccccfccbbcf000 ),
-        .ROW_7  ( 64'hfcccccccccbcf000 ),
-        .ROW_8  ( 64'hfcccccccccccf000 ),
-        .ROW_9  ( 64'h0fcccccccccf0000 ),
-        .ROW_10 ( 64'h00fcccccccf00000 ),
-        .ROW_11 ( 64'h000fcccccf000000 ),
-        .ROW_12 ( 64'h0000fcccf0000000 ),
-        .ROW_13 ( 64'h00000fcf00000000 ),
-        .ROW_14 ( 64'h000000f000000000 ),
-        .ROW_15 ( 64'h0000000000000000 ),
-
         .screen_width
         (screen_width),
 
