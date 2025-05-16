@@ -144,15 +144,15 @@ module lab_top
 
     typedef enum bit [7:0]
     {
-        F     = 8'b1000_1110,
-        P     = 8'b1100_1110,
-        G     = 8'b1011_1100,
-        A     = 8'b1110_1110,
-        space = 8'b0000_0000
+        ZERO  = 8'b1110_1110,
+        ONE   = 8'b0100_1000,
+        TWO   = 8'b1101_1110,
+        THREE = 8'b1101_0110,
+        SPACE = 8'b0000_0000
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = F;
+    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) THREE : SPACE;
     assign digit = 4'b1111;
 
     // assign red   = { w_red   { rgb [2] } };
