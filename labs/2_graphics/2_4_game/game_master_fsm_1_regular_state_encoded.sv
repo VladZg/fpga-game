@@ -43,6 +43,8 @@ module game_master_fsm_1_regular_state_encoded
     input      sprite_heart_1_within_screen,
     input      sprite_heart_2_within_screen,
     input      sprite_heart_3_within_screen,
+    input      sprite_torpedo_within_screen,
+    input      sprite_heart_within_screen,
 
     input      collision,
     input      collision_bullet,
