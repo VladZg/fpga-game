@@ -105,27 +105,25 @@ module lab_top
         .rgb              (   rgb                )
     );
 
-    wire [w_x * 2 - 1:0] x_2 = x * x;
-
-    wire [10:0] x11 = 11'(x);
-    wire [ 9:0] y10 = 10'(y);
-
     wire center_square =
            x >= screen_width  / 4
         && x <  screen_width  * 3 / 4
         && y >= screen_height / 4
         && y <  screen_height * 3 / 4;
 
-    always_comb
-    begin
-        red   = { w_red   { rgb[2] } };
-        green = { w_green { rgb[1] } };
-        blue  = { w_blue  { rgb[0] } };
+    always_comb begin
+        red   = { w_red   { 1'b1 } };
+        green = { w_green { 1'b1 } };
+        blue  = { w_blue  { 1'b1 } };
 
-        if (rgb == 3'b000 && center_square)
-        begin
+        if (rgb != 3'b000) begin
+            red   = { w_red   { rgb[2] } };
+            green = { w_green { rgb[1] } };
+            blue  = { w_blue  { rgb[0] } };
+        end
+        else if (center_square) begin
             red   = '0;
-            green = '1;
+            green = '0;
             blue  = '0;
         end
     end
