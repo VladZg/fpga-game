@@ -207,7 +207,7 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_END_ROUND:
         begin
-            if (score == 4'd10)
+            if (score == 10)
                 d_state = STATE_END_GAME;
             else
                 d_state = STATE_START_ROUND;
