@@ -578,8 +578,8 @@ module game_top
     wire                          sprite_heart_3_rgb_en;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_3_rgb;
 
-    assign sprite_heart_3_write_x  = 20;
-    assign sprite_heart_3_write_y  = 20;
+    assign sprite_heart_3_write_x  = 40;
+    assign sprite_heart_3_write_y  = 40;
 
     game_sprite_top
     #(
