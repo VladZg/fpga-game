@@ -158,9 +158,9 @@ module game_master_fsm_1_regular_state_encoded
 
             d_round_won                       = 1'b0;
 
-            if (!end_of_game_timer_running)
-                d_state = STATE_END_GAME;
-            else
+            // if (!end_of_game_timer_running)
+                // d_state = STATE_END_GAME;
+            // else
                 d_state = STATE_AIM;
         end
 
@@ -170,7 +170,8 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            if (!end_of_game_timer_running || game_end)
+            // if (!end_of_game_timer_running || )
+            if (game_end)
                 d_state = STATE_END_GAME;
             else if (launch_key)
                 d_state = STATE_SHOOT;
@@ -189,9 +190,9 @@ module game_master_fsm_1_regular_state_encoded
 
             d_sprite_torpedo_enable_update  = 1'b1;
 
-            if (!end_of_game_timer_running)
-                d_state = STATE_END_GAME;
-            else if (round_won)
+            // if (!end_of_game_timer_running)
+                // d_state = STATE_END_GAME;
+            if (round_won)
             begin
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
@@ -205,9 +206,9 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_END_ROUND:
         begin
-            if (!end_of_game_timer_running)
-                d_state = STATE_END_GAME;
-            else if (score == 4'd3) // TODO: declare 3 as a const
+            // if (!end_of_game_timer_running)
+                // d_state = STATE_END_GAME;
+            if (score == 4'd3) // TODO: declare 3 as a const
                 d_state = STATE_END_GAME;
             else
                 d_state = STATE_START_ROUND;
