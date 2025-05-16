@@ -105,26 +105,33 @@ module lab_top
         .rgb              (   rgb                )
     );
 
-    wire center_square =
-           x >= screen_width  / 4
-        && x <  screen_width  * 3 / 4
-        && y >= screen_height / 4
-        && y <  screen_height * 3 / 4;
+    // Задаём координаты рамки
+    localparam frame_left   = screen_width  / 4;
+    localparam frame_right  = screen_width  * 3 / 4;
+    localparam frame_top    = screen_height / 4;
+    localparam frame_bottom = screen_height * 3 / 4;
+
+    wire on_frame = ((x == frame_left || x == frame_right - 1)  && 
+                     (y >= frame_top  && y < frame_bottom) || 
+                     (y == frame_top  || y == frame_bottom - 1) && 
+                     (x >= frame_left && x < frame_right)
+    );
 
     always_comb begin
-        red   = { w_red   { 1'b1 } };
-        green = { w_green { 1'b1 } };
-        blue  = { w_blue  { 1'b1 } };
+        red   = '0;
+        green = '0;
+        blue  = '0;
+
+        if (on_frame) begin
+            red   = { w_red   { 1'b1 } };
+            green = { w_green { 1'b1 } };
+            blue  = { w_blue  { 1'b1 } };
+        end
 
         if (rgb != 3'b000) begin
             red   = { w_red   { rgb[2] } };
             green = { w_green { rgb[1] } };
             blue  = { w_blue  { rgb[0] } };
-        end
-        else if (center_square) begin
-            red   = '0;
-            green = '0;
-            blue  = '0;
         end
     end
 
