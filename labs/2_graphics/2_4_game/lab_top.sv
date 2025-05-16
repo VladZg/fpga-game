@@ -80,6 +80,7 @@ module lab_top
     //------------------------------------------------------------------------
 
     wire [`GAME_RGB_WIDTH - 1:0] rgb;
+    logic [3:0] score;
 
     game_top
     # (
@@ -102,6 +103,8 @@ module lab_top
 
         .x                (   x                  ),
         .y                (   y                  ),
+
+        .score            ( score                ),
 
         .rgb              (   rgb                )
     );
@@ -137,7 +140,7 @@ module lab_top
         end
     end
 
-    assign digit    = w_digit'(4'b1010);
+    assign digit    = w_digit'(score);
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
