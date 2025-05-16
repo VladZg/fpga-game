@@ -53,8 +53,8 @@ module game_master_fsm_1_regular_state_encoded
                      STATE_END_ROUND    = 4,
                      STATE_END_GAME     = 5;
 
-    logic [1:0] state;
-    logic [1:0] d_state;
+    logic [2:0] state;
+    logic [2:0] d_state;
 
     logic d_sprite_target_write_xy_1;
     logic d_sprite_target_write_xy_2;

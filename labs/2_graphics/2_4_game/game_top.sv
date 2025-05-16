@@ -606,6 +606,7 @@ module game_top
 
     wire collision;
     wire collision_bullet;
+    logic [3:0] score;
 
     game_overlap
     #(
