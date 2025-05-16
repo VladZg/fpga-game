@@ -73,9 +73,10 @@ module game_sprite_control
                 y <= y - 1;
                 x <= x;
             end
+
             if (is_meteor) begin
                 y <= y + 3;
-            end else begin
+            end else if (!bullet_is_shot && (!is_meteor || is_bullet)) begin
                 // Add with signed-extended dx and dy
                 x <= x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx };
             end
