@@ -26,7 +26,7 @@ module game_top
     input  [w_x             - 1:0] x,
     input  [w_y             - 1:0] y,
 
-    output logic [3:0]             score;
+    output logic [3:0]             score,
 
     output [`GAME_RGB_WIDTH - 1:0] rgb
 );

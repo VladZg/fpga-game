@@ -102,6 +102,7 @@ module game_master_fsm_1_regular_state_encoded
     always_comb
     begin
         d_state = state;
+        d_score = 0;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -207,7 +208,7 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_END_ROUND:
         begin
-            if (score == 10)
+            if (score == 4'd10)
                 d_state = STATE_END_GAME;
             else
                 d_state = STATE_START_ROUND;
@@ -229,7 +230,7 @@ module game_master_fsm_1_regular_state_encoded
         if (rst)
         begin
             state                           <= STATE_START_GAME;
-            score                           <= 0;
+            score                           <= 4'b0;
 
             sprite_target_write_xy_1        <= 1'b0;
             sprite_target_write_xy_2        <= 1'b0;
