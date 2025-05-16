@@ -29,6 +29,28 @@ module game_top
     output [`GAME_RGB_WIDTH - 1:0] rgb
 );
 
+    logic [63:0] corner_sprite [0:15] = '{
+        64'h0000000000000000,
+        64'h0000000000ff0ff0,
+        64'h000000000fccfc90,
+        64'h000000000fccccbf,
+        64'h00fff000fffcccf0,
+        64'h0fcccf0fcccfcf00,
+        64'hfcccccfccbbcf000,
+        64'hfcccccccccbcf000,
+        64'hfcccccccccccf000,
+        64'h0fcccccccccf0000,
+        64'h00fcccccccf00000,
+        64'h000fcccccf000000,
+        64'h0000fcccf0000000,
+        64'h00000fcf00000000,
+        64'h000000f000000000,
+        64'h0000000000000000
+    };
+
+    wire corner_active = (x < 16) && (y < 16) && corner_sprite[y][63 - x];
+    wire [2:0] corner_rgb = 3'b111;
+
     //------------------------------------------------------------------------
 
     wire [15:0] random_1;
