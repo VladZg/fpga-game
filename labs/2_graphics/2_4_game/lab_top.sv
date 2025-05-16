@@ -152,7 +152,8 @@ module lab_top
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = P;
+    assign abcdefgh = F;
+    assign digit = 4'b1111;
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
