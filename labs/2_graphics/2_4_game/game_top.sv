@@ -62,16 +62,16 @@ module game_top
     begin
         if (random_1 [7])
         begin
-            sprite_target_write_x_1  = 10'd0;
+            sprite_target_write_x_1  = screen_width * 3 / 10 + 2;
             sprite_target_write_dx_1 = 2'b01;
         end else begin
-            sprite_target_write_x_1  = screen_width / 4 + random_1 [3:0];
+            sprite_target_write_x_1  = screen_width * 3 / 10 + random_1 [6:0];
             sprite_target_write_dx_1 = 1'd0;
         end
     end
 
     assign sprite_target_write_dy_1 = 1'd0;
-    assign sprite_target_write_y_1 = 1'd0;
+    assign sprite_target_write_y_1 = 1'd1;
 
     game_sprite_top
     #(
@@ -173,10 +173,10 @@ module game_top
     begin
         if (random_1 [7])
         begin
-            sprite_target_write_x_2  = 10'd0;
+            sprite_target_write_x_2  = screen_width / 2;
             sprite_target_write_dx_2 = 2'b01;
         end else begin
-            sprite_target_write_x_2 = 2 * screen_width / 4 + random_1 [7:3];
+            sprite_target_write_x_2 =  screen_width / 2 + random_1 [7:3];
 
             sprite_target_write_dx_2 = 1'd0;
         end
@@ -285,10 +285,10 @@ module game_top
     begin
         if (random_1 [7])
         begin
-            sprite_target_write_x_3  = 10'd0;
+            sprite_target_write_x_3  = (7 * screen_width / 10) - 20;
             sprite_target_write_dx_3 = 2'b01;
         end else begin
-            sprite_target_write_x_3  = 3 * screen_width / 4 + random_1 [10:7];
+            sprite_target_write_x_3  = ((7 * screen_width / 10) - 20) - random_1 [10:7];
             sprite_target_write_dx_3 = 1'd0;
         end
     end
