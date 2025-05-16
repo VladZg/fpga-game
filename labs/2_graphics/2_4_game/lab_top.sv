@@ -140,19 +140,17 @@ module lab_top
         end
     end
 
-    // assign digit    = w_digit'(score);
-
     typedef enum bit [7:0]
     {
-        ZERO  = 8'b1110_1110,
-        ONE   = 8'b0100_1000,
-        TWO   = 8'b1101_1110,
-        THREE = 8'b1101_0110,
+        ZERO  = 8'b1111_1100,
+        ONE   = 8'b0110_0000,
+        TWO   = 8'b1110_1110,
+        THREE = 8'b1111_0010,
         SPACE = 8'b0000_0000
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) THREE : SPACE;
+    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : SPACE;
     assign digit = 4'b1111;
 
     // assign red   = { w_red   { rgb [2] } };

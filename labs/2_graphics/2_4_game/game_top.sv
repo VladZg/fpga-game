@@ -657,7 +657,7 @@ module game_top
     (
         .clk     ( clk                       ),
         .rst     ( rst                       ),
-        .value   ( 25'h1000000               ),
+        .value   ( 25'h0010000               ), // FIXME: изменить время игры
         .start   ( end_of_game_timer_start   ),
         .running ( end_of_game_timer_running )
     );
