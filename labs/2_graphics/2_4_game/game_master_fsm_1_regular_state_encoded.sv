@@ -13,29 +13,37 @@ module game_master_fsm_1_regular_state_encoded
     output logic sprite_target_write_xy_3,
     output logic sprite_bullet_write_xy,
     output logic sprite_spaceship_write_xy,
-    output logic sprite_heart_write_xy,
+    output logic sprite_heart_1_write_xy,
+    output logic sprite_heart_2_write_xy,
+    output logic sprite_heart_3_write_xy,
 
     output logic sprite_target_write_dxy_1,
     output logic sprite_target_write_dxy_2,
     output logic sprite_target_write_dxy_3,
     output logic sprite_bullet_write_dxy,
     output logic sprite_spaceship_write_dxy,
-    output logic sprite_heart_write_dxy,
+    output logic sprite_heart_1_write_dxy,
+    output logic sprite_heart_2_write_dxy,
+    output logic sprite_heart_3_write_dxy,
 
     output logic sprite_target_enable_update_1,
     output logic sprite_target_enable_update_2,
     output logic sprite_target_enable_update_3,
     output logic sprite_bullet_enable_update,
     output logic sprite_spaceship_enable_update,
-    output logic sprite_heart_enable_update,
+    output logic sprite_heart_1_enable_update,
+    output logic sprite_heart_2_enable_update,
+    output logic sprite_heart_3_enable_update,
 
     input      sprite_target_within_screen_1,
     input      sprite_target_within_screen_2,
     input      sprite_target_within_screen_3,
     input      sprite_bullet_within_screen,
     input      sprite_spaceship_within_screen,
-    input      sprite_heart_within_screen,
-    8
+    input      sprite_heart_1_within_screen,
+    input      sprite_heart_2_within_screen,
+    input      sprite_heart_3_within_screen,
+
     input      collision,
     input      collision_bullet,
 
@@ -58,21 +66,29 @@ module game_master_fsm_1_regular_state_encoded
     logic d_sprite_target_write_xy_3;
     logic d_sprite_spaceship_write_xy;
     logic d_sprite_bullet_write_xy;
-    logic d_sprite_heart_write_xy;
+    logic d_sprite_heart_1_write_xy;
+    logic d_sprite_heart_2_write_xy;
+    logic d_sprite_heart_3_write_xy;
 
     logic d_sprite_target_write_dxy_1;
     logic d_sprite_target_write_dxy_2;
     logic d_sprite_target_write_dxy_3;
     logic d_sprite_spaceship_write_dxy;
     logic d_sprite_bullet_write_dxy;
-    logic d_sprite_heart_write_dxy;
+    logic d_sprite_heart_1_write_dxy;
+    logic d_sprite_heart_2_write_dxy;
+    logic d_sprite_heart_3_write_dxy;
+
 
     logic d_sprite_target_enable_update_1;
     logic d_sprite_target_enable_update_2;
     logic d_sprite_target_enable_update_3;
     logic d_sprite_spaceship_enable_update;
     logic d_sprite_bullet_enable_update;
-    logic d_sprite_heart_enable_update;
+    logic d_sprite_heart_1_enable_update;
+    logic d_sprite_heart_2_enable_update;
+    logic d_sprite_heart_3_enable_update;
+
 
     logic d_end_of_game_timer_start;
     logic d_game_won;
@@ -87,7 +103,9 @@ module game_master_fsm_1_regular_state_encoded
           | ~ sprite_target_within_screen_2
           | ~ sprite_target_within_screen_3
           | ~ sprite_bullet_within_screen
-          | ~ sprite_heart_within_screen
+          | ~ sprite_heart_1_within_screen
+          | ~ sprite_heart_2_within_screen
+          | ~ sprite_heart_3_within_screen
           |  collision | collision_bullet;
 
     //------------------------------------------------------------------------
@@ -101,21 +119,27 @@ module game_master_fsm_1_regular_state_encoded
         d_sprite_target_write_xy_3        = 1'b0;
         d_sprite_bullet_write_xy          = 1'b0;
         d_sprite_spaceship_write_xy       = 1'b0;
-        d_sprite_heart_write_xy           = 1'b0;
+        d_sprite_heart_1_write_xy         = 1'b0;
+        d_sprite_heart_2_write_xy         = 1'b0;
+        d_sprite_heart_3_write_xy         = 1'b0;
 
         d_sprite_target_write_dxy_1       = 1'b0;
         d_sprite_target_write_dxy_2       = 1'b0;
         d_sprite_target_write_dxy_3       = 1'b0;
         d_sprite_spaceship_write_dxy      = 1'b0;
         d_sprite_bullet_write_dxy         = 1'b0;
-        d_sprite_heart_write_dxy          = 1'b0;
+        d_sprite_heart_1_write_dxy        = 1'b0;
+        d_sprite_heart_2_write_dxy        = 1'b0;
+        d_sprite_heart_3_write_dxy        = 1'b0;
 
         d_sprite_target_enable_update_1   = 1'b0;
         d_sprite_target_enable_update_2   = 1'b0;
         d_sprite_target_enable_update_3   = 1'b0;
         d_sprite_spaceship_enable_update  = 1'b0;
         d_sprite_bullet_enable_update     = 1'b0;
-        d_sprite_heart_enable_update      = 1'b0;
+        d_sprite_heart_1_enable_update    = 1'b0;
+        d_sprite_heart_2_enable_update    = 1'b0;
+        d_sprite_heart_3_enable_update    = 1'b0;
 
         d_end_of_game_timer_start         = 1'b0;
         d_shoot                           = 1'b0;
@@ -132,7 +156,9 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_write_xy_3        = 1'b1;
             d_sprite_spaceship_write_xy       = 1'b1;
             d_sprite_bullet_write_xy          = 1'b1;
-            d_sprite_heart_write_xy           = 1'b1;
+            d_sprite_heart_1_write_xy         = 1'b1;
+            d_sprite_heart_2_write_xy         = 1'b1;
+            d_sprite_heart_3_write_xy         = 1'b1;
 
             d_sprite_target_write_dxy_1       = 1'b1;
             d_sprite_target_write_dxy_2       = 1'b1;
@@ -211,21 +237,27 @@ module game_master_fsm_1_regular_state_encoded
             sprite_target_write_xy_3        <= 1'b0;
             sprite_spaceship_write_xy       <= 1'b0;
             sprite_bullet_write_xy          <= 1'b0;
-            sprite_heart_write_xy           <= 1'b0;
+            sprite_heart_1_write_xy         <= 1'b0;
+            sprite_heart_2_write_xy         <= 1'b0;
+            sprite_heart_3_write_xy         <= 1'b0;
 
             sprite_target_write_dxy_1       <= 1'b0;
             sprite_target_write_dxy_2       <= 1'b0;
             sprite_target_write_dxy_3       <= 1'b0;
             sprite_spaceship_write_dxy      <= 1'b0;
             sprite_bullet_write_dxy         <= 1'b0;
-            sprite_heart_write_dxy          <= 1'b0;
+            sprite_heart_1_write_dxy        <= 1'b0;
+            sprite_heart_2_write_dxy        <= 1'b0;
+            sprite_heart_3_write_dxy        <= 1'b0;
 
             sprite_target_enable_update_1   <= 1'b0;
             sprite_target_enable_update_2   <= 1'b0;
             sprite_target_enable_update_3   <= 1'b0;
             sprite_spaceship_enable_update  <= 1'b0;
             sprite_bullet_enable_update     <= 1'b0;
-            sprite_heart_enable_update      <= 1'b0;
+            sprite_heart_1_enable_update    <= 1'b0;
+            sprite_heart_2_enable_update    <= 1'b0;
+            sprite_heart_3_enable_update    <= 1'b0;
 
             end_of_game_timer_start         <= 1'b0;
             game_won                        <= 1'b0;
@@ -239,21 +271,27 @@ module game_master_fsm_1_regular_state_encoded
             sprite_target_write_xy_3        <= d_sprite_target_write_xy_3;
             sprite_spaceship_write_xy       <= d_sprite_spaceship_write_xy;
             sprite_bullet_write_xy          <= d_sprite_bullet_write_xy;
-            sprite_heart_write_xy           <= d_sprite_heart_write_xy;
+            sprite_heart_1_write_xy         <= d_sprite_heart_1_write_xy;
+            sprite_heart_2_write_xy         <= d_sprite_heart_2_write_xy;
+            sprite_heart_3_write_xy         <= d_sprite_heart_3_write_xy;
 
             sprite_target_write_dxy_1       <= d_sprite_target_write_dxy_1;
             sprite_target_write_dxy_2       <= d_sprite_target_write_dxy_2;
             sprite_target_write_dxy_3       <= d_sprite_target_write_dxy_3;
             sprite_spaceship_write_dxy      <= d_sprite_spaceship_write_dxy;
             sprite_bullet_write_dxy         <= d_sprite_bullet_write_dxy;
-            sprite_heart_write_dxy          <= d_sprite_heart_write_dxy;
+            sprite_heart_1_write_dxy        <= d_sprite_heart_1_write_dxy;
+            sprite_heart_2_write_dxy        <= d_sprite_heart_2_write_dxy;
+            sprite_heart_3_write_dxy        <= d_sprite_heart_3_write_dxy;
 
             sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
             sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
             sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;
             sprite_spaceship_enable_update  <= d_sprite_spaceship_enable_update;
             sprite_bullet_enable_update     <= d_sprite_bullet_enable_update;
-            sprite_heart_enable_update      <= d_sprite_heart_enable_update;
+            sprite_heart_1_enable_update    <= d_sprite_heart_1_enable_update;
+            sprite_heart_2_enable_update    <= d_sprite_heart_2_enable_update;
+            sprite_heart_3_enable_update    <= d_sprite_heart_3_enable_update;
 
             end_of_game_timer_start         <= d_end_of_game_timer_start;
 
