@@ -806,30 +806,30 @@ module game_top
         .sprite_target_write_xy_1       ( sprite_target_write_xy_1      ),
         .sprite_target_write_xy_2       ( sprite_target_write_xy_2      ),
         .sprite_target_write_xy_3       ( sprite_target_write_xy_3      ),
-
         .sprite_torpedo_write_xy        ( sprite_torpedo_write_xy       ),
+        .sprite_bullet_write_xy         ( sprite_bullet_write_xy        ),
+        .sprite_heart_write_xy          ( sprite_heart_write_xy         ),
 
         .sprite_target_write_dxy_1      ( sprite_target_write_dxy_1     ),
         .sprite_target_write_dxy_2      ( sprite_target_write_dxy_2     ),
         .sprite_target_write_dxy_3      ( sprite_target_write_dxy_3     ),
-
         .sprite_torpedo_write_dxy       ( sprite_torpedo_write_dxy      ),
+        .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy       ),
+        .sprite_heart_write_dxy         ( sprite_heart_write_dxy        ),
 
         .sprite_target_enable_update_1  ( sprite_target_enable_update_1 ),
         .sprite_target_enable_update_2  ( sprite_target_enable_update_2 ),
         .sprite_target_enable_update_3  ( sprite_target_enable_update_3 ),
-
         .sprite_torpedo_enable_update   ( sprite_torpedo_enable_update  ),
+        .sprite_bullet_enable_update    ( sprite_bullet_enable_update   ),
+        .sprite_heart_enable_update     ( sprite_heart_enable_update   ),
 
         .sprite_target_within_screen_1  ( sprite_target_within_screen_1 ),
         .sprite_target_within_screen_2  ( sprite_target_within_screen_2 ),
         .sprite_target_within_screen_3  ( sprite_target_within_screen_3 ),
-
         .sprite_torpedo_within_screen   ( sprite_torpedo_within_screen  ),
         .sprite_bullet_within_screen    ( sprite_bullet_within_screen   ),
-        .sprite_bullet_enable_update    ( sprite_bullet_enable_update   ),
-        .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy       ),
-        .sprite_bullet_write_xy         ( sprite_bullet_write_xy        ),
+        .sprite_heart_within_screen     ( sprite_heart_within_screen    ),
 
         .collision                      ( collision                     ),
         .collision_bullet               ( collision_bullet              ),
