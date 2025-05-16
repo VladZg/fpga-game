@@ -388,8 +388,8 @@ module game_top
     wire                          sprite_heart_1_rgb_en;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_1_rgb;
 
-    assign sprite_heart_1_write_x  = 1;
-    assign sprite_heart_1_write_y  = 1;
+    assign sprite_heart_1_write_x  = screen_width * 3 / 10 - 20;
+    assign sprite_heart_1_write_y  = screen_height - 60;
 
     game_sprite_top
     #(
@@ -443,9 +443,9 @@ module game_top
         .sprite_write_dy       ( sprite_heart_1_write_dy        ),
 
         .sprite_enable_update  ( sprite_heart_1_enable_update   ),
-        .is_meteor             ( 0                            ),
-        .is_bullet             ( 0                            ),
-        .shoot                 ( 0                            ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_1_x               ),
         .sprite_y              ( sprite_heart_1_y               ),
@@ -483,8 +483,8 @@ module game_top
     wire                          sprite_heart_2_rgb_en;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_2_rgb;
 
-    assign sprite_heart_2_write_x  = 20;
-    assign sprite_heart_2_write_y  = 20;
+    assign sprite_heart_2_write_x  = screen_width * 3 / 10 - 20;
+    assign sprite_heart_2_write_y  = screen_height - 40;
 
     game_sprite_top
     #(
@@ -538,9 +538,9 @@ module game_top
         .sprite_write_dy       ( sprite_heart_2_write_dy        ),
 
         .sprite_enable_update  ( sprite_heart_2_enable_update   ),
-        .is_meteor             ( 0                            ),
-        .is_bullet             ( 0                            ),
-        .shoot                 ( 0                            ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_2_x               ),
         .sprite_y              ( sprite_heart_2_y               ),
@@ -578,8 +578,8 @@ module game_top
     wire                          sprite_heart_3_rgb_en;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_3_rgb;
 
-    assign sprite_heart_3_write_x  = 40;
-    assign sprite_heart_3_write_y  = 40;
+    assign sprite_heart_3_write_x  = screen_width * 3 / 10 - 20;
+    assign sprite_heart_3_write_y  = screen_height - 20;
 
     game_sprite_top
     #(
