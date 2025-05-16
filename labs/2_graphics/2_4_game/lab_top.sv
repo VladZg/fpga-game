@@ -70,7 +70,7 @@ module lab_top
 
        assign led        = '0;
        assign abcdefgh   = '0;
-       assign digit      = '0;
+    //    assign digit      = '0;
     // assign red        = '0;
     // assign green      = '0;
     // assign blue       = '0;
@@ -137,6 +137,7 @@ module lab_top
         end
     end
 
+    assign digit    = w_digit'(4'b1010);
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };

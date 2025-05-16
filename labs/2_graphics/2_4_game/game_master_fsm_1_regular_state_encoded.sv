@@ -41,6 +41,8 @@ module game_master_fsm_1_regular_state_encoded
     output logic end_of_game_timer_start,
     output logic game_won,
 
+    output logic [3:0] score,
+
     input      end_of_game_timer_running
 );
 
@@ -80,7 +82,7 @@ module game_master_fsm_1_regular_state_encoded
     logic d_round_won;
 
     logic d_shoot;
-    logic [3:0] score;
+    logic [3:0] d_score;
 
     //------------------------------------------------------------------------
 
@@ -93,7 +95,7 @@ module game_master_fsm_1_regular_state_encoded
         | ~sprite_target_within_screen_2
         | ~sprite_target_within_screen_3
         | ~sprite_torpedo_within_screen
-        | ~sprite_bullet_within_screen
+        | ~sprite_bullet_within_screen;
 
     //------------------------------------------------------------------------
 
@@ -190,7 +192,7 @@ module game_master_fsm_1_regular_state_encoded
 
             if (round_won)
             begin
-                score = score + 1;
+                d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
             end
             else if (round_end)
@@ -214,7 +216,7 @@ module game_master_fsm_1_regular_state_encoded
         STATE_END_GAME:
         begin
             if (!end_of_game_timer_running)
-                d_state = STATE_START;
+                d_state = STATE_START_GAME;
 
         end
 
@@ -256,14 +258,8 @@ module game_master_fsm_1_regular_state_encoded
         else
         begin
             state                           <= d_state;
-            state                           <= d_state;
+            score                           <= d_score;
 
-            sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
-            sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
-            sprite_target_write_xy_3        <= d_sprite_target_write_xy_3;
-
-            sprite_torpedo_write_xy         <= d_sprite_torpedo_write_xy;
-            sprite_bullet_write_xy          <= d_sprite_bullet_write_xy;
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
             sprite_target_write_xy_3        <= d_sprite_target_write_xy_3;
@@ -277,19 +273,7 @@ module game_master_fsm_1_regular_state_encoded
 
             sprite_torpedo_write_dxy        <= d_sprite_torpedo_write_dxy;
             sprite_bullet_write_dxy         <= d_sprite_bullet_write_dxy;
-            sprite_target_write_dxy_1       <= d_sprite_target_write_dxy_1;
-            sprite_target_write_dxy_2       <= d_sprite_target_write_dxy_2;
-            sprite_target_write_dxy_3       <= d_sprite_target_write_dxy_3;
 
-            sprite_torpedo_write_dxy        <= d_sprite_torpedo_write_dxy;
-            sprite_bullet_write_dxy         <= d_sprite_bullet_write_dxy;
-
-            sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
-            sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
-            sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;
-
-            sprite_torpedo_enable_update    <= d_sprite_torpedo_enable_update;
-            sprite_bullet_enable_update     <= d_sprite_bullet_enable_update;
             sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
             sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
             sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;

@@ -733,6 +733,8 @@ module game_top
         .game_won                       ( game_won                      ),
         .end_of_game_timer_start        ( end_of_game_timer_start       ),
 
+        .score                          ( score                         ),
+
         .end_of_game_timer_running      ( end_of_game_timer_running     )
     );
 
