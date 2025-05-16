@@ -29,27 +29,27 @@ module game_top
     output [`GAME_RGB_WIDTH - 1:0] rgb
 );
 
-    logic [63:0] corner_sprite [0:15] = '{
-        64'h0000000000000000,
-        64'h0000000000ff0ff0,
-        64'h000000000fccfc90,
-        64'h000000000fccccbf,
-        64'h00fff000fffcccf0,
-        64'h0fcccf0fcccfcf00,
-        64'hfcccccfccbbcf000,
-        64'hfcccccccccbcf000,
-        64'hfcccccccccccf000,
-        64'h0fcccccccccf0000,
-        64'h00fcccccccf00000,
-        64'h000fcccccf000000,
-        64'h0000fcccf0000000,
-        64'h00000fcf00000000,
-        64'h000000f000000000,
-        64'h0000000000000000
-    };
+    // logic [63:0] corner_sprite [0:15] = '{
+    //     64'h0000000000000000,
+    //     64'h0000000000ff0ff0,
+    //     64'h000000000fccfc90,
+    //     64'h000000000fccccbf,
+    //     64'h00fff000fffcccf0,
+    //     64'h0fcccf0fcccfcf00,
+    //     64'hfcccccfccbbcf000,
+    //     64'hfcccccccccbcf000,
+    //     64'hfcccccccccccf000,
+    //     64'h0fcccccccccf0000,
+    //     64'h00fcccccccf00000,
+    //     64'h000fcccccf000000,
+    //     64'h0000fcccf0000000,
+    //     64'h00000fcf00000000,
+    //     64'h000000f000000000,
+    //     64'h0000000000000000
+    // };
 
-    wire corner_active = (x < 16) && (y < 16) && corner_sprite[y][63 - x];
-    wire [2:0] corner_rgb = 3'b111;
+    // wire corner_active = (x < 16) && (y < 16) && corner_sprite[y][63 - x];
+    // wire [2:0] corner_rgb = 3'b111;
 
     //------------------------------------------------------------------------
 
@@ -386,6 +386,107 @@ module game_top
 
         .rgb_en                ( sprite_target_rgb_en_3         ),
         .rgb                   ( sprite_target_rgb_3            )
+    );
+
+    //------------------------------------------------------------------------
+
+    wire                          sprite_heart_write_xy;
+    wire                          sprite_heart_write_dxy;
+
+    logic [w_x             - 1:0] sprite_heart_write_x;
+    logic [w_y             - 1:0] sprite_heart_write_y;
+
+    logic [                  1:0] sprite_heart_write_dx;
+    logic [                  1:0] sprite_heart_write_dy;
+
+    wire                          sprite_heart_enable_update;
+    wire  [w_x             - 1:0] sprite_heart_x;
+    wire  [w_y             - 1:0] sprite_heart_y;
+    wire                          sprite_heart_within_screen;
+    wire  [w_x             - 1:0] sprite_heart_out_left;
+    wire  [w_x             - 1:0] sprite_heart_out_right;
+    wire  [w_y             - 1:0] sprite_heart_out_top;
+    wire  [w_y             - 1:0] sprite_heart_out_bottom;
+    wire                          sprite_heart_rgb_en;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_rgb;
+
+    always_comb begin
+        sprite_heart_write_x  = '0;
+        sprite_heart_write_y  = '0;
+        sprite_heart_write_dx = '0;
+        sprite_heart_write_dy = '0;
+    end
+    assign sprite_heart_write_xy  = 1'b1;
+    assign sprite_heart_write_dxy = 1'b1;
+
+    game_sprite_top
+    #(
+        .SPRITE_WIDTH  ( 16 ),
+        .SPRITE_HEIGHT ( 16 ),
+
+        .DX_WIDTH      ( 2 ),
+        .DY_WIDTH      ( 1 ),
+
+        .ROW_0  ( 64'h0000000000000000 ),
+        .ROW_1  ( 64'h00f0000ff0000f00 ),
+        .ROW_2  ( 64'h0f9ff0fbbf0ff9f0 ),
+        .ROW_3  ( 64'h0fbbaf9999fabbf0 ),
+        .ROW_4  ( 64'h0fb9aaaaaaaa9bf0 ),
+        .ROW_5  ( 64'h00fa99affa99af00 ),
+        .ROW_6  ( 64'h00fa9aaeeaa9af00 ),
+        .ROW_7  ( 64'h0faa9a0cc0a9aaf0 ),
+        .ROW_8  ( 64'h0f9a9ac00ca9a9f0 ),
+        .ROW_9  ( 64'h0fb99acccca99bf0 ),
+        .ROW_10 ( 64'h00fb9aaccaa9bf00 ),
+        .ROW_11 ( 64'h000f9a9aa9a9f000 ),
+        .ROW_12 ( 64'h0000fa9999fd0000 ),
+        .ROW_13 ( 64'h00000fbffbf00000 ),
+        .ROW_14 ( 64'h000000f00f000000 ),
+        .ROW_15 ( 64'h0000000000000000 ),
+
+        .screen_width
+        (screen_width),
+
+        .screen_height
+        (screen_height),
+
+        .strobe_to_update_xy_counter_width
+        (strobe_to_update_xy_counter_width)
+    )
+    sprite_heart
+    (
+        .clk                   ( clk                          ),
+        .rst                   ( rst                          ),
+
+        .pixel_x               ( x                            ),
+        .pixel_y               ( y                            ),
+
+        .sprite_write_xy       ( sprite_heart_write_xy        ),
+        .sprite_write_dxy      ( sprite_heart_write_dxy       ),
+
+        .sprite_write_x        ( sprite_heart_write_x         ),
+        .sprite_write_y        ( sprite_heart_write_y         ),
+
+        .sprite_write_dx       ( sprite_heart_write_dx        ),
+        .sprite_write_dy       ( sprite_heart_write_dy        ),
+
+        .sprite_enable_update  ( sprite_heart_enable_update   ),
+        .is_meteor             ( 0                            ),
+        .is_bullet             ( 0                            ),
+        .shoot                 ( 0                            ),
+
+        .sprite_x              ( sprite_heart_x               ),
+        .sprite_y              ( sprite_heart_y               ),
+
+        .sprite_within_screen  ( sprite_heart_within_screen   ),
+
+        .sprite_out_left       ( sprite_heart_out_left        ),
+        .sprite_out_right      ( sprite_heart_out_right       ),
+        .sprite_out_top        ( sprite_heart_out_top         ),
+        .sprite_out_bottom     ( sprite_heart_out_bottom      ),
+
+        .rgb_en                ( sprite_heart_rgb_en          ),
+        .rgb                   ( sprite_heart_rgb             )
     );
 
     //------------------------------------------------------------------------
