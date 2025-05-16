@@ -256,7 +256,14 @@ module game_master_fsm_1_regular_state_encoded
         else
         begin
             state                           <= d_state;
+            state                           <= d_state;
 
+            sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
+            sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
+            sprite_target_write_xy_3        <= d_sprite_target_write_xy_3;
+
+            sprite_torpedo_write_xy         <= d_sprite_torpedo_write_xy;
+            sprite_bullet_write_xy          <= d_sprite_bullet_write_xy;
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
             sprite_target_write_xy_3        <= d_sprite_target_write_xy_3;
@@ -270,7 +277,19 @@ module game_master_fsm_1_regular_state_encoded
 
             sprite_torpedo_write_dxy        <= d_sprite_torpedo_write_dxy;
             sprite_bullet_write_dxy         <= d_sprite_bullet_write_dxy;
+            sprite_target_write_dxy_1       <= d_sprite_target_write_dxy_1;
+            sprite_target_write_dxy_2       <= d_sprite_target_write_dxy_2;
+            sprite_target_write_dxy_3       <= d_sprite_target_write_dxy_3;
 
+            sprite_torpedo_write_dxy        <= d_sprite_torpedo_write_dxy;
+            sprite_bullet_write_dxy         <= d_sprite_bullet_write_dxy;
+
+            sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
+            sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
+            sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;
+
+            sprite_torpedo_enable_update    <= d_sprite_torpedo_enable_update;
+            sprite_bullet_enable_update     <= d_sprite_bullet_enable_update;
             sprite_target_enable_update_1   <= d_sprite_target_enable_update_1;
             sprite_target_enable_update_2   <= d_sprite_target_enable_update_2;
             sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;
