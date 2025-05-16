@@ -140,7 +140,7 @@ module lab_top
         end
     end
 
-    assign digit    = w_digit'(score);
+    // assign digit    = w_digit'(score);
 
     typedef enum bit [7:0]
     {
@@ -152,7 +152,7 @@ module lab_top
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = key [0] ? P : F;
+    assign abcdefgh = P;
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
