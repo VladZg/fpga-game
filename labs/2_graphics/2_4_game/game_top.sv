@@ -463,49 +463,49 @@ module game_top
 
     //------------------------------------------------------------------------
 
-    wire                          sprite_torpedo_write_xy;
-    wire                          sprite_torpedo_write_dxy;
+    wire                          sprite_spaceship_write_xy;
+    wire                          sprite_spaceship_write_dxy;
 
-    wire  [w_x             - 1:0] sprite_torpedo_write_x;
-    wire  [w_y             - 1:0] sprite_torpedo_write_y;
+    wire  [w_x             - 1:0] sprite_spaceship_write_x;
+    wire  [w_y             - 1:0] sprite_spaceship_write_y;
 
-    logic [                  1:0] sprite_torpedo_write_dx;
-    logic [                  2:0] sprite_torpedo_write_dy;
+    logic [                  1:0] sprite_spaceship_write_dx;
+    logic [                  2:0] sprite_spaceship_write_dy;
 
-    wire                          sprite_torpedo_enable_update;
+    wire                          sprite_spaceship_enable_update;
 
-    wire  [w_x             - 1:0] sprite_torpedo_x;
-    wire  [w_y             - 1:0] sprite_torpedo_y;
+    wire  [w_x             - 1:0] sprite_spaceship_x;
+    wire  [w_y             - 1:0] sprite_spaceship_y;
 
-    wire                          sprite_torpedo_within_screen;
+    wire                          sprite_spaceship_within_screen;
 
-    wire  [w_x             - 1:0] sprite_torpedo_out_left;
-    wire  [w_x             - 1:0] sprite_torpedo_out_right;
-    wire  [w_y             - 1:0] sprite_torpedo_out_top;
-    wire  [w_y             - 1:0] sprite_torpedo_out_bottom;
+    wire  [w_x             - 1:0] sprite_spaceship_out_left;
+    wire  [w_x             - 1:0] sprite_spaceship_out_right;
+    wire  [w_y             - 1:0] sprite_spaceship_out_top;
+    wire  [w_y             - 1:0] sprite_spaceship_out_bottom;
 
-    wire                          sprite_torpedo_rgb_en;
-    wire  [`GAME_RGB_WIDTH - 1:0] sprite_torpedo_rgb;
+    wire                          sprite_spaceship_rgb_en;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_spaceship_rgb;
 
     //------------------------------------------------------------------------
 
-    assign sprite_torpedo_write_x  = screen_width / 2 + random_1 [15:10];
-    assign sprite_torpedo_write_y  = screen_height - 20;
+    assign sprite_spaceship_write_x  = screen_width / 2 + random_1 [15:10];
+    assign sprite_spaceship_write_y  = screen_height - 20;
 
     always_comb
     begin
         case (left_right_keys)
-        2'b00: sprite_torpedo_write_dx = 2'b00;
-        2'b01: sprite_torpedo_write_dx = 2'b01;
-        2'b10: sprite_torpedo_write_dx = 2'b11;
-        2'b11: sprite_torpedo_write_dx = 2'b00;
+        2'b00: sprite_spaceship_write_dx = 2'b00;
+        2'b01: sprite_spaceship_write_dx = 2'b01;
+        2'b10: sprite_spaceship_write_dx = 2'b11;
+        2'b11: sprite_spaceship_write_dx = 2'b00;
         endcase
 
         case (left_right_keys)
-        2'b00: sprite_torpedo_write_dy = 3'b111;
-        2'b01: sprite_torpedo_write_dy = 3'b110;
-        2'b10: sprite_torpedo_write_dy = 3'b110;
-        2'b11: sprite_torpedo_write_dy = 3'b110;
+        2'b00: sprite_spaceship_write_dy = 3'b111;
+        2'b01: sprite_spaceship_write_dy = 3'b110;
+        2'b10: sprite_spaceship_write_dy = 3'b110;
+        2'b11: sprite_spaceship_write_dy = 3'b110;
         endcase
     end
 
@@ -545,7 +545,7 @@ module game_top
         .strobe_to_update_xy_counter_width
         (strobe_to_update_xy_counter_width)
     )
-    sprite_torpedo
+    sprite_spaceship
     (
         .clk                   ( clk                           ),
         .rst                   ( rst                           ),
@@ -553,32 +553,32 @@ module game_top
         .pixel_x               ( x                             ),
         .pixel_y               ( y                             ),
 
-        .sprite_write_xy       ( sprite_torpedo_write_xy       ),
-        .sprite_write_dxy      ( sprite_torpedo_write_dxy      ),
+        .sprite_write_xy       ( sprite_spaceship_write_xy       ),
+        .sprite_write_dxy      ( sprite_spaceship_write_dxy      ),
 
-        .sprite_write_x        ( sprite_torpedo_write_x        ),
-        .sprite_write_y        ( sprite_torpedo_write_y        ),
+        .sprite_write_x        ( sprite_spaceship_write_x        ),
+        .sprite_write_y        ( sprite_spaceship_write_y        ),
 
-        .sprite_write_dx       ( sprite_torpedo_write_dx       ),
-        .sprite_write_dy       ( 0                             ),
+        .sprite_write_dx       ( sprite_spaceship_write_dx       ),
+        .sprite_write_dy       ( 0                               ),
 
-        .sprite_enable_update  ( sprite_torpedo_enable_update  ),
-        .is_meteor             ( 0                             ),
-        .is_bullet             ( 0                             ),
-        .shoot                 ( shoot                          ),
+        .sprite_enable_update  ( sprite_spaceship_enable_update  ),
+        .is_meteor             ( 0                               ),
+        .is_bullet             ( 0                               ),
+        .shoot                 ( shoot                           ),
 
-        .sprite_x              ( sprite_torpedo_x              ),
-        .sprite_y              ( sprite_torpedo_y              ),
+        .sprite_x              ( sprite_spaceship_x              ),
+        .sprite_y              ( sprite_spaceship_y              ),
 
-        .sprite_within_screen  ( sprite_torpedo_within_screen  ),
+        .sprite_within_screen  ( sprite_spaceship_within_screen  ),
 
-        .sprite_out_left       ( sprite_torpedo_out_left       ),
-        .sprite_out_right      ( sprite_torpedo_out_right      ),
-        .sprite_out_top        ( sprite_torpedo_out_top        ),
-        .sprite_out_bottom     ( sprite_torpedo_out_bottom     ),
+        .sprite_out_left       ( sprite_spaceship_out_left       ),
+        .sprite_out_right      ( sprite_spaceship_out_right      ),
+        .sprite_out_top        ( sprite_spaceship_out_top        ),
+        .sprite_out_bottom     ( sprite_spaceship_out_bottom     ),
 
-        .rgb_en                ( sprite_torpedo_rgb_en         ),
-        .rgb                   ( sprite_torpedo_rgb            )
+        .rgb_en                ( sprite_spaceship_rgb_en         ),
+        .rgb                   ( sprite_spaceship_rgb            )
     );
 
     //------------------------------------------------------------------------
@@ -732,10 +732,10 @@ module game_top
         .top_bullet     ( sprite_bullet_out_top     ),
         .bottom_bullet  ( sprite_bullet_out_bottom  ),
 
-        .left_2      ( sprite_torpedo_out_left      ),
-        .right_2     ( sprite_torpedo_out_right     ),
-        .top_2       ( sprite_torpedo_out_top       ),
-        .bottom_2    ( sprite_torpedo_out_bottom    ),
+        .left_2      ( sprite_spaceship_out_left      ),
+        .right_2     ( sprite_spaceship_out_right     ),
+        .top_2       ( sprite_spaceship_out_top       ),
+        .bottom_2    ( sprite_spaceship_out_bottom    ),
 
         .overlap            ( collision             ),
         .overlap_bullet     ( collision_bullet      )
@@ -774,8 +774,8 @@ module game_top
         .sprite_bullet_rgb_en          ( sprite_bullet_rgb_en          ),
         .sprite_bullet_rgb             ( sprite_bullet_rgb             ),
 
-        .sprite_torpedo_rgb_en         ( sprite_torpedo_rgb_en         ),
-        .sprite_torpedo_rgb            ( sprite_torpedo_rgb            ),
+        .sprite_spaceship_rgb_en       ( sprite_spaceship_rgb_en       ),
+        .sprite_spaceship_rgb          ( sprite_spaceship_rgb          ),
 
         .sprite_heart_rgb_en           ( sprite_heart_rgb_en           ),
         .sprite_heart_rgb              ( sprite_heart_rgb              ),
@@ -800,28 +800,28 @@ module game_top
         .sprite_target_write_xy_1       ( sprite_target_write_xy_1      ),
         .sprite_target_write_xy_2       ( sprite_target_write_xy_2      ),
         .sprite_target_write_xy_3       ( sprite_target_write_xy_3      ),
-        .sprite_torpedo_write_xy        ( sprite_torpedo_write_xy       ),
+        .sprite_spaceship_write_xy        ( sprite_spaceship_write_xy       ),
         .sprite_bullet_write_xy         ( sprite_bullet_write_xy        ),
         .sprite_heart_write_xy          ( sprite_heart_write_xy         ),
 
         .sprite_target_write_dxy_1      ( sprite_target_write_dxy_1     ),
         .sprite_target_write_dxy_2      ( sprite_target_write_dxy_2     ),
         .sprite_target_write_dxy_3      ( sprite_target_write_dxy_3     ),
-        .sprite_torpedo_write_dxy       ( sprite_torpedo_write_dxy      ),
+        .sprite_spaceship_write_dxy       ( sprite_spaceship_write_dxy      ),
         .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy       ),
         .sprite_heart_write_dxy         ( sprite_heart_write_dxy        ),
 
         .sprite_target_enable_update_1  ( sprite_target_enable_update_1 ),
         .sprite_target_enable_update_2  ( sprite_target_enable_update_2 ),
         .sprite_target_enable_update_3  ( sprite_target_enable_update_3 ),
-        .sprite_torpedo_enable_update   ( sprite_torpedo_enable_update  ),
+        .sprite_spaceship_enable_update ( sprite_spaceship_enable_update),
         .sprite_bullet_enable_update    ( sprite_bullet_enable_update   ),
-        .sprite_heart_enable_update     ( sprite_heart_enable_update   ),
+        .sprite_heart_enable_update     ( sprite_heart_enable_update    ),
 
         .sprite_target_within_screen_1  ( sprite_target_within_screen_1 ),
         .sprite_target_within_screen_2  ( sprite_target_within_screen_2 ),
         .sprite_target_within_screen_3  ( sprite_target_within_screen_3 ),
-        .sprite_torpedo_within_screen   ( sprite_torpedo_within_screen  ),
+        .sprite_spaceship_within_screen ( sprite_spaceship_within_screen),
         .sprite_bullet_within_screen    ( sprite_bullet_within_screen   ),
         .sprite_heart_within_screen     ( sprite_heart_within_screen    ),
 
