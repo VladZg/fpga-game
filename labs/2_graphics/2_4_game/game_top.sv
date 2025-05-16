@@ -125,8 +125,9 @@ module game_top
         .sprite_write_dy       ( sprite_target_write_dy_1       ),
 
         .sprite_enable_update  ( sprite_target_enable_update_1  ),
-        .is_meteor             ( 1                    ),
-        .is_bullet             ( 0                          ),
+        .is_meteor             ( 1                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( shoot                          ),
 
         .sprite_x              ( sprite_target_x_1              ),
         .sprite_y              ( sprite_target_y_1              ),
@@ -236,8 +237,9 @@ module game_top
         .sprite_write_dy       ( sprite_target_write_dy_2       ),
 
         .sprite_enable_update  ( sprite_target_enable_update_2  ),
-        .is_meteor             ( 1                    ),
-        .is_bullet             ( 0                          ),
+        .is_meteor             ( 1                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( shoot                          ),
 
         .sprite_x              ( sprite_target_x_2              ),
         .sprite_y              ( sprite_target_y_2              ),
@@ -346,8 +348,9 @@ module game_top
         .sprite_write_dy       ( sprite_target_write_dy_3       ),
 
         .sprite_enable_update  ( sprite_target_enable_update_3  ),
-        .is_meteor             ( 1                    ),
-        .is_bullet             ( 0                          ),
+        .is_meteor             ( 1                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( shoot                          ),
 
         .sprite_x              ( sprite_target_x_3              ),
         .sprite_y              ( sprite_target_y_3              ),
@@ -462,11 +465,12 @@ module game_top
         .sprite_write_y        ( sprite_torpedo_write_y        ),
 
         .sprite_write_dx       ( sprite_torpedo_write_dx       ),
-        .sprite_write_dy       ( 0       ),
+        .sprite_write_dy       ( 0                             ),
 
         .sprite_enable_update  ( sprite_torpedo_enable_update  ),
-        .is_meteor             ( 0                          ),
-        .is_bullet             ( 0                          ),
+        .is_meteor             ( 0                             ),
+        .is_bullet             ( 0                             ),
+        .shoot                 ( shoot                          ),
 
         .sprite_x              ( sprite_torpedo_x              ),
         .sprite_y              ( sprite_torpedo_y              ),
@@ -484,47 +488,47 @@ module game_top
 
     //------------------------------------------------------------------------
 
-    wire                          sprite_bullet_write_xy_1;
-    wire                          sprite_bullet_write_dxy_1;
+    wire                          sprite_bullet_write_xy;
+    wire                          sprite_bullet_write_dxy;
 
-    logic [w_x             - 1:0] sprite_bullet_write_x_1;
-    logic [w_y             - 1:0] sprite_bullet_write_y_1;
+    logic [w_x             - 1:0] sprite_bullet_write_x;
+    logic [w_y             - 1:0] sprite_bullet_write_y;
 
-    logic [                  1:0] sprite_bullet_write_dx_1;
-    logic [                  2:0] sprite_bullet_write_dy_1;
+    logic [                  1:0] sprite_bullet_write_dx;
+    logic [                  2:0] sprite_bullet_write_dy;
 
-    wire                          sprite_bullet_enable_update_1;
+    wire                          sprite_bullet_enable_update;
 
-    wire  [w_x             - 1:0] sprite_bullet_x_1;
-    wire  [w_y             - 1:0] sprite_bullet_y_1;
+    wire  [w_x             - 1:0] sprite_bullet_x;
+    wire  [w_y             - 1:0] sprite_bullet_y;
 
-    wire                          sprite_bullet_within_screen_1;
+    wire                          sprite_bullet_within_screen;
 
-    wire  [w_x             - 1:0] sprite_bullet_out_left_1;
-    wire  [w_x             - 1:0] sprite_bullet_out_right_1;
-    wire  [w_y             - 1:0] sprite_bullet_out_top_1;
-    wire  [w_y             - 1:0] sprite_bullet_out_bottom_1;
+    wire  [w_x             - 1:0] sprite_bullet_out_left;
+    wire  [w_x             - 1:0] sprite_bullet_out_right;
+    wire  [w_y             - 1:0] sprite_bullet_out_top;
+    wire  [w_y             - 1:0] sprite_bullet_out_bottom;
 
-    wire                          sprite_bullet_rgb_en_1;
-    wire  [`GAME_RGB_WIDTH - 1:0] sprite_bullet_rgb_1;
+    wire                          sprite_bullet_rgb_en;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_bullet_rgb;
 
-    assign sprite_bullet_write_x_1  = screen_width / 2 + + random_1 [15:10];
-    assign sprite_bullet_write_y_1  = screen_height - 33;
+    assign sprite_bullet_write_x = screen_width / 2 + + random_1 [15:10];
+    assign sprite_bullet_write_y = screen_height - 37;
 
     always_comb
     begin
         case (left_right_keys)
-        2'b00: sprite_bullet_write_dx_1 = 2'b00;
-        2'b01: sprite_bullet_write_dx_1 = 2'b01;
-        2'b10: sprite_bullet_write_dx_1 = 2'b11;
-        2'b11: sprite_bullet_write_dx_1 = 2'b00;
+        2'b00: sprite_bullet_write_dx = 2'b00;
+        2'b01: sprite_bullet_write_dx = 2'b01;
+        2'b10: sprite_bullet_write_dx = 2'b11;
+        2'b11: sprite_bullet_write_dx = 2'b00;
         endcase
 
         case (left_right_keys)
-        2'b00: sprite_bullet_write_dy_1 = 3'b111;
-        2'b01: sprite_bullet_write_dy_1 = 3'b110;
-        2'b10: sprite_bullet_write_dy_1 = 3'b110;
-        2'b11: sprite_bullet_write_dy_1 = 3'b110;
+        2'b00: sprite_bullet_write_dy = 3'b111;
+        2'b01: sprite_bullet_write_dy = 3'b110;
+        2'b10: sprite_bullet_write_dy = 3'b110;
+        2'b11: sprite_bullet_write_dy = 3'b110;
         endcase
     end
 
@@ -570,41 +574,33 @@ module game_top
         .pixel_x               ( x                            ),
         .pixel_y               ( y                            ),
 
-        .sprite_write_xy       ( sprite_bullet_write_xy_1       ),
-        .sprite_write_dxy      ( sprite_bullet_write_dxy_1      ),
+        .sprite_write_xy       ( sprite_bullet_write_xy       ),
+        .sprite_write_dxy      ( sprite_bullet_write_dxy      ),
 
-        .sprite_write_x        ( sprite_bullet_write_x_1        ),
-        .sprite_write_y        ( sprite_bullet_write_y_1        ),
+        .sprite_write_x        ( sprite_bullet_write_x        ),
+        .sprite_write_y        ( sprite_bullet_write_y        ),
 
-        .sprite_write_dx       ( sprite_bullet_write_dx_1       ),
-        .sprite_write_dy       ( sprite_bullet_write_dy_1       ),
+        .sprite_write_dx       ( sprite_bullet_write_dx       ),
+        .sprite_write_dy       ( sprite_bullet_write_dy       ),
 
-        .sprite_enable_update  ( sprite_bullet_enable_update_1  ),
-        .is_meteor             ( 0                    ),
-        .is_bullet             ( 1                          ),
+        .sprite_enable_update  ( sprite_bullet_enable_update  ),
+        .is_meteor             ( 0                            ),
+        .is_bullet             ( 1                            ),
+        .shoot                 ( shoot                        ),
 
-        .sprite_x              ( sprite_bullet_x_1              ),
-        .sprite_y              ( sprite_bullet_y_1              ),
+        .sprite_x              ( sprite_bullet_x              ),
+        .sprite_y              ( sprite_bullet_y              ),
 
-        .sprite_within_screen  ( sprite_bullet_within_screen_1  ),
+        .sprite_within_screen  ( sprite_bullet_within_screen  ),
 
-        .sprite_out_left       ( sprite_bullet_out_left_1       ),
-        .sprite_out_right      ( sprite_bullet_out_right_1      ),
-        .sprite_out_top        ( sprite_bullet_out_top_1        ),
-        .sprite_out_bottom     ( sprite_bullet_out_bottom_1     ),
+        .sprite_out_left       ( sprite_bullet_out_left       ),
+        .sprite_out_right      ( sprite_bullet_out_right      ),
+        .sprite_out_top        ( sprite_bullet_out_top        ),
+        .sprite_out_bottom     ( sprite_bullet_out_bottom     ),
 
-        .rgb_en                ( sprite_bullet_rgb_en_1         ),
-        .rgb                   ( sprite_bullet_rgb_1            )
+        .rgb_en                ( sprite_bullet_rgb_en         ),
+        .rgb                   ( sprite_bullet_rgb            )
     );
-
-    // always_ff @ (posedge clk or posedge rst)
-    //     if (rst) begin
-    //         sprite_bullet_x_1 = 0;
-    //         sprite_bullet_y_1 = 0;
-    //     end else begin
-    //         sprite_bullet_x_1 = sprite_torpedo_x;
-    //         sprite_bullet_y_1 = sprite_torpedo_y;
-    //     end
 
     //------------------------------------------------------------------------
 
@@ -636,17 +632,17 @@ module game_top
         .top_1_3     ( sprite_target_out_top_3      ),
         .bottom_1_3  ( sprite_target_out_bottom_3   ),
 
-        .left_bullet    ( sprite_bullet_out_left_1     ),
-        .right_bullet   ( sprite_bullet_out_right_1    ),
-        .top_bullet     ( sprite_bullet_out_top_1      ),
-        .bottom_bullet  ( sprite_bullet_out_bottom_1   ),
+        .left_bullet    ( sprite_bullet_out_left    ),
+        .right_bullet   ( sprite_bullet_out_right   ),
+        .top_bullet     ( sprite_bullet_out_top     ),
+        .bottom_bullet  ( sprite_bullet_out_bottom  ),
 
         .left_2      ( sprite_torpedo_out_left      ),
         .right_2     ( sprite_torpedo_out_right     ),
         .top_2       ( sprite_torpedo_out_top       ),
         .bottom_2    ( sprite_torpedo_out_bottom    ),
 
-        .overlap     ( collision                    ),
+        .overlap            ( collision             ),
         .overlap_bullet     ( collision_bullet      )
     );
 
@@ -680,15 +676,15 @@ module game_top
         .sprite_target_rgb_en_3        ( sprite_target_rgb_en_3        ),
         .sprite_target_rgb_3           ( sprite_target_rgb_3           ),
 
-        .sprite_bullet_rgb_en        ( sprite_bullet_rgb_en_1        ),
-        .sprite_bullet_rgb          ( sprite_bullet_rgb_1           ),
+        .sprite_bullet_rgb_en          ( sprite_bullet_rgb_en          ),
+        .sprite_bullet_rgb             ( sprite_bullet_rgb             ),
 
         .sprite_torpedo_rgb_en         ( sprite_torpedo_rgb_en         ),
         .sprite_torpedo_rgb            ( sprite_torpedo_rgb            ),
 
         .game_won                      ( game_won                      ),
         .end_of_game_timer_running     ( end_of_game_timer_running     ),
-        .random                        ( random_1 [0]                    ),
+        .random                        ( random_1 [0]                  ),
 
         .rgb                           ( rgb                           )
     );
@@ -701,7 +697,7 @@ module game_top
         .rst                            ( rst                           ),
 
         .launch_key                     ( launch_key                    ),
-        .shoot                     ( shoot                    ),
+        .shoot                          ( shoot                         ),
 
         .sprite_target_write_xy_1       ( sprite_target_write_xy_1      ),
         .sprite_target_write_xy_2       ( sprite_target_write_xy_2      ),
@@ -726,10 +722,10 @@ module game_top
         .sprite_target_within_screen_3  ( sprite_target_within_screen_3 ),
 
         .sprite_torpedo_within_screen   ( sprite_torpedo_within_screen  ),
-        .sprite_bullet_within_screen   ( sprite_bullet_within_screen_1  ),
-        .sprite_bullet_enable_update (sprite_bullet_enable_update_1),
-        .sprite_bullet_write_dxy (sprite_bullet_write_dxy_1),
-        .sprite_bullet_write_xy (sprite_bullet_write_xy_1),
+        .sprite_bullet_within_screen    ( sprite_bullet_within_screen   ),
+        .sprite_bullet_enable_update    ( sprite_bullet_enable_update   ),
+        .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy       ),
+        .sprite_bullet_write_xy         ( sprite_bullet_write_xy        ),
 
         .collision                      ( collision                     ),
         .collision_bullet               ( collision_bullet              ),

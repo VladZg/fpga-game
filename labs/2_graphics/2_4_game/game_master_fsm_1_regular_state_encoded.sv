@@ -76,6 +76,8 @@ module game_master_fsm_1_regular_state_encoded
     logic d_end_of_game_timer_start;
     logic d_game_won;
 
+    logic d_shoot;
+
     //------------------------------------------------------------------------
 
     wire end_of_game
@@ -114,6 +116,7 @@ module game_master_fsm_1_regular_state_encoded
         d_sprite_bullet_enable_update     = 1'b0;
 
         d_end_of_game_timer_start         = 1'b0;
+        d_shoot                           = 1'b0;
         d_game_won                        = game_won;
 
         //--------------------------------------------------------------------
@@ -160,19 +163,13 @@ module game_master_fsm_1_regular_state_encoded
         STATE_SHOOT:
         begin
             d_sprite_torpedo_write_dxy      = 1'b1;
-            d_sprite_bullet_write_dxy      = 1'b1;
+            d_sprite_bullet_write_dxy       = 1'b1;
 
             d_sprite_target_enable_update_1   = 1'b1;
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            // if (shoot) begin
-            d_sprite_bullet_enable_update  = 1'b1;
-            // end else begin
-            //     d_sprite_bullet_write_xy       = 1'b0;
-            //     d_sprite_bullet_write_dxy      = 1'b0;
-            //     d_sprite_bullet_enable_update  = 1'b0;
-            // end
+            d_sprite_bullet_enable_update   = 1'b1;
 
             d_sprite_torpedo_enable_update  = 1'b1;
 
