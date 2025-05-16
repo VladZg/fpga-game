@@ -105,9 +105,8 @@ module lab_top
         .rgb              (   rgb                )
     );
 
-    // Задаём координаты рамки
-    localparam frame_left   = screen_width  / 3;
-    localparam frame_right  = screen_width  * 2 / 3;
+    localparam frame_left   = screen_width * 3 / 10;
+    localparam frame_right  = screen_width * 7 / 10;
     localparam frame_top    = 1;
     localparam frame_bottom = screen_height - 1;
 
