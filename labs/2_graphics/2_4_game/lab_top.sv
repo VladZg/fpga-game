@@ -106,10 +106,10 @@ module lab_top
     );
 
     // Задаём координаты рамки
-    localparam frame_left   = screen_width  / 4;
-    localparam frame_right  = screen_width  * 3 / 4;
-    localparam frame_top    = screen_height / 4;
-    localparam frame_bottom = screen_height * 3 / 4;
+    localparam frame_left   = screen_width  / 8;
+    localparam frame_right  = screen_width  * 7 / 8;
+    localparam frame_top    = screen_height / 8;
+    localparam frame_bottom = screen_height * 7 / 8;
 
     wire on_frame = ((x == frame_left || x == frame_right - 1)  && 
                      (y >= frame_top  && y < frame_bottom) || 
