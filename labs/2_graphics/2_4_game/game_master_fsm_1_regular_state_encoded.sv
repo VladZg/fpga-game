@@ -216,7 +216,7 @@ module game_master_fsm_1_regular_state_encoded
         begin
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
-            if (score == 4'd3) // TODO: declare 3 as a const
+            if (d_score == 4'd3) // TODO: declare 3 as a const
                 d_state = STATE_END_GAME;
             else
                 d_state = STATE_START_ROUND;
