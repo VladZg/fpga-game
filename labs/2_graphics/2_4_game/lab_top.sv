@@ -157,13 +157,15 @@ module lab_top
     }
     seven_seg_encoding_e;
 
+    logic [3:0] d_digit;
     always_ff @(posedge clk) begin
         if (rst)
-            digit <= 4'b0001;
-        else begin
-            digit <= {digit[2:0], digit[3]};
-        end
+            d_digit <= 4'b0001;
+        else
+            d_digit <= {d_digit[2:0], d_digit[3]};
     end
+
+    assign digit = {4{0}, d_digit};
 
     // logic [2:0] digit_value_0;
     // logic [2:0] digit_value_1;
@@ -171,8 +173,7 @@ module lab_top
     // assign digit_value_1 = n_lifes;
 
     always_comb begin
-
-        case (digit)
+        case (d_digit)
             2'b0001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
             2'b0010: abcdefgh = S;
             2'b0100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
