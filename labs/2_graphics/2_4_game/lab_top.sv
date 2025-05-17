@@ -165,23 +165,23 @@ module lab_top
             d_digit <= {d_digit[2:0], d_digit[3]};
     end
 
-    assign digit = {4{0}, d_digit};
+    assign digit = {4'b0000, d_digit};
 
     // logic [2:0] digit_value_0;
     // logic [2:0] digit_value_1;
-    // assign digit_value_0 = score;
-    // assign digit_value_1 = n_lifes;
+    // // assign digit_value_0 = score;
+    // // assign digit_value_1 = n_lifes;
 
-    always_comb begin
-        case (d_digit)
-            2'b0001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-            2'b0010: abcdefgh = S;
-            2'b0100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-            2'b1000: abcdefgh = L;
-        endcase
-    end
+    // always_comb begin
+    //     case (d_digit)
+    //         2'b0001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+    //         2'b0010: abcdefgh = S;
+    //         2'b0100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+    //         2'b1000: abcdefgh = L;
+    //     endcase
+    // end
 
-    // assign red   = { w_red   { rgb [2] } };
+    // // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
     // assign blue  = { w_blue  { rgb [0] } };
 
