@@ -19,6 +19,13 @@ module game_mixer
     input                                sprite_heart_3_rgb_en,
     input        [`GAME_RGB_WIDTH - 1:0] sprite_heart_3_rgb,
 
+    input                                sprite_score_1_rgb_en,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_score_1_rgb,
+    input                                sprite_score_2_rgb_en,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_score_2_rgb,
+    input                                sprite_score_3_rgb_en,
+    input        [`GAME_RGB_WIDTH - 1:0] sprite_score_3_rgb,
+
     input                                sprite_bullet_rgb_en,
     input        [`GAME_RGB_WIDTH - 1:0] sprite_bullet_rgb,
 
@@ -53,6 +60,12 @@ module game_mixer
             rgb <= sprite_heart_2_rgb;
         else if (sprite_heart_3_rgb_en)
             rgb <= sprite_heart_3_rgb;
+        else if (sprite_score_1_rgb_en)
+            rgb <= sprite_score_1_rgb;
+        else if (sprite_score_2_rgb_en)
+            rgb <= sprite_score_2_rgb;
+        else if (sprite_score_3_rgb_en)
+            rgb <= sprite_score_3_rgb;
         else
             rgb <= 3'b000;
 

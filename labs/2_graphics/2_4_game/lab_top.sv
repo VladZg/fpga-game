@@ -71,9 +71,9 @@ module lab_top
        assign led        = '0;
     //    assign abcdefgh   = '0;
     //    assign digit      = '0;
-    // assign red        = '0;
-    // assign green      = '0;
-    // assign blue       = '0;
+    //    assign red        = '0;
+    //    assign green      = '0;
+    //    assign blue       = '0;
        assign sound      = '0;
        assign uart_tx    = '1;
 

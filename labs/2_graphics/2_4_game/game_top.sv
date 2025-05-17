@@ -660,6 +660,294 @@ module game_top
 
     //------------------------------------------------------------------------
 
+    wire                          sprite_score_1_write_xy;
+    wire                          sprite_score_1_write_dxy;
+
+    logic [w_x             - 1:0] sprite_score_1_write_x;
+    logic [w_y             - 1:0] sprite_score_1_write_y;
+
+    logic [                  1:0] sprite_score_1_write_dx;
+    logic [                  1:0] sprite_score_1_write_dy;
+
+    wire                          sprite_score_1_enable_update;
+    wire  [w_x             - 1:0] sprite_score_1_x;
+    wire  [w_y             - 1:0] sprite_score_1_y;
+    wire                          sprite_score_1_within_screen;
+    wire  [w_x             - 1:0] sprite_score_1_out_left;
+    wire  [w_x             - 1:0] sprite_score_1_out_right;
+    wire  [w_y             - 1:0] sprite_score_1_out_top;
+    wire  [w_y             - 1:0] sprite_score_1_out_bottom;
+    wire                          sprite_score_1_rgb_en;
+    wire                          sprite_score_1_rgb_en_fsm;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_1_rgb;
+
+    assign sprite_score_1_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_1_write_y  = screen_height - 65;
+
+    game_sprite_top
+    #(
+        .SPRITE_WIDTH  ( 16 ),
+        .SPRITE_HEIGHT ( 16 ),
+
+        .DX_WIDTH      ( 2 ),
+        .DY_WIDTH      ( 1 ),
+
+        .ROW_0  ( 64'h00000bb9b9b00000 ),
+        .ROW_1  ( 64'h000fffbb9b9bb000 ),
+        .ROW_2  ( 64'h00fffffbb9b9b900 ),
+        .ROW_3  ( 64'h0ffffffbb9b9b990 ),
+        .ROW_4  ( 64'h0fffffbbb9b9bbb0 ),
+        .ROW_5  ( 64'hbffffbbbbbb9b999 ),
+        .ROW_6  ( 64'hbbffbbbb9bbb9999 ),
+        .ROW_7  ( 64'h9bbbbbb9bb9b9999 ),
+        .ROW_8  ( 64'hb9bbbb9bb9bb9999 ),
+        .ROW_9  ( 64'hbb999bbb9bbbb999 ),
+        .ROW_10 ( 64'h9bbbbbb9bbb99999 ),
+        .ROW_11 ( 64'h099999bbbb999990 ),
+        .ROW_12 ( 64'h09bbbb9b9b999990 ),
+        .ROW_13 ( 64'h0099999999999900 ),
+        .ROW_14 ( 64'h0009999999999000 ),
+        .ROW_15 ( 64'h0000099999900000 ),
+
+        .screen_width
+        (screen_width),
+
+        .screen_height
+        (screen_height),
+
+        .strobe_to_update_xy_counter_width
+        (strobe_to_update_xy_counter_width)
+    )
+    sprite_score_1
+    (
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
+
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
+
+        .sprite_write_xy       ( sprite_score_1_write_xy        ),
+        .sprite_write_dxy      ( sprite_score_1_write_dxy       ),
+
+        .sprite_write_x        ( sprite_score_1_write_x         ),
+        .sprite_write_y        ( sprite_score_1_write_y         ),
+
+        .sprite_write_dx       ( sprite_score_1_write_dx        ),
+        .sprite_write_dy       ( sprite_score_1_write_dy        ),
+
+        .sprite_enable_update  ( sprite_score_1_enable_update   ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .is_shot               ( 0                              ),
+
+        .sprite_x              ( sprite_score_1_x               ),
+        .sprite_y              ( sprite_score_1_y               ),
+
+        .sprite_within_screen  ( sprite_score_1_within_screen   ),
+
+        .sprite_out_left       ( sprite_score_1_out_left        ),
+        .sprite_out_right      ( sprite_score_1_out_right       ),
+        .sprite_out_top        ( sprite_score_1_out_top         ),
+        .sprite_out_bottom     ( sprite_score_1_out_bottom      ),
+
+        .rgb_en                ( sprite_score_1_rgb_en          ),
+        .rgb                   ( sprite_score_1_rgb             )
+    );
+
+    //------------------------------------------------------------------------
+
+    wire                          sprite_score_2_write_xy;
+    wire                          sprite_score_2_write_dxy;
+
+    logic [w_x             - 1:0] sprite_score_2_write_x;
+    logic [w_y             - 1:0] sprite_score_2_write_y;
+
+    logic [                  1:0] sprite_score_2_write_dx;
+    logic [                  1:0] sprite_score_2_write_dy;
+
+    wire                          sprite_score_2_enable_update;
+    wire  [w_x             - 1:0] sprite_score_2_x;
+    wire  [w_y             - 1:0] sprite_score_2_y;
+    wire                          sprite_score_2_within_screen;
+    wire  [w_x             - 1:0] sprite_score_2_out_left;
+    wire  [w_x             - 1:0] sprite_score_2_out_right;
+    wire  [w_y             - 1:0] sprite_score_2_out_top;
+    wire  [w_y             - 1:0] sprite_score_2_out_bottom;
+    wire                          sprite_score_2_rgb_en;
+    wire                          sprite_score_2_rgb_en_fsm;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_2_rgb;
+
+    assign sprite_score_2_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_2_write_y  = screen_height - 45;
+
+    game_sprite_top
+    #(
+        .SPRITE_WIDTH  ( 16 ),
+        .SPRITE_HEIGHT ( 16 ),
+
+        .DX_WIDTH      ( 2 ),
+        .DY_WIDTH      ( 1 ),
+
+        .ROW_0  ( 64'h00000bb9b9b00000 ),
+        .ROW_1  ( 64'h000fffbb9b9bb000 ),
+        .ROW_2  ( 64'h00fffffbb9b9b900 ),
+        .ROW_3  ( 64'h0ffffffbb9b9b990 ),
+        .ROW_4  ( 64'h0fffffbbb9b9bbb0 ),
+        .ROW_5  ( 64'hbffffbbbbbb9b999 ),
+        .ROW_6  ( 64'hbbffbbbb9bbb9999 ),
+        .ROW_7  ( 64'h9bbbbbb9bb9b9999 ),
+        .ROW_8  ( 64'hb9bbbb9bb9bb9999 ),
+        .ROW_9  ( 64'hbb999bbb9bbbb999 ),
+        .ROW_10 ( 64'h9bbbbbb9bbb99999 ),
+        .ROW_11 ( 64'h099999bbbb999990 ),
+        .ROW_12 ( 64'h09bbbb9b9b999990 ),
+        .ROW_13 ( 64'h0099999999999900 ),
+        .ROW_14 ( 64'h0009999999999000 ),
+        .ROW_15 ( 64'h0000099999900000 ),
+
+        .screen_width
+        (screen_width),
+
+        .screen_height
+        (screen_height),
+
+        .strobe_to_update_xy_counter_width
+        (strobe_to_update_xy_counter_width)
+    )
+    sprite_score_2
+    (
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
+
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
+
+        .sprite_write_xy       ( sprite_score_2_write_xy        ),
+        .sprite_write_dxy      ( sprite_score_2_write_dxy       ),
+
+        .sprite_write_x        ( sprite_score_2_write_x         ),
+        .sprite_write_y        ( sprite_score_2_write_y         ),
+
+        .sprite_write_dx       ( sprite_score_2_write_dx        ),
+        .sprite_write_dy       ( sprite_score_2_write_dy        ),
+
+        .sprite_enable_update  ( sprite_score_2_enable_update   ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .is_shot               ( 0                              ),
+
+        .sprite_x              ( sprite_score_2_x               ),
+        .sprite_y              ( sprite_score_2_y               ),
+
+        .sprite_within_screen  ( sprite_score_2_within_screen   ),
+
+        .sprite_out_left       ( sprite_score_2_out_left        ),
+        .sprite_out_right      ( sprite_score_2_out_right       ),
+        .sprite_out_top        ( sprite_score_2_out_top         ),
+        .sprite_out_bottom     ( sprite_score_2_out_bottom      ),
+
+        .rgb_en                ( sprite_score_2_rgb_en          ),
+        .rgb                   ( sprite_score_2_rgb             )
+    );
+
+    //------------------------------------------------------------------------
+
+    wire                          sprite_score_3_write_xy;
+    wire                          sprite_score_3_write_dxy;
+
+    logic [w_x             - 1:0] sprite_score_3_write_x;
+    logic [w_y             - 1:0] sprite_score_3_write_y;
+
+    logic [                  1:0] sprite_score_3_write_dx;
+    logic [                  1:0] sprite_score_3_write_dy;
+
+    wire                          sprite_score_3_enable_update;
+    wire  [w_x             - 1:0] sprite_score_3_x;
+    wire  [w_y             - 1:0] sprite_score_3_y;
+    wire                          sprite_score_3_within_screen;
+    wire  [w_x             - 1:0] sprite_score_3_out_left;
+    wire  [w_x             - 1:0] sprite_score_3_out_right;
+    wire  [w_y             - 1:0] sprite_score_3_out_top;
+    wire  [w_y             - 1:0] sprite_score_3_out_bottom;
+    wire                          sprite_score_3_rgb_en;
+    wire                          sprite_score_3_rgb_en_fsm;
+    wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_3_rgb;
+
+    assign sprite_score_3_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_3_write_y  = screen_height - 25;
+
+    game_sprite_top
+    #(
+        .SPRITE_WIDTH  ( 16 ),
+        .SPRITE_HEIGHT ( 16 ),
+
+        .DX_WIDTH      ( 2 ),
+        .DY_WIDTH      ( 1 ),
+
+        .ROW_0  ( 64'h00000bb9b9b00000 ),
+        .ROW_1  ( 64'h000fffbb9b9bb000 ),
+        .ROW_2  ( 64'h00fffffbb9b9b900 ),
+        .ROW_3  ( 64'h0ffffffbb9b9b990 ),
+        .ROW_4  ( 64'h0fffffbbb9b9bbb0 ),
+        .ROW_5  ( 64'hbffffbbbbbb9b999 ),
+        .ROW_6  ( 64'hbbffbbbb9bbb9999 ),
+        .ROW_7  ( 64'h9bbbbbb9bb9b9999 ),
+        .ROW_8  ( 64'hb9bbbb9bb9bb9999 ),
+        .ROW_9  ( 64'hbb999bbb9bbbb999 ),
+        .ROW_10 ( 64'h9bbbbbb9bbb99999 ),
+        .ROW_11 ( 64'h099999bbbb999990 ),
+        .ROW_12 ( 64'h09bbbb9b9b999990 ),
+        .ROW_13 ( 64'h0099999999999900 ),
+        .ROW_14 ( 64'h0009999999999000 ),
+        .ROW_15 ( 64'h0000099999900000 ),
+
+        .screen_width
+        (screen_width),
+
+        .screen_height
+        (screen_height),
+
+        .strobe_to_update_xy_counter_width
+        (strobe_to_update_xy_counter_width)
+    )
+    sprite_score_3
+    (
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
+
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
+
+        .sprite_write_xy       ( sprite_score_3_write_xy        ),
+        .sprite_write_dxy      ( sprite_score_3_write_dxy       ),
+
+        .sprite_write_x        ( sprite_score_3_write_x         ),
+        .sprite_write_y        ( sprite_score_3_write_y         ),
+
+        .sprite_write_dx       ( sprite_score_3_write_dx        ),
+        .sprite_write_dy       ( sprite_score_3_write_dy        ),
+
+        .sprite_enable_update  ( sprite_score_3_enable_update   ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .is_shot               ( 0                              ),
+
+        .sprite_x              ( sprite_score_3_x               ),
+        .sprite_y              ( sprite_score_3_y               ),
+
+        .sprite_within_screen  ( sprite_score_3_within_screen   ),
+
+        .sprite_out_left       ( sprite_score_3_out_left        ),
+        .sprite_out_right      ( sprite_score_3_out_right       ),
+        .sprite_out_top        ( sprite_score_3_out_top         ),
+        .sprite_out_bottom     ( sprite_score_3_out_bottom      ),
+
+        .rgb_en                ( sprite_score_3_rgb_en          ),
+        .rgb                   ( sprite_score_3_rgb             )
+    );
+
+    //------------------------------------------------------------------------
+
     wire                          sprite_spaceship_write_xy;
     wire                          sprite_spaceship_write_dxy;
 
@@ -984,6 +1272,13 @@ module game_top
         .sprite_heart_3_rgb_en         ( sprite_heart_3_rgb_en & sprite_heart_3_rgb_en_fsm ),
         .sprite_heart_3_rgb            ( sprite_heart_3_rgb            ),
 
+        .sprite_score_1_rgb_en         ( sprite_score_1_rgb_en & sprite_score_1_rgb_en_fsm ),
+        .sprite_score_1_rgb            ( sprite_score_1_rgb            ),
+        .sprite_score_2_rgb_en         ( sprite_score_2_rgb_en & sprite_score_2_rgb_en_fsm ),
+        .sprite_score_2_rgb            ( sprite_score_2_rgb            ),
+        .sprite_score_3_rgb_en         ( sprite_score_3_rgb_en & sprite_score_3_rgb_en_fsm ),
+        .sprite_score_3_rgb            ( sprite_score_3_rgb            ),
+
         .game_won                      ( game_won                      ),
         .end_of_game_timer_running     ( end_of_game_timer_running     ),
         .random                        ( random_1 [0]                  ),
@@ -1009,6 +1304,9 @@ module game_top
         .sprite_heart_1_write_xy        ( sprite_heart_1_write_xy        ),
         .sprite_heart_2_write_xy        ( sprite_heart_2_write_xy        ),
         .sprite_heart_3_write_xy        ( sprite_heart_3_write_xy        ),
+        .sprite_score_1_write_xy        ( sprite_score_1_write_xy        ),
+        .sprite_score_2_write_xy        ( sprite_score_2_write_xy        ),
+        .sprite_score_3_write_xy        ( sprite_score_3_write_xy        ),
 
         .sprite_target_write_dxy_1      ( sprite_target_write_dxy_1      ),
         .sprite_target_write_dxy_2      ( sprite_target_write_dxy_2      ),
@@ -1018,6 +1316,9 @@ module game_top
         .sprite_heart_1_write_dxy       ( sprite_heart_1_write_dxy       ),
         .sprite_heart_2_write_dxy       ( sprite_heart_2_write_dxy       ),
         .sprite_heart_3_write_dxy       ( sprite_heart_3_write_dxy       ),
+        .sprite_score_1_write_dxy       ( sprite_score_1_write_dxy       ),
+        .sprite_score_2_write_dxy       ( sprite_score_2_write_dxy       ),
+        .sprite_score_3_write_dxy       ( sprite_score_3_write_dxy       ),
 
         .sprite_target_enable_update_1  ( sprite_target_enable_update_1  ),
         .sprite_target_enable_update_2  ( sprite_target_enable_update_2  ),
@@ -1027,6 +1328,9 @@ module game_top
         .sprite_heart_1_enable_update   ( sprite_heart_1_enable_update   ),
         .sprite_heart_2_enable_update   ( sprite_heart_2_enable_update   ),
         .sprite_heart_3_enable_update   ( sprite_heart_3_enable_update   ),
+        .sprite_score_1_enable_update   ( sprite_score_1_enable_update   ),
+        .sprite_score_2_enable_update   ( sprite_score_2_enable_update   ),
+        .sprite_score_3_enable_update   ( sprite_score_3_enable_update   ),
 
         .sprite_target_within_screen_1  ( sprite_target_within_screen_1  ),
         .sprite_target_within_screen_2  ( sprite_target_within_screen_2  ),
@@ -1036,11 +1340,17 @@ module game_top
         .sprite_heart_1_within_screen   ( sprite_heart_1_within_screen   ),
         .sprite_heart_2_within_screen   ( sprite_heart_2_within_screen   ),
         .sprite_heart_3_within_screen   ( sprite_heart_3_within_screen   ),
+        .sprite_score_1_within_screen   ( sprite_score_1_within_screen   ),
+        .sprite_score_2_within_screen   ( sprite_score_2_within_screen   ),
+        .sprite_score_3_within_screen   ( sprite_score_3_within_screen   ),
 
+        .sprite_bullet_rgb_en_fsm       ( sprite_bullet_rgb_en_fsm       ),
         .sprite_heart_1_rgb_en_fsm      ( sprite_heart_1_rgb_en_fsm      ),
         .sprite_heart_2_rgb_en_fsm      ( sprite_heart_2_rgb_en_fsm      ),
         .sprite_heart_3_rgb_en_fsm      ( sprite_heart_3_rgb_en_fsm      ),
-        .sprite_bullet_rgb_en_fsm       ( sprite_bullet_rgb_en_fsm       ),
+        .sprite_score_1_rgb_en_fsm      ( sprite_score_1_rgb_en_fsm      ),
+        .sprite_score_2_rgb_en_fsm      ( sprite_score_2_rgb_en_fsm      ),
+        .sprite_score_3_rgb_en_fsm      ( sprite_score_3_rgb_en_fsm      ),
 
         .collision                      ( collision                      ),
         .collision_bullet               ( collision_bullet               ),
