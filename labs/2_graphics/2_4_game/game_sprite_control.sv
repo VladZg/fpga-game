@@ -32,7 +32,7 @@ module game_sprite_control
     input                    sprite_enable_update,
     input                    is_meteor,
     input                    is_bullet,
-    input                    shoot,
+    input                    is_shot,
 
     output [w_x       - 1:0] sprite_x,
     output [w_y       - 1:0] sprite_y
@@ -50,33 +50,27 @@ module game_sprite_control
 
     logic [ DX_WIDTH - 1:0] dx;
     logic [ DY_WIDTH - 1:0] dy;
-    logic                   bullet_is_shot;
 
     always_ff @ (posedge clk or posedge rst)
         if (rst)
         begin
             x  <= 1'b0;
             y  <= 1'b0;
-            bullet_is_shot <= 1'b0;
         end
         else if (sprite_write_xy)
         begin
             x  <= sprite_write_x;
             y  <= sprite_write_y;
-            bullet_is_shot <= bullet_is_shot | (is_bullet & shoot);
         end
         else if (sprite_enable_update && strobe_to_update_xy)
         begin
-            bullet_is_shot <= bullet_is_shot | (is_bullet & shoot);
-
-            if (bullet_is_shot) begin
+            if (is_bullet && is_shot) begin
                 y <= y - 3;
                 x <= x;
             end
-
-            if (is_meteor) begin
+            else if (is_meteor) begin
                 y <= y + 2;
-            end else if (!bullet_is_shot && (!is_meteor || is_bullet)) begin
+            end else if (!(is_bullet && is_shot) && (!is_meteor || is_bullet)) begin
                 // Add with signed-extended dx and dy
                 if ((x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx }) == (3 * screen_width / 10) ||
                 (x + { { w_x - DX_WIDTH { dx [DX_WIDTH - 1] } }, dx }) == (7 * screen_width / 10) - 18) begin
