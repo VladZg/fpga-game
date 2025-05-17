@@ -140,6 +140,8 @@ module game_master_fsm_1_regular_state_encoded
             d_round_won                 = 1'b0;
             d_end_of_game_timer_start   = 1'b1;
 
+            d_score = 0;    // FIXME
+
             d_state = STATE_START_ROUND;
         end
 
@@ -158,6 +160,8 @@ module game_master_fsm_1_regular_state_encoded
 
             d_round_won                       = 1'b0;
 
+            d_score = 0;    // FIXME
+
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
             // else
@@ -169,6 +173,8 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_1   = 1'b1;
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
+
+            d_score = 1;    // FIXME
 
             // if (!end_of_game_timer_running || )
             if (game_end)
@@ -189,6 +195,8 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_bullet_enable_update   = 1'b1;
 
             d_sprite_torpedo_enable_update  = 1'b1;
+
+            d_score = 2;    // FIXME
 
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
