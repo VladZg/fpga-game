@@ -35,6 +35,7 @@ module game_master_fsm_1_regular_state_encoded
     output logic sprite_heart_2_enable_update,
     output logic sprite_heart_3_enable_update,
 
+    output logic sprite_bullet_rgb_en_fsm,
     output logic sprite_heart_1_rgb_en_fsm,
     output logic sprite_heart_2_rgb_en_fsm,
     output logic sprite_heart_3_rgb_en_fsm,
@@ -62,16 +63,18 @@ module game_master_fsm_1_regular_state_encoded
     input      end_of_game_timer_running
 );
 
-    localparam [2:0] STATE_START_GAME   = 0,
+    localparam [3:0] STATE_START_GAME   = 0,
                      STATE_START_ROUND  = 1,
                      STATE_AIM          = 2,
                      STATE_SHOOT        = 3,
-                     STATE_END_ROUND    = 4,
-                     STATE_END_GAME     = 5,
-                     STATE_DEBUG        = 6;
+                     STATE_HP2        = 5,
+                     STATE_HP1        = 6,
+                     STATE_END_ROUND    = 7,
+                     STATE_END_GAME     = 8,
+                     STATE_DEBUG        = 9;
 
-    logic [2:0] state;
-    logic [2:0] d_state;
+    logic [3:0] state;
+    logic [3:0] d_state;
 
     logic d_sprite_target_write_xy_1;
     logic d_sprite_target_write_xy_2;
@@ -104,6 +107,7 @@ module game_master_fsm_1_regular_state_encoded
     logic d_sprite_heart_1_rgb_en_fsm;
     logic d_sprite_heart_2_rgb_en_fsm;
     logic d_sprite_heart_3_rgb_en_fsm;
+    logic d_sprite_bullet_rgb_en_fsm;
 
     logic d_end_of_game_timer_start;
     logic d_game_won;
@@ -113,6 +117,20 @@ module game_master_fsm_1_regular_state_encoded
     logic [2:0] d_score;
     logic [2:0] d_debug;
     logic [2:0] d_n_lifes;
+
+    reg collision_del;
+    wire posedge_collision;
+
+    assign posedge_collision = collision & !collision_del;
+
+    always_ff @ (posedge clk or posedge rst) begin
+        if (rst)
+            collision_del <= 0;
+        else begin
+            collision_del <= collision;
+
+        end
+    end
 
     //------------------------------------------------------------------------
 
@@ -165,6 +183,7 @@ module game_master_fsm_1_regular_state_encoded
         d_sprite_heart_1_rgb_en_fsm       = 1'b1;
         d_sprite_heart_2_rgb_en_fsm       = 1'b1;
         d_sprite_heart_3_rgb_en_fsm       = 1'b1;
+        d_sprite_bullet_rgb_en_fsm        = 0;
 
         d_end_of_game_timer_start         = 1'b0;
         d_shoot                           = 1'b0;
@@ -192,6 +211,7 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_heart_1_rgb_en_fsm = 1'b1;
             d_sprite_heart_2_rgb_en_fsm = 1'b1;
             d_sprite_heart_3_rgb_en_fsm = 1'b1;
+            d_sprite_bullet_rgb_en_fsm  = 0;
 
             d_state = STATE_START_ROUND;
         end
@@ -211,9 +231,9 @@ module game_master_fsm_1_regular_state_encoded
 
             d_round_won                       = 1'b0;
 
-            // if (!end_of_game_timer_running)
-                // d_state = STATE_END_GAME;
-            // else
+            if (!end_of_game_timer_running)
+                d_state = STATE_END_GAME;
+            else
                 d_state = STATE_AIM;
         end
 
@@ -224,34 +244,47 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             // if (!end_of_game_timer_running || )
-            if (collision) begin
-                d_n_lifes = d_n_lifes - 1;
+            // if (collision) begin
+            //     d_sprite_heart_1_rgb_en_fsm     = 0 ;
+            //     // d_n_lifes = d_n_lifes - 1;
 
-                case (n_lifes)
-                3'd3: begin
-                    d_sprite_heart_1_write_xy       = 1'b0;
-                    d_sprite_heart_1_rgb_en_fsm     = 1'b0;
-                    d_sprite_heart_1_enable_update  = 1'b0;
-                end
+            //     // case (3)
+            //     // 3'd3: begin
+            //         d_sprite_heart_1_write_xy       = 1'b1;
+            //         d_sprite_heart_1_enable_update  = 1'b1;
+            //     // end
 
-                3'd2: begin
-                    d_sprite_heart_2_write_xy       = 1'b0;
-                    d_sprite_heart_2_rgb_en_fsm     = 1'b0;
-                    d_sprite_heart_2_enable_update  = 1'b0;
+            //     // 3'd2: begin
+            //         d_sprite_heart_2_write_xy       = 1'b0;
+            //         d_sprite_heart_2_rgb_en_fsm     = 1'b0;
+            //         d_sprite_heart_2_enable_update  = 1'b0;
 
-                end
+            //     // end
 
-                3'd1: begin
-                    d_sprite_heart_3_write_xy       = 1'b0;
-                    d_sprite_heart_3_rgb_en_fsm     = 1'b0;
-                    d_sprite_heart_3_enable_update  = 1'b0;
+            //     // 3'd1: begin
+            //         d_sprite_heart_3_write_xy       = 1'b0;
+            //         d_sprite_heart_3_rgb_en_fsm     = 1'b0;
+            //         d_sprite_heart_3_enable_update  = 1'b0;
 
-                end
-                endcase
+            //     // end
+            //     // endcase
 
-                d_state = STATE_END_ROUND;
-            end
-            else if (launch_key) begin
+            //     d_state = STATE_END_ROUND;
+            // end
+            // else
+
+            d_sprite_bullet_write_dxy        = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (shoot) begin
                 d_state = STATE_SHOOT;
             end
             else if (round_end) begin
@@ -261,33 +294,59 @@ module game_master_fsm_1_regular_state_encoded
 
         STATE_SHOOT:
         begin
-            d_sprite_spaceship_write_dxy     = 1'b1;
-            d_sprite_bullet_write_dxy        = 1'b1;
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
 
             d_sprite_target_enable_update_1   = 1'b1;
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            d_sprite_bullet_enable_update     = 1'b1;
-            d_sprite_spaceship_enable_update  = 1'b1;
-
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
-            if (collision)
-            begin
-                case (d_n_lifes)
-                3'd3:
-                    d_sprite_heart_1_write_xy = 1'b0;
-                3'd2:
-                    d_sprite_heart_2_write_xy = 1'b0;
-                3'd1:
-                    d_sprite_heart_3_write_xy = 1'b0;
-                endcase
 
-                d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_ROUND;
+            if (posedge_collision) begin
+                d_state = STATE_HP2;
             end
-            else if (collision_bullet)
+
+            // case (were_collisions)
+            // 3'd0: begin
+            //     d_sprite_heart_1_rgb_en_fsm = 1;
+            //     d_sprite_heart_2_rgb_en_fsm = 1;
+            //     d_sprite_heart_3_rgb_en_fsm = 1;
+            // end
+            // 3'd1: begin
+            //     d_sprite_heart_1_rgb_en_fsm = 0;
+            //     d_sprite_heart_2_rgb_en_fsm = 1;
+            //     d_sprite_heart_3_rgb_en_fsm = 1;
+            // end
+            // 3'd2: begin
+            //     d_sprite_heart_1_rgb_en_fsm = 0;
+            //     d_sprite_heart_2_rgb_en_fsm = 0;
+            //     d_sprite_heart_3_rgb_en_fsm = 1;
+            // end
+            // 3'd3: begin
+            //     d_sprite_heart_1_rgb_en_fsm = 0;
+            //     d_sprite_heart_2_rgb_en_fsm = 0;
+            //     d_sprite_heart_3_rgb_en_fsm = 0;
+            // end
+            // default: begin
+            //     d_sprite_heart_1_rgb_en_fsm = 1;
+            //     d_sprite_heart_2_rgb_en_fsm = 1;
+            //     d_sprite_heart_3_rgb_en_fsm = 1;
+            // end
+            // endcase
+
+            // if (collision && (were_collisions == 2))
+            //     d_state = STATE_END_GAME;
+            //     // d_n_lifes = d_n_lifes - 1;
+            // else if (collision && (were_collisions != 2))
+            //     d_state = STATE_END_ROUND;
+
+            if (collision_bullet)
             begin
                 // d_round_won = 1;
                 d_score = d_score + 1;
@@ -300,18 +359,62 @@ module game_master_fsm_1_regular_state_encoded
 
         end
 
+        STATE_HP2:
+        begin
+            d_sprite_spaceship_write_dxy     = 1'b1;
+            d_sprite_bullet_write_dxy        = 1'b1;
+
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_spaceship_enable_update  = 1'b1;
+
+            d_sprite_heart_1_rgb_en_fsm = 0;
+            d_sprite_heart_2_rgb_en_fsm = 1;
+            d_sprite_heart_3_rgb_en_fsm = 1;
+
+            if (posedge_collision) begin
+                d_state = STATE_HP1;
+            end
+        end
+
+        STATE_HP1:
+        begin
+            d_sprite_spaceship_write_dxy     = 1'b1;
+            d_sprite_bullet_write_dxy        = 1'b1;
+
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_spaceship_enable_update  = 1'b1;
+
+            d_sprite_heart_1_rgb_en_fsm = 0;
+            d_sprite_heart_2_rgb_en_fsm = 0;
+            d_sprite_heart_3_rgb_en_fsm = 1;
+
+            if (posedge_collision) begin
+                d_state = STATE_START_GAME;
+            end
+        end
+
         STATE_END_ROUND:
         begin
             // if (!end_of_game_timer_running)
-                // d_state = STATE_END_GAME;
-            if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
-            begin
-                d_state = STATE_END_GAME;
-            end
-            else
-            begin
+            //     // d_state = STATE_END_GAME;
+            // if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
+            // begin
+            //     d_state = STATE_END_GAME;
+            // end
+            // else
+            // begin
                 d_state = STATE_START_ROUND;
-            end
+            // end
         end
 
         STATE_END_GAME:
@@ -321,6 +424,7 @@ module game_master_fsm_1_regular_state_encoded
 
         endcase
     end
+
 
     //------------------------------------------------------------------------
 
@@ -359,9 +463,10 @@ module game_master_fsm_1_regular_state_encoded
             sprite_heart_2_enable_update    <= 1'b0;
             sprite_heart_3_enable_update    <= 1'b0;
 
-            sprite_heart_1_rgb_en_fsm       <= 1'b0;
-            sprite_heart_2_rgb_en_fsm       <= 1'b0;
-            sprite_heart_3_rgb_en_fsm       <= 1'b0;
+            sprite_heart_1_rgb_en_fsm       <= 0;
+            sprite_heart_2_rgb_en_fsm       <= 0;
+            sprite_heart_3_rgb_en_fsm       <= 0;
+            sprite_bullet_rgb_en_fsm        <= 0;
 
             end_of_game_timer_start         <= 1'b0;
             game_won                        <= 1'b0;
@@ -403,6 +508,7 @@ module game_master_fsm_1_regular_state_encoded
             sprite_heart_1_rgb_en_fsm       <= d_sprite_heart_1_rgb_en_fsm;
             sprite_heart_2_rgb_en_fsm       <= d_sprite_heart_2_rgb_en_fsm;
             sprite_heart_3_rgb_en_fsm       <= d_sprite_heart_3_rgb_en_fsm;
+            sprite_bullet_rgb_en_fsm        <= d_sprite_bullet_rgb_en_fsm;
 
             end_of_game_timer_start         <= d_end_of_game_timer_start;
 

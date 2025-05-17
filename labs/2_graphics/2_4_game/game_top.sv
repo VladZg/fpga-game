@@ -390,12 +390,11 @@ module game_top
     wire  [w_y             - 1:0] sprite_heart_1_out_top;
     wire  [w_y             - 1:0] sprite_heart_1_out_bottom;
     wire                          sprite_heart_1_rgb_en;
-    wire                          sprite_heart_1_rgb_en_fsm = 1;
+    wire                          sprite_heart_1_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_1_rgb;
 
     assign sprite_heart_1_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_1_write_y  = screen_height - 65;
-    assign sprite_heart_1_rgb_en_fsm = 1;
 
     game_sprite_top
     #(
@@ -463,7 +462,7 @@ module game_top
         .sprite_out_top        ( sprite_heart_1_out_top         ),
         .sprite_out_bottom     ( sprite_heart_1_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_1_rgb_en ),
+        .rgb_en                ( sprite_heart_1_rgb_en),
         .rgb                   ( sprite_heart_1_rgb                                 )
     );
 
@@ -487,13 +486,11 @@ module game_top
     wire  [w_y             - 1:0] sprite_heart_2_out_top;
     wire  [w_y             - 1:0] sprite_heart_2_out_bottom;
     wire                          sprite_heart_2_rgb_en;
-    wire                          sprite_heart_2_rgb_en_fsm = 1;
+    wire                          sprite_heart_2_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_2_rgb;
 
     assign sprite_heart_2_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_2_write_y  = screen_height - 45;
-    assign sprite_heart_2_rgb_en_fsm = 1;
-
 
     game_sprite_top
     #(
@@ -590,7 +587,6 @@ module game_top
 
     assign sprite_heart_3_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_3_write_y  = screen_height - 25;
-    assign sprite_heart_3_rgb_en_fsm = 1;
 
     game_sprite_top
     #(
@@ -806,6 +802,8 @@ module game_top
     wire  [w_y             - 1:0] sprite_bullet_out_bottom;
 
     wire                          sprite_bullet_rgb_en;
+    wire                          sprite_bullet_rgb_en_fsm;
+
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_bullet_rgb;
 
     assign sprite_bullet_write_x = screen_width / 2 + + random_1 [15:10];
@@ -973,17 +971,17 @@ module game_top
         .sprite_target_rgb_en_3        ( sprite_target_rgb_en_3        ),
         .sprite_target_rgb_3           ( sprite_target_rgb_3           ),
 
-        .sprite_bullet_rgb_en          ( sprite_bullet_rgb_en          ),
+        .sprite_bullet_rgb_en          ( sprite_bullet_rgb_en & sprite_bullet_rgb_en_fsm ),
         .sprite_bullet_rgb             ( sprite_bullet_rgb             ),
 
         .sprite_spaceship_rgb_en       ( sprite_spaceship_rgb_en       ),
         .sprite_spaceship_rgb          ( sprite_spaceship_rgb          ),
 
-        .sprite_heart_1_rgb_en         ( sprite_heart_1_rgb_en         ),
+        .sprite_heart_1_rgb_en         ( sprite_heart_1_rgb_en & sprite_heart_1_rgb_en_fsm ),
         .sprite_heart_1_rgb            ( sprite_heart_1_rgb            ),
-        .sprite_heart_2_rgb_en         ( sprite_heart_2_rgb_en         ),
+        .sprite_heart_2_rgb_en         ( sprite_heart_2_rgb_en & sprite_heart_2_rgb_en_fsm ),
         .sprite_heart_2_rgb            ( sprite_heart_2_rgb            ),
-        .sprite_heart_3_rgb_en         ( sprite_heart_3_rgb_en         ),
+        .sprite_heart_3_rgb_en         ( sprite_heart_3_rgb_en & sprite_heart_3_rgb_en_fsm ),
         .sprite_heart_3_rgb            ( sprite_heart_3_rgb            ),
 
         .game_won                      ( game_won                      ),
@@ -1042,6 +1040,7 @@ module game_top
         .sprite_heart_1_rgb_en_fsm      ( sprite_heart_1_rgb_en_fsm      ),
         .sprite_heart_2_rgb_en_fsm      ( sprite_heart_2_rgb_en_fsm      ),
         .sprite_heart_3_rgb_en_fsm      ( sprite_heart_3_rgb_en_fsm      ),
+        .sprite_bullet_rgb_en_fsm       ( sprite_bullet_rgb_en_fsm       ),
 
         .collision                      ( collision                      ),
         .collision_bullet               ( collision_bullet               ),

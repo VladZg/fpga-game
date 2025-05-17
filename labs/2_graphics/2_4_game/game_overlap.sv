@@ -57,6 +57,7 @@ module game_overlap
                            || right_2  < left_1_3
                            || bottom_1_3 < top_2
                            || bottom_2 < top_1_3  );
+            // overlap <= 1;
 
             overlap_bullet <= ! (    right_1_1  < left_bullet
                            || right_bullet  < left_1_1
