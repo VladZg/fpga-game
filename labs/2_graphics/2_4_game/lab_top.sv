@@ -155,9 +155,27 @@ module lab_top
     }
     seven_seg_encoding_e;
 
-    // assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-    assign abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-    assign digit = 4'b1111;
+    logic mux_digit_sel;
+    always_ff @(posedge clk) begin
+        if (rst)
+            mux_digit_sel <= 0;
+        else
+            mux_digit_sel <= ~mux_digit_sel;
+    end
+
+    // logic [2:0] digit_value_0;
+    // logic [2:0] digit_value_1;
+    // assign digit_value_0 = score;
+    // assign digit_value_1 = n_lifes;
+
+    always_comb begin
+    if (mux_digit_sel == 0) begin
+        abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+        digit = 4'b0100;  // активируем младший разряд (предположим 0-й)
+    end else begin
+        abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+        digit = 4'b0001;  // активируем старший разряд (1-й)
+    end
 
     // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
