@@ -82,6 +82,7 @@ module lab_top
     wire [`GAME_RGB_WIDTH - 1:0] rgb;
     logic [2:0] score;
     logic [2:0] n_lifes;
+    logic [2:0] debug;
 
     game_top
     # (
@@ -107,6 +108,7 @@ module lab_top
 
         .score            ( score                ),
         .n_lifes          ( n_lifes              ),
+        .debug            ( debug                ),
 
         .rgb              (   rgb                )
     );
@@ -153,7 +155,8 @@ module lab_top
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+    // assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+    assign abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
     assign digit = 4'b1111;
 
     // assign red   = { w_red   { rgb [2] } };

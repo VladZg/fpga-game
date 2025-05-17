@@ -28,6 +28,7 @@ module game_top
 
     output logic [2:0]             score,
     output logic [2:0]             n_lifes,
+    output logic [2:0]             debug,
 
     output [`GAME_RGB_WIDTH - 1:0] rgb
 );
@@ -1038,6 +1039,7 @@ module game_top
 
         .score                          ( score                         ),
         .n_lifes                        ( n_lifes                       ),
+        .debug                          ( debug                         ),
 
         .end_of_game_timer_running      ( end_of_game_timer_running      )
     );
