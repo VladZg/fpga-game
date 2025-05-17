@@ -199,8 +199,6 @@ module game_master_fsm_1_regular_state_encoded
                 // d_state = STATE_END_GAME;
             // else
                 d_state = STATE_AIM;
-
-            // d_debug = 1;    // debug
         end
 
         STATE_AIM:
@@ -214,23 +212,19 @@ module game_master_fsm_1_regular_state_encoded
             begin
                 d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_ROUND;
-                // d_debug = 3;    // debug
             end
             else if (collision_bullet)
             begin
-                // d_score = d_score + 1;
+                d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
-                // d_debug = 3;    // debug
             end
             else if (launch_key)
             begin
                 d_state = STATE_SHOOT;
-                // d_debug = 2;    // debug
             end
             else if (round_end)
             begin
                 d_state = STATE_END_ROUND;
-                // d_debug = 3;    // debug
             end
         end
 
@@ -254,28 +248,23 @@ module game_master_fsm_1_regular_state_encoded
                 3'd3:
                     d_sprite_heart_1_write_xy   = 1'b0;
                 3'd2:
-                    d_sprite_heart_2_write_xy   = 1'b1;
+                    d_sprite_heart_2_write_xy   = 1'b0;
                 3'd1:
-                    d_sprite_heart_3_write_xy   = 1'b1;
+                    d_sprite_heart_3_write_xy   = 1'b0;
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_GAME;
-
-                // d_debug = 4;    // debug
             end
             else if (collision_bullet)
             begin
                 d_round_won = 1;
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
-
-                // d_debug = 3;    // debug
             end
             else if (round_end)
             begin
                 d_state = STATE_END_ROUND;
-                // d_debug = 3;    // debug
             end
 
         end
@@ -287,18 +276,15 @@ module game_master_fsm_1_regular_state_encoded
             if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
             begin
                 d_state = STATE_END_GAME;
-                // d_debug = 4;    // debug
             end
             else
             begin
                 d_state = STATE_START_ROUND;
-                // d_debug = 0;    // debug
             end
         end
 
         STATE_END_GAME:
         begin
-            // d_debug = 0;    // debug
             d_state = STATE_START_GAME;
         end
 
