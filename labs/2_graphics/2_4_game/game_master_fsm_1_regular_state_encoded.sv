@@ -64,7 +64,9 @@ module game_master_fsm_1_regular_state_encoded
                      STATE_SHOOT        = 3,
                      STATE_END_ROUND    = 4,
                      STATE_END_GAME     = 5,
-                     STATE_DEBUG        = 6;
+                     STATE_DEBUG        = 6,
+                     STATE_MINUS_LIFE   = 7,
+                     STATE_PLUS_SCORE   = 8;
 
     logic [2:0] state;
     logic [2:0] d_state;
@@ -211,17 +213,8 @@ module game_master_fsm_1_regular_state_encoded
             // if (!end_of_game_timer_running || )
             if (collision)
             begin
-                case (d_n_lifes)
-                3'd3:
-                    d_sprite_heart_1_write_xy = 1'b0;
-                3'd2:
-                    d_sprite_heart_2_write_xy = 1'b0;
-                3'd1:
-                    d_sprite_heart_3_write_xy = 1'b0;
-                endcase
-
-                d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_ROUND;
+                // d_n_lifes = d_n_lifes - 1;
+                d_state = STATE_MINUS_LIFE;
             end
             else if (launch_key)
             begin
@@ -249,23 +242,14 @@ module game_master_fsm_1_regular_state_encoded
                 // d_state = STATE_END_GAME;
             if (collision)
             begin
-                case (d_n_lifes)
-                3'd3:
-                    d_sprite_heart_1_write_xy = 1'b0;
-                3'd2:
-                    d_sprite_heart_2_write_xy = 1'b0;
-                3'd1:
-                    d_sprite_heart_3_write_xy = 1'b0;
-                endcase
-
-                d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_ROUND;
+                // d_n_lifes = d_n_lifes - 1;
+                d_state = STATE_MINUS_LIFE;
             end
             else if (collision_bullet)
             begin
                 // d_round_won = 1;
-                d_score = d_score + 1;
-                d_state = STATE_END_ROUND;
+                // d_score = d_score + 1;
+                d_state = STATE_PLUS_SCORE;
             end
             else if (round_end)
             begin
@@ -273,6 +257,22 @@ module game_master_fsm_1_regular_state_encoded
             end
 
         end
+
+        STATE_MINUS_LIFE:
+        begin
+            case (d_n_lifes)
+            3'd3:
+                d_sprite_heart_1_write_xy = 1'b0;
+            3'd2:
+                d_sprite_heart_2_write_xy = 1'b0;
+            3'd1:
+                d_sprite_heart_3_write_xy = 1'b0;
+            endcase
+            d_state = STATE_END_ROUND;
+        end
+
+        STATE_PLUS_SCORE:
+            d_state = STATE_END_ROUND;
 
         STATE_END_ROUND:
         begin
@@ -294,6 +294,14 @@ module game_master_fsm_1_regular_state_encoded
         end
 
         endcase
+    end
+
+    always_ff @ (posedge clk)
+    begin
+        if (state == STATE_MINUS_LIFE)
+            d_n_lifes = d_n_lifes - 1;
+        else if (state == STATE_PLUS_SCORE)
+            d_score = d_score + 1;
     end
 
     //------------------------------------------------------------------------
