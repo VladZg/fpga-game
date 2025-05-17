@@ -71,25 +71,50 @@ module game_master_fsm_1_regular_state_encoded
     output logic end_of_game_timer_start,
     output logic game_won,
 
-    output logic [2:0] score,
-    output logic [2:0] debug,
-    output logic [2:0] n_lifes,
-
     input      end_of_game_timer_running
 );
 
-    localparam [3:0] STATE_START_GAME  = 0,
-                     STATE_START_ROUND = 1,
-                     STATE_AIM         = 2,
-                     STATE_SHOOT       = 3,
-                     STATE_HP2         = 5,
-                     STATE_HP1         = 6,
-                     STATE_END_ROUND   = 7,
-                     STATE_END_GAME    = 8,
-                     STATE_DEBUG       = 9;
+    localparam [3:0]
+                     STATE_HP3_SC0     = 1,
+                     STATE_HP3_SC1     = 2,
+                     STATE_HP3_SC2     = 3,
+                     STATE_HP2_SC0     = 4,
+                     STATE_HP2_SC1     = 5,
+                     STATE_HP2_SC2     = 6,
+                     STATE_HP1_SC0     = 7,
+                     STATE_HP1_SC1     = 8,
+                     STATE_HP1_SC2     = 9;
 
-    logic [3:0] state;
-    logic [3:0] d_state;
+    localparam [4:0] STATE_START_GAME       = 0,
+                     STATE_END_GAME         = 1,
+                     STATE_START_ROUND      = 2,
+
+                     STATE_AIM_HP3_SC0      = 3,
+                     STATE_SHOOT_HP3_SC0    = 4,
+                     STATE_AIM_HP3_SC1      = 5,
+                     STATE_SHOOT_HP3_SC1    = 6,
+                     STATE_AIM_HP3_SC2      = 7,
+                     STATE_SHOOT_HP3_SC2    = 8,
+
+                     STATE_AIM_HP2_SC0      = 9,
+                     STATE_SHOOT_HP2_SC0    = 10,
+                     STATE_AIM_HP2_SC1      = 11,
+                     STATE_SHOOT_HP2_SC1    = 12,
+                     STATE_AIM_HP2_SC2      = 13,
+                     STATE_SHOOT_HP2_SC2    = 14,
+
+                     STATE_AIM_HP1_SC0      = 15,
+                     STATE_SHOOT_HP1_SC0    = 16,
+                     STATE_AIM_HP1_SC1      = 17,
+                     STATE_SHOOT_HP1_SC1    = 18,
+                     STATE_AIM_HP1_SC2      = 19,
+                     STATE_SHOOT_HP1_SC2    = 20;
+
+    logic [4:0] state;
+    logic [4:0] d_state;
+
+    logic [3:0] game_stats;
+    logic [3:0] d_game_stats;
 
     logic d_sprite_target_write_xy_1;
     logic d_sprite_target_write_xy_2;
@@ -139,10 +164,11 @@ module game_master_fsm_1_regular_state_encoded
     logic d_game_won;
     logic d_round_won;
 
-    logic d_shoot;
-    logic [2:0] d_score;
-    logic [2:0] d_debug;
-    logic [2:0] d_n_lifes;
+    logic [3:0] d_score;
+    logic [3:0] score;
+
+    logic [3:0] d_lifes;
+    logic [3:0] lifes;
 
     reg collision_del;
     wire posedge_collision;
@@ -158,10 +184,21 @@ module game_master_fsm_1_regular_state_encoded
         end
     end
 
-    //------------------------------------------------------------------------
+    reg collision_bullet_del;
+    wire posedge_collision_bullet;
 
-    // wire game_end = collision;
-    // wire round_won = collision_bullet;
+    assign posedge_collision_bullet = collision_bullet & !collision_bullet_del;
+
+    always_ff @ (posedge clk or posedge rst) begin
+        if (rst)
+            collision_bullet_del <= 0;
+        else begin
+            collision_bullet_del <= collision_bullet;
+
+        end
+    end
+
+    //------------------------------------------------------------------------
 
     wire round_end =
           ~sprite_target_within_screen_1
@@ -175,9 +212,7 @@ module game_master_fsm_1_regular_state_encoded
     always_comb
     begin
         d_state   = state;
-        d_score   = score;
-        d_n_lifes = n_lifes;
-        d_debug   = n_lifes;
+        d_game_stats = game_stats;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -208,23 +243,24 @@ module game_master_fsm_1_regular_state_encoded
         d_sprite_target_enable_update_3   = 1'b0;
         d_sprite_spaceship_enable_update  = 1'b0;
         d_sprite_bullet_enable_update     = 1'b0;
+
         d_sprite_heart_1_enable_update    = 1'b1;
         d_sprite_heart_2_enable_update    = 1'b1;
         d_sprite_heart_3_enable_update    = 1'b1;
-        d_sprite_score_1_enable_update    = 1'b1;
-        d_sprite_score_2_enable_update    = 1'b1;
-        d_sprite_score_3_enable_update    = 1'b1;
+
+        d_sprite_score_1_enable_update    = 1'b0;
+        d_sprite_score_2_enable_update    = 1'b0;
+        d_sprite_score_3_enable_update    = 1'b0;
 
         d_sprite_bullet_rgb_en_fsm        = 0;
         d_sprite_heart_1_rgb_en_fsm       = 1'b1;
         d_sprite_heart_2_rgb_en_fsm       = 1'b1;
         d_sprite_heart_3_rgb_en_fsm       = 1'b1;
-        d_sprite_score_1_rgb_en_fsm       = 1'b1;
-        d_sprite_score_2_rgb_en_fsm       = 1'b1;
-        d_sprite_score_3_rgb_en_fsm       = 1'b1;
+        d_sprite_score_1_rgb_en_fsm       = 1'b0;
+        d_sprite_score_2_rgb_en_fsm       = 1'b0;
+        d_sprite_score_3_rgb_en_fsm       = 1'b0;
 
         d_end_of_game_timer_start         = 1'b0;
-        d_shoot                           = 1'b0;
         d_game_won                        = game_won;
         d_round_won                       = 1'b0;
 
@@ -238,26 +274,38 @@ module game_master_fsm_1_regular_state_encoded
             d_round_won                 = 1'b0;
             d_end_of_game_timer_start   = 1'b1;
 
-            d_score                     = 0;
-            d_n_lifes                   = 3;
-            d_debug                     = 0;
-
             d_sprite_heart_1_write_xy   = 1'b1;
             d_sprite_heart_2_write_xy   = 1'b1;
             d_sprite_heart_3_write_xy   = 1'b1;
-            d_sprite_score_1_write_xy   = 1'b1;
-            d_sprite_score_2_write_xy   = 1'b1;
-            d_sprite_score_3_write_xy   = 1'b1;
+            d_sprite_score_1_write_xy   = 1'b0;
+            d_sprite_score_2_write_xy   = 1'b0;
+            d_sprite_score_3_write_xy   = 1'b0;
 
             d_sprite_bullet_rgb_en_fsm  = 0;
             d_sprite_heart_1_rgb_en_fsm = 1'b1;
             d_sprite_heart_2_rgb_en_fsm = 1'b1;
             d_sprite_heart_3_rgb_en_fsm = 1'b1;
-            d_sprite_score_1_rgb_en_fsm = 1'b1;
-            d_sprite_score_2_rgb_en_fsm = 1'b1;
-            d_sprite_score_3_rgb_en_fsm = 1'b1;
+            d_sprite_score_1_rgb_en_fsm = 1'b0;
+            d_sprite_score_2_rgb_en_fsm = 1'b0;
+            d_sprite_score_3_rgb_en_fsm = 1'b0;
 
-            d_state = STATE_START_ROUND;
+            d_sprite_target_write_xy_1        = 1'b1;
+            d_sprite_target_write_xy_2        = 1'b1;
+            d_sprite_target_write_xy_3        = 1'b1;
+
+            d_sprite_target_write_dxy_1       = 1'b1;
+            d_sprite_target_write_dxy_2       = 1'b1;
+            d_sprite_target_write_dxy_3       = 1'b1;
+
+            d_sprite_spaceship_write_xy       = 1'b1;
+            d_sprite_bullet_write_xy          = 1'b1;
+
+            d_round_won                       = 1'b0;
+
+            if (!end_of_game_timer_running)
+                d_state = STATE_END_GAME;
+            else
+                d_state = STATE_START_ROUND;
         end
 
         STATE_START_ROUND:
@@ -277,47 +325,59 @@ module game_master_fsm_1_regular_state_encoded
 
             if (!end_of_game_timer_running)
                 d_state = STATE_END_GAME;
-            else
-                d_state = STATE_AIM;
+            else begin
+                case (d_game_stats)
+                    STATE_HP3_SC0: begin
+                        d_state = STATE_AIM_HP3_SC0;
+                    end
+                    STATE_HP3_SC1: begin
+                        d_state = STATE_AIM_HP3_SC1;
+                    end
+                    STATE_HP3_SC2: begin
+                        d_state = STATE_AIM_HP3_SC2;
+                    end
+                    STATE_HP2_SC0: begin
+                        d_state = STATE_AIM_HP2_SC0;
+                    end
+                    STATE_HP2_SC1: begin
+                        d_state = STATE_AIM_HP2_SC1;
+                    end
+                    STATE_HP2_SC2: begin
+                        d_state = STATE_AIM_HP2_SC2;
+                    end
+                    STATE_HP1_SC0: begin
+                        d_state = STATE_AIM_HP1_SC0;
+                    end
+                    STATE_HP1_SC1: begin
+                        d_state = STATE_AIM_HP1_SC1;
+                    end
+                    STATE_HP1_SC2: begin
+                        d_state = STATE_AIM_HP1_SC2;
+                    end
+                    default: begin
+                        d_state = STATE_END_GAME;
+                    end
+                endcase
+            end
         end
 
-        STATE_AIM:
+        STATE_AIM_HP3_SC0:
         begin
             d_sprite_target_enable_update_1   = 1'b1;
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            // if (!end_of_game_timer_running || )
-            // if (collision) begin
-            //     d_sprite_heart_1_rgb_en_fsm     = 0 ;
-            //     // d_n_lifes = d_n_lifes - 1;
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
 
-            //     // case (3)
-            //     // 3'd3: begin
-            //         d_sprite_heart_1_write_xy       = 1'b1;
-            //         d_sprite_heart_1_enable_update  = 1'b1;
-            //     // end
-
-            //     // 3'd2: begin
-            //         d_sprite_heart_2_write_xy       = 1'b0;
-            //         d_sprite_heart_2_rgb_en_fsm     = 1'b0;
-            //         d_sprite_heart_2_enable_update  = 1'b0;
-
-            //     // end
-
-            //     // 3'd1: begin
-            //         d_sprite_heart_3_write_xy       = 1'b0;
-            //         d_sprite_heart_3_rgb_en_fsm     = 1'b0;
-            //         d_sprite_heart_3_enable_update  = 1'b0;
-
-            //     // end
-            //     // endcase
-
-            //     d_state = STATE_END_ROUND;
-            // end
-            // else
-
-            d_sprite_bullet_write_dxy        = 1'b1;
+            d_sprite_bullet_write_dxy         = 1'b1;
             d_sprite_bullet_enable_update     = 1'b1;
             d_sprite_bullet_rgb_en_fsm        = 0;
 
@@ -329,18 +389,45 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             if (shoot) begin
-                d_state = STATE_SHOOT;
+                d_state = STATE_SHOOT_HP3_SC0;
+            end  if (posedge_collision) begin
+                d_game_stats = STATE_HP2_SC0;
+                d_state = STATE_START_ROUND;
             end
             else if (round_end) begin
-                d_state = STATE_END_ROUND;
+                d_state = STATE_START_ROUND;
             end
         end
 
-        STATE_SHOOT:
+        STATE_AIM_HP3_SC1:
         begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
             d_sprite_bullet_write_dxy         = 1'b1;
             d_sprite_bullet_enable_update     = 1'b1;
-            d_sprite_bullet_rgb_en_fsm        = 1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
 
             d_sprite_spaceship_enable_update  = 1'b1;
             d_sprite_spaceship_write_dxy      = 1'b1;
@@ -349,116 +436,763 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            // if (!end_of_game_timer_running)
-                // d_state = STATE_END_GAME;
+            if (shoot) begin
+                d_state = STATE_SHOOT_HP3_SC1;
+            end  if (posedge_collision) begin
+                d_game_stats = STATE_HP2_SC1;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP3_SC1:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
 
             if (posedge_collision) begin
-                d_state = STATE_HP2;
+                d_game_stats = STATE_HP2_SC1;
+                d_state = STATE_START_ROUND;
             end
-
-            // case (were_collisions)
-            // 3'd0: begin
-            //     d_sprite_heart_1_rgb_en_fsm = 1;
-            //     d_sprite_heart_2_rgb_en_fsm = 1;
-            //     d_sprite_heart_3_rgb_en_fsm = 1;
-            // end
-            // 3'd1: begin
-            //     d_sprite_heart_1_rgb_en_fsm = 0;
-            //     d_sprite_heart_2_rgb_en_fsm = 1;
-            //     d_sprite_heart_3_rgb_en_fsm = 1;
-            // end
-            // 3'd2: begin
-            //     d_sprite_heart_1_rgb_en_fsm = 0;
-            //     d_sprite_heart_2_rgb_en_fsm = 0;
-            //     d_sprite_heart_3_rgb_en_fsm = 1;
-            // end
-            // 3'd3: begin
-            //     d_sprite_heart_1_rgb_en_fsm = 0;
-            //     d_sprite_heart_2_rgb_en_fsm = 0;
-            //     d_sprite_heart_3_rgb_en_fsm = 0;
-            // end
-            // default: begin
-            //     d_sprite_heart_1_rgb_en_fsm = 1;
-            //     d_sprite_heart_2_rgb_en_fsm = 1;
-            //     d_sprite_heart_3_rgb_en_fsm = 1;
-            // end
-            // endcase
-
-            // if (collision && (were_collisions == 2))
-            //     d_state = STATE_END_GAME;
-            //     // d_n_lifes = d_n_lifes - 1;
-            // else if (collision && (were_collisions != 2))
-            //     d_state = STATE_END_ROUND;
-
-            if (collision_bullet)
-            begin
-                // d_round_won = 1;
-                d_score = d_score + 1;
-                d_state = STATE_END_ROUND;
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP3_SC2;
+                d_state = STATE_START_ROUND;
             end
             else if (round_end)
             begin
-                d_state = STATE_END_ROUND;
-            end
-
-        end
-
-        STATE_HP2:
-        begin
-            d_sprite_spaceship_write_dxy     = 1'b1;
-            d_sprite_bullet_write_dxy        = 1'b1;
-
-
-            d_sprite_target_enable_update_1   = 1'b1;
-            d_sprite_target_enable_update_2   = 1'b1;
-            d_sprite_target_enable_update_3   = 1'b1;
-
-            d_sprite_bullet_enable_update     = 1'b1;
-            d_sprite_spaceship_enable_update  = 1'b1;
-
-            d_sprite_heart_1_rgb_en_fsm = 0;
-            d_sprite_heart_2_rgb_en_fsm = 1;
-            d_sprite_heart_3_rgb_en_fsm = 1;
-
-            if (posedge_collision) begin
-                d_state = STATE_HP1;
-            end
-        end
-
-        STATE_HP1:
-        begin
-            d_sprite_spaceship_write_dxy     = 1'b1;
-            d_sprite_bullet_write_dxy        = 1'b1;
-
-
-            d_sprite_target_enable_update_1   = 1'b1;
-            d_sprite_target_enable_update_2   = 1'b1;
-            d_sprite_target_enable_update_3   = 1'b1;
-
-            d_sprite_bullet_enable_update     = 1'b1;
-            d_sprite_spaceship_enable_update  = 1'b1;
-
-            d_sprite_heart_1_rgb_en_fsm = 0;
-            d_sprite_heart_2_rgb_en_fsm = 0;
-            d_sprite_heart_3_rgb_en_fsm = 1;
-
-            if (posedge_collision) begin
-                d_state = STATE_START_GAME;
-            end
-        end
-
-        STATE_END_ROUND:
-        begin
-            // if (!end_of_game_timer_running)
-            //     // d_state = STATE_END_GAME;
-            // if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
-            // begin
-            //     d_state = STATE_END_GAME;
-            // end
-            // else
-            // begin
                 d_state = STATE_START_ROUND;
-            // end
+            end
+        end
+
+        STATE_AIM_HP3_SC2:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (shoot) begin
+                d_state = STATE_SHOOT_HP3_SC2;
+            end  if (posedge_collision) begin
+                d_game_stats = STATE_HP2_SC2;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP3_SC2:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP2_SC2;
+                d_state = STATE_START_ROUND;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP3_SC0:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 1;
+            d_sprite_heart_1_rgb_en_fsm        = 1;
+            d_sprite_heart_1_enable_update     = 1;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP2_SC0;
+                d_state = STATE_START_ROUND;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP3_SC1;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+
+        end
+
+        STATE_AIM_HP2_SC0:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC0;
+                d_state = STATE_START_ROUND;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP2_SC0;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP2_SC0:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC0;
+                d_state = STATE_START_ROUND;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP2_SC0;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP1_SC0:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP1_SC0;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP2_SC1:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC1;
+                d_state = STATE_START_ROUND;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP2_SC1;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP1_SC1:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP1_SC1;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP2_SC2:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC2;
+                d_state = STATE_START_ROUND;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP2_SC2;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP2_SC2:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC2;
+                d_state = STATE_START_ROUND;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_AIM_HP1_SC2:
+        begin
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 0;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end else if (shoot) begin
+                d_state = STATE_SHOOT_HP1_SC2;
+            end
+            else if (round_end) begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP1_SC2:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 1;
+            d_sprite_score_2_rgb_en_fsm        = 1;
+            d_sprite_score_2_enable_update     = 1;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP1_SC1:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP1_SC2;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP2_SC1:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_score_1_write_xy          = 0;
+            d_sprite_score_1_rgb_en_fsm        = 0;
+            d_sprite_score_1_enable_update     = 0;
+            d_sprite_score_2_write_xy          = 0;
+            d_sprite_score_2_rgb_en_fsm        = 0;
+            d_sprite_score_2_enable_update     = 0;
+            d_sprite_score_3_write_xy          = 1;
+            d_sprite_score_3_rgb_en_fsm        = 1;
+            d_sprite_score_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC1;
+                d_state = STATE_START_ROUND;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP2_SC2;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP2_SC0:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 1;
+            d_sprite_heart_2_rgb_en_fsm        = 1;
+            d_sprite_heart_2_enable_update     = 1;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP1_SC0;
+                d_state = STATE_START_ROUND;
+            end
+            else if (posedge_collision_bullet) begin
+                d_game_stats = STATE_HP2_SC1;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
+        end
+
+        STATE_SHOOT_HP1_SC0:
+        begin
+            d_sprite_bullet_write_dxy         = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_bullet_rgb_en_fsm        = 1;
+
+            d_sprite_heart_1_write_xy          = 0;
+            d_sprite_heart_1_rgb_en_fsm        = 0;
+            d_sprite_heart_1_enable_update     = 0;
+            d_sprite_heart_2_write_xy          = 0;
+            d_sprite_heart_2_rgb_en_fsm        = 0;
+            d_sprite_heart_2_enable_update     = 0;
+            d_sprite_heart_3_write_xy          = 1;
+            d_sprite_heart_3_rgb_en_fsm        = 1;
+            d_sprite_heart_3_enable_update     = 1;
+
+            d_sprite_target_enable_update_1   = 1'b1;
+            d_sprite_target_enable_update_2   = 1'b1;
+            d_sprite_target_enable_update_3   = 1'b1;
+
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_spaceship_write_dxy      = 1'b1;
+
+            if (posedge_collision) begin
+                d_game_stats = STATE_HP3_SC0;
+                d_state = STATE_END_GAME;
+            end
+            else if (collision_bullet) begin
+                d_game_stats = STATE_HP1_SC1;
+                d_state = STATE_START_ROUND;
+            end
+            else if (round_end)
+            begin
+                d_state = STATE_START_ROUND;
+            end
         end
 
         STATE_END_GAME:
@@ -476,9 +1210,7 @@ module game_master_fsm_1_regular_state_encoded
         if (rst)
         begin
             state                           <= STATE_START_GAME;
-            score                           <= 3'd0;
-            n_lifes                         <= 3'd3;
-            debug                           <= 3'd0;
+            game_stats                      <= STATE_HP3_SC0;
 
             sprite_target_write_xy_1        <= 1'b0;
             sprite_target_write_xy_2        <= 1'b0;
@@ -530,9 +1262,7 @@ module game_master_fsm_1_regular_state_encoded
         else
         begin
             state                           <= d_state;
-            score                           <= d_score;
-            n_lifes                         <= d_n_lifes;
-            debug                           <= d_n_lifes;   //d_state
+            game_stats                      <= d_game_stats;
 
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
@@ -563,12 +1293,14 @@ module game_master_fsm_1_regular_state_encoded
             sprite_target_enable_update_3   <= d_sprite_target_enable_update_3;
             sprite_spaceship_enable_update  <= d_sprite_spaceship_enable_update;
             sprite_bullet_enable_update     <= d_sprite_bullet_enable_update;
+
             sprite_heart_1_enable_update    <= d_sprite_heart_1_enable_update;
             sprite_heart_2_enable_update    <= d_sprite_heart_2_enable_update;
             sprite_heart_3_enable_update    <= d_sprite_heart_3_enable_update;
-            sprite_scroe_1_enable_update    <= d_sprite_score_1_enable_update;
-            sprite_scroe_2_enable_update    <= d_sprite_score_2_enable_update;
-            sprite_scroe_3_enable_update    <= d_sprite_score_3_enable_update;
+
+            sprite_score_1_enable_update    <= d_sprite_score_1_enable_update;
+            sprite_score_2_enable_update    <= d_sprite_score_2_enable_update;
+            sprite_score_3_enable_update    <= d_sprite_score_3_enable_update;
 
             sprite_bullet_rgb_en_fsm        <= d_sprite_bullet_rgb_en_fsm;
             sprite_heart_1_rgb_en_fsm       <= d_sprite_heart_1_rgb_en_fsm;

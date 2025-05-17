@@ -106,10 +106,6 @@ module lab_top
         .x                (   x                  ),
         .y                (   y                  ),
 
-        .score            ( score                ),
-        .n_lifes          ( n_lifes              ),
-        .debug            ( debug                ),
-
         .rgb              (   rgb                )
     );
 

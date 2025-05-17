@@ -26,10 +26,6 @@ module game_top
     input  [w_x             - 1:0] x,
     input  [w_y             - 1:0] y,
 
-    output logic [2:0]             score,
-    output logic [2:0]             n_lifes,
-    output logic [2:0]             debug,
-
     output [`GAME_RGB_WIDTH - 1:0] rgb
 );
 
@@ -681,7 +677,7 @@ module game_top
     wire                          sprite_score_1_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_1_rgb;
 
-    assign sprite_score_1_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_1_write_x  = screen_width * 7 / 10 + 3;
     assign sprite_score_1_write_y  = screen_height - 65;
 
     game_sprite_top
@@ -777,7 +773,7 @@ module game_top
     wire                          sprite_score_2_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_2_rgb;
 
-    assign sprite_score_2_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_2_write_x  = screen_width * 7 / 10 + 3;
     assign sprite_score_2_write_y  = screen_height - 45;
 
     game_sprite_top
@@ -873,7 +869,7 @@ module game_top
     wire                          sprite_score_3_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_score_3_rgb;
 
-    assign sprite_score_3_write_x  = screen_width * 7 / 10 + 20;
+    assign sprite_score_3_write_x  = screen_width * 7 / 10 + 3;
     assign sprite_score_3_write_y  = screen_height - 25;
 
     game_sprite_top
@@ -1357,10 +1353,6 @@ module game_top
 
         .game_won                       ( game_won                      ),
         .end_of_game_timer_start        ( end_of_game_timer_start       ),
-
-        .score                          ( score                         ),
-        .n_lifes                        ( n_lifes                       ),
-        .debug                          ( debug                         ),
 
         .end_of_game_timer_running      ( end_of_game_timer_running      )
     );
