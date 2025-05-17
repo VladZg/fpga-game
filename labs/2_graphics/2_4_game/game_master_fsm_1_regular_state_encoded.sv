@@ -208,12 +208,7 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             // if (!end_of_game_timer_running || )
-            if (collision)
-            begin
-                d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_ROUND;
-            end
-            else if (collision_bullet)
+            if (collision_bullet)
             begin
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
@@ -254,11 +249,11 @@ module game_master_fsm_1_regular_state_encoded
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_GAME;
+                d_state = STATE_END_ROUND;
             end
             else if (collision_bullet)
             begin
-                d_round_won = 1;
+                // d_round_won = 1;
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
             end
