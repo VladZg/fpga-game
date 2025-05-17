@@ -209,29 +209,32 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             // if (!end_of_game_timer_running || )
-            if (collision)
-            begin
-                case (d_n_lifes)
-                3'd3:
+            if (collision) begin
+                d_n_lifes = d_n_lifes - 1;
+
+                case (n_lifes)
+                3'd3: begin
                     d_sprite_heart_1_write_xy       = 1'b0;
                     d_sprite_heart_1_enable_update  = 1'b0;
-                3'd2:
+                end
+
+                3'd2: begin
                     d_sprite_heart_2_write_xy       = 1'b0;
                     d_sprite_heart_2_enable_update  = 1'b0;
-                3'd1:
+                end
+
+                3'd1: begin
                     d_sprite_heart_3_write_xy       = 1'b0;
                     d_sprite_heart_3_enable_update  = 1'b0;
+                end
                 endcase
 
-                d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_ROUND;
             end
-            else if (launch_key)
-            begin
+            else if (launch_key) begin
                 d_state = STATE_SHOOT;
             end
-            else if (round_end)
-            begin
+            else if (round_end) begin
                 d_state = STATE_END_ROUND;
             end
         end
