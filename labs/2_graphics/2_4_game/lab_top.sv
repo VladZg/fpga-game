@@ -82,6 +82,7 @@ module lab_top
     wire [`GAME_RGB_WIDTH - 1:0] rgb;
     logic [2:0] score;
     logic [2:0] n_lifes;
+    logic [2:0] debug;
 
     game_top
     # (
@@ -107,6 +108,7 @@ module lab_top
 
         .score            ( score                ),
         .n_lifes          ( n_lifes              ),
+        .debug            ( debug                ),
 
         .rgb              (   rgb                )
     );
@@ -146,17 +148,40 @@ module lab_top
     {
         ZERO  = 8'b1111_1100,
         ONE   = 8'b0110_0000,
-        TWO   = 8'b1101_1100,
+        TWO   = 8'b1101_1010,
         THREE = 8'b1111_0010,
         FOUR  = 8'b0110_0110,
-        SPACE = 8'b0000_0000
+        SPACE = 8'b0000_0000,
+        S     = 8'b1011_0110,
+        L     = 8'b0001_1100
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-    assign digit = 4'b1111;
+    logic [3:0] d_digit;
+    always_ff @(posedge clk) begin
+        if (rst)
+            d_digit <= 4'b0001;
+        else
+            d_digit <= {d_digit[2:0], d_digit[3]};
+    end
 
-    // assign red   = { w_red   { rgb [2] } };
+    assign digit = {4'b0000, d_digit};
+
+    // logic [2:0] digit_value_0;
+    // logic [2:0] digit_value_1;
+    // // assign digit_value_0 = score;
+    // // assign digit_value_1 = n_lifes;
+
+    // always_comb begin
+    //     case (d_digit)
+    //         2'b0001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+    //         2'b0010: abcdefgh = S;
+    //         2'b0100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+    //         2'b1000: abcdefgh = L;
+    //     endcase
+    // end
+
+    // // assign red   = { w_red   { rgb [2] } };
     // assign green = { w_green { rgb [1] } };
     // assign blue  = { w_blue  { rgb [0] } };
 

@@ -52,6 +52,7 @@ module game_master_fsm_1_regular_state_encoded
     output logic game_won,
 
     output logic [2:0] score,
+    output logic [2:0] debug,
     output logic [2:0] n_lifes,
 
     input      end_of_game_timer_running
@@ -62,7 +63,8 @@ module game_master_fsm_1_regular_state_encoded
                      STATE_AIM          = 2,
                      STATE_SHOOT        = 3,
                      STATE_END_ROUND    = 4,
-                     STATE_END_GAME     = 5;
+                     STATE_END_GAME     = 5,
+                     STATE_DEBUG        = 6;
 
     logic [2:0] state;
     logic [2:0] d_state;
@@ -102,6 +104,7 @@ module game_master_fsm_1_regular_state_encoded
 
     logic d_shoot;
     logic [2:0] d_score;
+    logic [2:0] d_debug;
     logic [2:0] d_n_lifes;
 
     //------------------------------------------------------------------------
@@ -120,9 +123,10 @@ module game_master_fsm_1_regular_state_encoded
 
     always_comb
     begin
-        d_state = state;
-        d_score = 0;
-        d_n_lifes = 0;
+        d_state   = state;
+        d_score   = score;
+        d_n_lifes = n_lifes;
+        d_debug   = n_lifes;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -147,9 +151,9 @@ module game_master_fsm_1_regular_state_encoded
         d_sprite_target_enable_update_3   = 1'b0;
         d_sprite_spaceship_enable_update  = 1'b0;
         d_sprite_bullet_enable_update     = 1'b0;
-        d_sprite_heart_1_enable_update    = 1'b0;
-        d_sprite_heart_2_enable_update    = 1'b0;
-        d_sprite_heart_3_enable_update    = 1'b0;
+        d_sprite_heart_1_enable_update    = 1'b1;
+        d_sprite_heart_2_enable_update    = 1'b1;
+        d_sprite_heart_3_enable_update    = 1'b1;
 
         d_end_of_game_timer_start         = 1'b0;
         d_shoot                           = 1'b0;
@@ -168,6 +172,7 @@ module game_master_fsm_1_regular_state_encoded
 
             d_score                     = 0;
             d_n_lifes                   = 3;
+            d_debug                     = 0;
 
             d_sprite_heart_1_write_xy   = 1'b1;
             d_sprite_heart_2_write_xy   = 1'b1;
@@ -195,8 +200,6 @@ module game_master_fsm_1_regular_state_encoded
                 // d_state = STATE_END_GAME;
             // else
                 d_state = STATE_AIM;
-
-            d_score = 1;    // debug
         end
 
         STATE_AIM:
@@ -208,25 +211,25 @@ module game_master_fsm_1_regular_state_encoded
             // if (!end_of_game_timer_running || )
             if (collision)
             begin
+                case (d_n_lifes)
+                3'd3:
+                    d_sprite_heart_1_write_xy = 1'b0;
+                3'd2:
+                    d_sprite_heart_2_write_xy = 1'b0;
+                3'd1:
+                    d_sprite_heart_3_write_xy = 1'b0;
+                endcase
+
                 d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_ROUND;
-                d_score = 3;    // debug
-            end
-            else if (collision_bullet)
-            begin
-                // d_score = d_score + 1;
-                d_state = STATE_END_ROUND;
-                d_score = 3;    // debug
             end
             else if (launch_key)
             begin
                 d_state = STATE_SHOOT;
-                d_score = 2;    // debug
             end
             else if (round_end)
             begin
                 d_state = STATE_END_ROUND;
-                d_score = 3;    // debug
             end
         end
 
@@ -248,30 +251,25 @@ module game_master_fsm_1_regular_state_encoded
             begin
                 case (d_n_lifes)
                 3'd3:
-                    d_sprite_heart_1_write_xy   = 1'b0;
+                    d_sprite_heart_1_write_xy = 1'b0;
                 3'd2:
-                    d_sprite_heart_2_write_xy   = 1'b1;
+                    d_sprite_heart_2_write_xy = 1'b0;
                 3'd1:
-                    d_sprite_heart_3_write_xy   = 1'b1;
+                    d_sprite_heart_3_write_xy = 1'b0;
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_GAME;
-
-                d_score = 4;    // debug
+                d_state = STATE_END_ROUND;
             end
             else if (collision_bullet)
             begin
-                d_round_won = 1;
+                // d_round_won = 1;
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
-
-                d_score = 3;    // debug
             end
             else if (round_end)
             begin
                 d_state = STATE_END_ROUND;
-                d_score = 3;    // debug
             end
 
         end
@@ -283,18 +281,15 @@ module game_master_fsm_1_regular_state_encoded
             if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
             begin
                 d_state = STATE_END_GAME;
-                d_score = 4;    // debug
             end
             else
             begin
                 d_state = STATE_START_ROUND;
-                d_score = 0;    // debug
             end
         end
 
         STATE_END_GAME:
         begin
-            d_score = 0;    // debug
             d_state = STATE_START_GAME;
         end
 
@@ -307,7 +302,9 @@ module game_master_fsm_1_regular_state_encoded
         if (rst)
         begin
             state                           <= STATE_START_GAME;
-            score                           <= 4'b0;
+            score                           <= 3'd0;
+            n_lifes                         <= 3'd3;
+            debug                           <= 3'd0;
 
             sprite_target_write_xy_1        <= 1'b0;
             sprite_target_write_xy_2        <= 1'b0;
@@ -343,6 +340,8 @@ module game_master_fsm_1_regular_state_encoded
         begin
             state                           <= d_state;
             score                           <= d_score;
+            n_lifes                         <= d_n_lifes;
+            debug                           <= d_n_lifes;   //d_state
 
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
