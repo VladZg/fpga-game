@@ -268,13 +268,13 @@ module game_master_fsm_1_regular_state_encoded
             3'd1:
                 d_sprite_heart_3_write_xy = 1'b0;
             endcase
-            // d_n_lifes = d_n_lifes - 1;  // FIXME: DELETE LATER
+            d_n_lifes = n_lifes - 1;  // FIXME: DELETE LATER
             d_state = STATE_END_ROUND;
         end
 
         STATE_PLUS_SCORE:
         begin
-            // d_score = d_score + 1;  // FIXME: DELETE LATER
+            d_score = score + 1;  // FIXME: DELETE LATER
             d_state = STATE_END_ROUND;
         end
 
@@ -300,16 +300,16 @@ module game_master_fsm_1_regular_state_encoded
         endcase
     end
 
-    always_ff @ (posedge clk or posedge rst)
-    begin
-        if (rst) begin
-            // "ZA ZARIPOVA" LOGIC UNIT
-        end
-        else if (state == STATE_MINUS_LIFE)
-            d_n_lifes <= d_n_lifes - 1;
-        else if (state == STATE_PLUS_SCORE)
-            d_score <= d_score + 1;
-    end
+    // always_ff @ (posedge clk or posedge rst)
+    // begin
+    //     if (rst) begin
+    //         // "ZA ZARIPOVA" LOGIC UNIT
+    //     end
+    //     else if (state == STATE_MINUS_LIFE)
+    //         d_n_lifes <= d_n_lifes - 1;
+    //     else if (state == STATE_PLUS_SCORE)
+    //         d_score <= d_score + 1;
+    // end
 
     //------------------------------------------------------------------------
 
