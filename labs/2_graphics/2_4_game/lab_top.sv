@@ -157,12 +157,12 @@ module lab_top
     }
     seven_seg_encoding_e;
 
-    logic [1:0] mux_digit_sel;
+    logic [4:0] mux_digit_sel;
     always_ff @(posedge clk) begin
         if (rst)
-            mux_digit_sel <= 0;
+            mux_digit_sel <= 4'b0001;
         else
-            mux_digit_sel <= mux_digit_sel + 1;
+            mux_digit_sel <= {mux_digit_sel[2:0], mux_digit_sel[3]};
     end
 
     // logic [2:0] digit_value_0;
@@ -171,26 +171,13 @@ module lab_top
     // assign digit_value_1 = n_lifes;
 
     always_comb begin
+        digit = mux_digit_sel;
+
         case (mux_digit_sel)
-            2'b00: begin
-                abcdefgh = L;
-                digit = 4'b1000;
-            end
-
-            2'b01: begin
-                abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-                digit = 4'b0100;
-            end
-
-            2'b10: begin
-                abcdefgh = S;
-                digit = 4'b0010;
-            end
-
-            2'b11: begin
-                abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-                digit = 4'b0001;
-            end
+            2'b0001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+            2'b0010: abcdefgh = S;
+            2'b0100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+            2'b1000: abcdefgh = L;
         endcase
     end
 
