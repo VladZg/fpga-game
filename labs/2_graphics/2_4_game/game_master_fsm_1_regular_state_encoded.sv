@@ -124,9 +124,9 @@ module game_master_fsm_1_regular_state_encoded
     always_comb
     begin
         d_state   = state;
-        d_score   = 0;
+        d_score   = score;
         d_n_lifes = n_lifes;
-        d_debug = n_lifes;
+        d_debug   = n_lifes;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -221,8 +221,7 @@ module game_master_fsm_1_regular_state_encoded
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
-                // d_state = STATE_END_ROUND;
-                d_state = STATE_DEBUG;
+                d_state = STATE_END_ROUND;
             end
             else if (launch_key)
             begin
@@ -260,8 +259,7 @@ module game_master_fsm_1_regular_state_encoded
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
-                // d_state = STATE_END_ROUND;
-                d_state = STATE_DEBUG;
+                d_state = STATE_END_ROUND;
             end
             else if (collision_bullet)
             begin
@@ -274,50 +272,6 @@ module game_master_fsm_1_regular_state_encoded
                 d_state = STATE_END_ROUND;
             end
 
-        end
-
-        STATE_DEBUG :
-        begin
-            d_sprite_target_write_xy_1        = 1'b0;
-            d_sprite_target_write_xy_2        = 1'b0;
-            d_sprite_target_write_xy_3        = 1'b0;
-            d_sprite_bullet_write_xy          = 1'b0;
-            d_sprite_spaceship_write_xy       = 1'b1;
-
-            d_sprite_target_write_dxy_1       = 1'b0;
-            d_sprite_target_write_dxy_2       = 1'b0;
-            d_sprite_target_write_dxy_3       = 1'b0;
-            d_sprite_spaceship_write_dxy      = 1'b0;
-            d_sprite_bullet_write_dxy         = 1'b0;
-
-            d_sprite_target_enable_update_1   = 1'b0;
-            d_sprite_target_enable_update_2   = 1'b0;
-            d_sprite_target_enable_update_3   = 1'b0;
-            d_sprite_spaceship_enable_update  = 1'b1;
-            d_sprite_bullet_enable_update     = 1'b0;
-
-            if (launch_key)
-            begin
-                d_sprite_target_write_xy_1        = 1'b1;
-                d_sprite_target_write_xy_2        = 1'b1;
-                d_sprite_target_write_xy_3        = 1'b1;
-                d_sprite_bullet_write_xy          = 1'b1;
-                d_sprite_spaceship_write_xy       = 1'b1;
-
-                d_sprite_target_write_dxy_1       = 1'b1;
-                d_sprite_target_write_dxy_2       = 1'b1;
-                d_sprite_target_write_dxy_3       = 1'b1;
-                d_sprite_spaceship_write_dxy      = 1'b1;
-                d_sprite_bullet_write_dxy         = 1'b1;
-
-                d_sprite_target_enable_update_1   = 1'b1;
-                d_sprite_target_enable_update_2   = 1'b1;
-                d_sprite_target_enable_update_3   = 1'b1;
-                d_sprite_spaceship_enable_update  = 1'b1;
-                d_sprite_bullet_enable_update     = 1'b1;
-
-                d_state = STATE_END_ROUND;
-            end
         end
 
         STATE_END_ROUND:
@@ -387,7 +341,7 @@ module game_master_fsm_1_regular_state_encoded
             state                           <= d_state;
             score                           <= d_score;
             n_lifes                         <= d_n_lifes;
-            debug                           <= d_n_lifes;   //d_state
+            debug                           <= d_score;   //d_state
 
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
