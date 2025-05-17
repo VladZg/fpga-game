@@ -109,11 +109,11 @@ module game_top
     )
     sprite_target_1
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_target_write_xy_1       ),
         .sprite_write_dxy      ( sprite_target_write_dxy_1      ),
@@ -221,11 +221,11 @@ module game_top
     )
     sprite_target_2
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_target_write_xy_2       ),
         .sprite_write_dxy      ( sprite_target_write_dxy_2      ),
@@ -332,11 +332,11 @@ module game_top
     )
     sprite_target_3
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_target_write_xy_3       ),
         .sprite_write_dxy      ( sprite_target_write_dxy_3      ),
@@ -389,7 +389,7 @@ module game_top
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_1_rgb;
 
     assign sprite_heart_1_write_x  = screen_width * 3 / 10 - 20;
-    assign sprite_heart_1_write_y  = screen_height - 60;
+    assign sprite_heart_1_write_y  = screen_height - 65;
 
     game_sprite_top
     #(
@@ -427,11 +427,11 @@ module game_top
     )
     sprite_heart_1
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_heart_1_write_xy        ),
         .sprite_write_dxy      ( sprite_heart_1_write_dxy       ),
@@ -484,7 +484,7 @@ module game_top
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_2_rgb;
 
     assign sprite_heart_2_write_x  = screen_width * 3 / 10 - 20;
-    assign sprite_heart_2_write_y  = screen_height - 40;
+    assign sprite_heart_2_write_y  = screen_height - 45;
 
     game_sprite_top
     #(
@@ -522,11 +522,11 @@ module game_top
     )
     sprite_heart_2
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_heart_2_write_xy        ),
         .sprite_write_dxy      ( sprite_heart_2_write_dxy       ),
@@ -579,7 +579,7 @@ module game_top
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_3_rgb;
 
     assign sprite_heart_3_write_x  = screen_width * 3 / 10 - 20;
-    assign sprite_heart_3_write_y  = screen_height - 20;
+    assign sprite_heart_3_write_y  = screen_height - 25;
 
     game_sprite_top
     #(
@@ -617,11 +617,11 @@ module game_top
     )
     sprite_heart_3
     (
-        .clk                   ( clk                          ),
-        .rst                   ( rst                          ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                            ),
-        .pixel_y               ( y                            ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
         .sprite_write_xy       ( sprite_heart_3_write_xy        ),
         .sprite_write_dxy      ( sprite_heart_3_write_dxy       ),
@@ -633,9 +633,9 @@ module game_top
         .sprite_write_dy       ( sprite_heart_3_write_dy        ),
 
         .sprite_enable_update  ( sprite_heart_3_enable_update   ),
-        .is_meteor             ( 0                            ),
-        .is_bullet             ( 0                            ),
-        .shoot                 ( 0                            ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_3_x               ),
         .sprite_y              ( sprite_heart_3_y               ),
@@ -737,38 +737,38 @@ module game_top
     )
     sprite_spaceship
     (
-        .clk                   ( clk                           ),
-        .rst                   ( rst                           ),
+        .clk                   ( clk                            ),
+        .rst                   ( rst                            ),
 
-        .pixel_x               ( x                             ),
-        .pixel_y               ( y                             ),
+        .pixel_x               ( x                              ),
+        .pixel_y               ( y                              ),
 
-        .sprite_write_xy       ( sprite_spaceship_write_xy       ),
-        .sprite_write_dxy      ( sprite_spaceship_write_dxy      ),
+        .sprite_write_xy       ( sprite_spaceship_write_xy      ),
+        .sprite_write_dxy      ( sprite_spaceship_write_dxy     ),
 
-        .sprite_write_x        ( sprite_spaceship_write_x        ),
-        .sprite_write_y        ( sprite_spaceship_write_y        ),
+        .sprite_write_x        ( sprite_spaceship_write_x       ),
+        .sprite_write_y        ( sprite_spaceship_write_y       ),
 
-        .sprite_write_dx       ( sprite_spaceship_write_dx       ),
-        .sprite_write_dy       ( 0                               ),
+        .sprite_write_dx       ( sprite_spaceship_write_dx      ),
+        .sprite_write_dy       ( 0                              ),
 
-        .sprite_enable_update  ( sprite_spaceship_enable_update  ),
-        .is_meteor             ( 0                               ),
-        .is_bullet             ( 0                               ),
-        .shoot                 ( shoot                           ),
+        .sprite_enable_update  ( sprite_spaceship_enable_update ),
+        .is_meteor             ( 0                              ),
+        .is_bullet             ( 0                              ),
+        .shoot                 ( shoot                          ),
 
-        .sprite_x              ( sprite_spaceship_x              ),
-        .sprite_y              ( sprite_spaceship_y              ),
+        .sprite_x              ( sprite_spaceship_x             ),
+        .sprite_y              ( sprite_spaceship_y             ),
 
-        .sprite_within_screen  ( sprite_spaceship_within_screen  ),
+        .sprite_within_screen  ( sprite_spaceship_within_screen ),
 
-        .sprite_out_left       ( sprite_spaceship_out_left       ),
-        .sprite_out_right      ( sprite_spaceship_out_right      ),
-        .sprite_out_top        ( sprite_spaceship_out_top        ),
-        .sprite_out_bottom     ( sprite_spaceship_out_bottom     ),
+        .sprite_out_left       ( sprite_spaceship_out_left      ),
+        .sprite_out_right      ( sprite_spaceship_out_right     ),
+        .sprite_out_top        ( sprite_spaceship_out_top       ),
+        .sprite_out_bottom     ( sprite_spaceship_out_bottom    ),
 
-        .rgb_en                ( sprite_spaceship_rgb_en         ),
-        .rgb                   ( sprite_spaceship_rgb            )
+        .rgb_en                ( sprite_spaceship_rgb_en        ),
+        .rgb                   ( sprite_spaceship_rgb           )
     );
 
     //------------------------------------------------------------------------
@@ -922,10 +922,10 @@ module game_top
         .top_bullet     ( sprite_bullet_out_top     ),
         .bottom_bullet  ( sprite_bullet_out_bottom  ),
 
-        .left_2      ( sprite_spaceship_out_left      ),
-        .right_2     ( sprite_spaceship_out_right     ),
-        .top_2       ( sprite_spaceship_out_top       ),
-        .bottom_2    ( sprite_spaceship_out_bottom    ),
+        .left_2      ( sprite_spaceship_out_left    ),
+        .right_2     ( sprite_spaceship_out_right   ),
+        .top_2       ( sprite_spaceship_out_top     ),
+        .bottom_2    ( sprite_spaceship_out_bottom  ),
 
         .overlap            ( collision             ),
         .overlap_bullet     ( collision_bullet      )
@@ -985,55 +985,55 @@ module game_top
 
     `GAME_MASTER_FSM_MODULE master_fsm
     (
-        .clk                            ( clk                           ),
-        .rst                            ( rst                           ),
+        .clk                            ( clk                            ),
+        .rst                            ( rst                            ),
 
-        .launch_key                     ( launch_key                    ),
-        .shoot                          ( shoot                         ),
+        .launch_key                     ( launch_key                     ),
+        .shoot                          ( shoot                          ),
 
-        .sprite_target_write_xy_1       ( sprite_target_write_xy_1      ),
-        .sprite_target_write_xy_2       ( sprite_target_write_xy_2      ),
-        .sprite_target_write_xy_3       ( sprite_target_write_xy_3      ),
-        .sprite_spaceship_write_xy      ( sprite_spaceship_write_xy     ),
-        .sprite_bullet_write_xy         ( sprite_bullet_write_xy        ),
-        .sprite_heart_1_write_xy        ( sprite_heart_1_write_xy       ),
-        .sprite_heart_2_write_xy        ( sprite_heart_2_write_xy       ),
-        .sprite_heart_3_write_xy        ( sprite_heart_3_write_xy       ),
+        .sprite_target_write_xy_1       ( sprite_target_write_xy_1       ),
+        .sprite_target_write_xy_2       ( sprite_target_write_xy_2       ),
+        .sprite_target_write_xy_3       ( sprite_target_write_xy_3       ),
+        .sprite_spaceship_write_xy      ( sprite_spaceship_write_xy      ),
+        .sprite_bullet_write_xy         ( sprite_bullet_write_xy         ),
+        .sprite_heart_1_write_xy        ( sprite_heart_1_write_xy        ),
+        .sprite_heart_2_write_xy        ( sprite_heart_2_write_xy        ),
+        .sprite_heart_3_write_xy        ( sprite_heart_3_write_xy        ),
 
-        .sprite_target_write_dxy_1      ( sprite_target_write_dxy_1     ),
-        .sprite_target_write_dxy_2      ( sprite_target_write_dxy_2     ),
-        .sprite_target_write_dxy_3      ( sprite_target_write_dxy_3     ),
-        .sprite_spaceship_write_dxy     ( sprite_spaceship_write_dxy    ),
-        .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy       ),
-        .sprite_heart_1_write_dxy       ( sprite_heart_1_write_dxy      ),
-        .sprite_heart_2_write_dxy       ( sprite_heart_2_write_dxy      ),
-        .sprite_heart_3_write_dxy       ( sprite_heart_3_write_dxy      ),
+        .sprite_target_write_dxy_1      ( sprite_target_write_dxy_1      ),
+        .sprite_target_write_dxy_2      ( sprite_target_write_dxy_2      ),
+        .sprite_target_write_dxy_3      ( sprite_target_write_dxy_3      ),
+        .sprite_spaceship_write_dxy     ( sprite_spaceship_write_dxy     ),
+        .sprite_bullet_write_dxy        ( sprite_bullet_write_dxy        ),
+        .sprite_heart_1_write_dxy       ( sprite_heart_1_write_dxy       ),
+        .sprite_heart_2_write_dxy       ( sprite_heart_2_write_dxy       ),
+        .sprite_heart_3_write_dxy       ( sprite_heart_3_write_dxy       ),
 
-        .sprite_target_enable_update_1  ( sprite_target_enable_update_1 ),
-        .sprite_target_enable_update_2  ( sprite_target_enable_update_2 ),
-        .sprite_target_enable_update_3  ( sprite_target_enable_update_3 ),
-        .sprite_spaceship_enable_update ( sprite_spaceship_enable_update),
-        .sprite_bullet_enable_update    ( sprite_bullet_enable_update   ),
-        .sprite_heart_1_enable_update   ( sprite_heart_1_enable_update  ),
-        .sprite_heart_2_enable_update   ( sprite_heart_2_enable_update  ),
-        .sprite_heart_3_enable_update   ( sprite_heart_3_enable_update  ),
+        .sprite_target_enable_update_1  ( sprite_target_enable_update_1  ),
+        .sprite_target_enable_update_2  ( sprite_target_enable_update_2  ),
+        .sprite_target_enable_update_3  ( sprite_target_enable_update_3  ),
+        .sprite_spaceship_enable_update ( sprite_spaceship_enable_update ),
+        .sprite_bullet_enable_update    ( sprite_bullet_enable_update    ),
+        .sprite_heart_1_enable_update   ( sprite_heart_1_enable_update   ),
+        .sprite_heart_2_enable_update   ( sprite_heart_2_enable_update   ),
+        .sprite_heart_3_enable_update   ( sprite_heart_3_enable_update   ),
 
-        .sprite_target_within_screen_1  ( sprite_target_within_screen_1 ),
-        .sprite_target_within_screen_2  ( sprite_target_within_screen_2 ),
-        .sprite_target_within_screen_3  ( sprite_target_within_screen_3 ),
-        .sprite_spaceship_within_screen ( sprite_spaceship_within_screen),
-        .sprite_bullet_within_screen    ( sprite_bullet_within_screen   ),
-        .sprite_heart_1_within_screen   ( sprite_heart_1_within_screen  ),
-        .sprite_heart_2_within_screen   ( sprite_heart_2_within_screen  ),
-        .sprite_heart_3_within_screen   ( sprite_heart_3_within_screen  ),
+        .sprite_target_within_screen_1  ( sprite_target_within_screen_1  ),
+        .sprite_target_within_screen_2  ( sprite_target_within_screen_2  ),
+        .sprite_target_within_screen_3  ( sprite_target_within_screen_3  ),
+        .sprite_spaceship_within_screen ( sprite_spaceship_within_screen ),
+        .sprite_bullet_within_screen    ( sprite_bullet_within_screen    ),
+        .sprite_heart_1_within_screen   ( sprite_heart_1_within_screen   ),
+        .sprite_heart_2_within_screen   ( sprite_heart_2_within_screen   ),
+        .sprite_heart_3_within_screen   ( sprite_heart_3_within_screen   ),
 
-        .collision                      ( collision                     ),
-        .collision_bullet               ( collision_bullet              ),
+        .collision                      ( collision                      ),
+        .collision_bullet               ( collision_bullet               ),
 
-        .game_won                       ( game_won                      ),
-        .end_of_game_timer_start        ( end_of_game_timer_start       ),
+        .game_won                       ( game_won                       ),
+        .end_of_game_timer_start        ( end_of_game_timer_start        ),
 
-        .end_of_game_timer_running      ( end_of_game_timer_running     )
+        .end_of_game_timer_running      ( end_of_game_timer_running      )
     );
 
 endmodule
