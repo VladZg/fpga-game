@@ -124,9 +124,9 @@ module game_master_fsm_1_regular_state_encoded
     always_comb
     begin
         d_state = state;
-        // d_score = 0;
-        // d_n_lifes = 0;
-        // d_debug = n_lifes;
+        d_score = 0;
+        d_n_lifes = 0;
+        d_debug = n_lifes;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
