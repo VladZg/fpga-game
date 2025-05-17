@@ -171,7 +171,7 @@ module game_master_fsm_1_regular_state_encoded
             d_end_of_game_timer_start   = 1'b1;
 
             d_score                     = 0;
-            d_n_lifes                   = 3;
+            d_n_lifes                   = 0;
             d_debug                     = 0;
 
             d_sprite_heart_1_write_xy   = 1'b1;
@@ -220,7 +220,7 @@ module game_master_fsm_1_regular_state_encoded
                     d_sprite_heart_3_write_xy = 1'b0;
                 endcase
 
-                d_n_lifes = d_n_lifes - 1;
+                d_n_lifes = d_n_lifes + 1;
                 // d_state = STATE_END_ROUND;
                 d_state = STATE_DEBUG;
             end
@@ -259,7 +259,7 @@ module game_master_fsm_1_regular_state_encoded
                     d_sprite_heart_3_write_xy = 1'b0;
                 endcase
 
-                d_n_lifes = d_n_lifes - 1;
+                d_n_lifes = d_n_lifes + 1;
                 // d_state = STATE_END_ROUND;
                 d_state = STATE_DEBUG;
             end
@@ -324,7 +324,7 @@ module game_master_fsm_1_regular_state_encoded
         begin
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
-            if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
+            if (d_score == 3 || d_n_lifes == 3) // TODO: declare 3 as a const
             begin
                 d_state = STATE_END_GAME;
             end
