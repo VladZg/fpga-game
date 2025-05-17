@@ -63,7 +63,8 @@ module game_master_fsm_1_regular_state_encoded
                      STATE_AIM          = 2,
                      STATE_SHOOT        = 3,
                      STATE_END_ROUND    = 4,
-                     STATE_END_GAME     = 5;
+                     STATE_END_GAME     = 5,
+                     STATE_DEBUG        = 6;
 
     logic [2:0] state;
     logic [2:0] d_state;
@@ -208,10 +209,20 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             // if (!end_of_game_timer_running || )
-            if (collision_bullet)
+            if (collision)
             begin
-                d_score = d_score + 1;
-                d_state = STATE_END_ROUND;
+                case (d_n_lifes)
+                3'd3:
+                    d_sprite_heart_1_write_xy = 1'b0;
+                3'd2:
+                    d_sprite_heart_2_write_xy = 1'b0;
+                3'd1:
+                    d_sprite_heart_3_write_xy = 1'b0;
+                endcase
+
+                d_n_lifes = d_n_lifes - 1;
+                // d_state = STATE_END_ROUND;
+                d_state = STATE_DEBUG;
             end
             else if (launch_key)
             begin
@@ -241,15 +252,16 @@ module game_master_fsm_1_regular_state_encoded
             begin
                 case (d_n_lifes)
                 3'd3:
-                    d_sprite_heart_1_write_xy   = 1'b0;
+                    d_sprite_heart_1_write_xy = 1'b0;
                 3'd2:
-                    d_sprite_heart_2_write_xy   = 1'b0;
+                    d_sprite_heart_2_write_xy = 1'b0;
                 3'd1:
-                    d_sprite_heart_3_write_xy   = 1'b0;
+                    d_sprite_heart_3_write_xy = 1'b0;
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
-                d_state = STATE_END_ROUND;
+                // d_state = STATE_END_ROUND;
+                d_state = STATE_DEBUG;
             end
             else if (collision_bullet)
             begin
@@ -262,6 +274,50 @@ module game_master_fsm_1_regular_state_encoded
                 d_state = STATE_END_ROUND;
             end
 
+        end
+
+        STATE_DEBUG :
+        begin
+            d_sprite_target_write_xy_1        = 1'b0;
+            d_sprite_target_write_xy_2        = 1'b0;
+            d_sprite_target_write_xy_3        = 1'b0;
+            d_sprite_bullet_write_xy          = 1'b0;
+            d_sprite_spaceship_write_xy       = 1'b1;
+
+            d_sprite_target_write_dxy_1       = 1'b0;
+            d_sprite_target_write_dxy_2       = 1'b0;
+            d_sprite_target_write_dxy_3       = 1'b0;
+            d_sprite_spaceship_write_dxy      = 1'b0;
+            d_sprite_bullet_write_dxy         = 1'b0;
+
+            d_sprite_target_enable_update_1   = 1'b0;
+            d_sprite_target_enable_update_2   = 1'b0;
+            d_sprite_target_enable_update_3   = 1'b0;
+            d_sprite_spaceship_enable_update  = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b0;
+
+            if (launch_key)
+            begin
+                d_sprite_target_write_xy_1        = 1'b1;
+                d_sprite_target_write_xy_2        = 1'b1;
+                d_sprite_target_write_xy_3        = 1'b1;
+                d_sprite_bullet_write_xy          = 1'b1;
+                d_sprite_spaceship_write_xy       = 1'b1;
+
+                d_sprite_target_write_dxy_1       = 1'b1;
+                d_sprite_target_write_dxy_2       = 1'b1;
+                d_sprite_target_write_dxy_3       = 1'b1;
+                d_sprite_spaceship_write_dxy      = 1'b1;
+                d_sprite_bullet_write_dxy         = 1'b1;
+
+                d_sprite_target_enable_update_1   = 1'b1;
+                d_sprite_target_enable_update_2   = 1'b1;
+                d_sprite_target_enable_update_3   = 1'b1;
+                d_sprite_spaceship_enable_update  = 1'b1;
+                d_sprite_bullet_enable_update     = 1'b1;
+
+                d_state = STATE_END_ROUND;
+            end
         end
 
         STATE_END_ROUND:
@@ -292,8 +348,8 @@ module game_master_fsm_1_regular_state_encoded
         if (rst)
         begin
             state                           <= STATE_START_GAME;
-            score                           <= 4'd0;
-            n_lifes                         <= 4'd3;
+            score                           <= 3'd0;
+            n_lifes                         <= 3'd3;
             debug                           <= 3'd0;
 
             sprite_target_write_xy_1        <= 1'b0;
