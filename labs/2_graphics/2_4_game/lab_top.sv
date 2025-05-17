@@ -177,32 +177,32 @@ module lab_top
     //     endcase
     // end
 
-logic [3:0] d_digit;       // To store the digit selection
-logic [15:0] counter;       // Counter to control the pause duration
-parameter MAX_COUNT = 16'd5000;  // Set this value to the desired pause duration
-    always_ff @(posedge clk) begin
-    if (rst) begin
-        d_digit <= 4'b0001;    // Reset d_digit
-        counter <= 0;          // Reset counter
-    end else if (counter == MAX_COUNT) begin
-        counter <= 0;
-        d_digit <= {d_digit[2:0], d_digit[3]}; // Rotate d_digit
-    end else begin
-        counter <= counter + 1; // Increment counter to control pause duration
-    end
-    end
+// logic [3:0] d_digit;       // To store the digit selection
+// logic [15:0] counter;       // Counter to control the pause duration
+// parameter MAX_COUNT = 16'd5000;  // Set this value to the desired pause duration
+//     always_ff @(posedge clk) begin
+//     if (rst) begin
+//         d_digit <= 4'b0001;    // Reset d_digit
+//         counter <= 0;          // Reset counter
+//     end else if (counter == MAX_COUNT) begin
+//         counter <= 0;
+//         d_digit <= {d_digit[2:0], d_digit[3]}; // Rotate d_digit
+//     end else begin
+//         counter <= counter + 1; // Increment counter to control pause duration
+//     end
+//     end
 
-    assign digit = {4'b0000, d_digit}; // Output digit control (may need adjustment based on your requirements)
+//     assign digit = {4'b0000, d_digit}; // Output digit control (may need adjustment based on your requirements)
 
-    always_comb begin
-    case (digit)
-        8'b00000001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-        8'b00000010: abcdefgh = S;
-        8'b00000100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-        8'b00001000: abcdefgh = L;
-        default: abcdefgh = SPACE;
-    endcase
-    end
+//     always_comb begin
+//     case (digit)
+//         8'b00000001: abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+//         8'b00000010: abcdefgh = S;
+//         8'b00000100: abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+//         8'b00001000: abcdefgh = L;
+//         default: abcdefgh = SPACE;
+//     endcase
+//     end
 
 
 /// WORKING ONE
@@ -224,34 +224,34 @@ parameter MAX_COUNT = 16'd5000;  // Set this value to the desired pause duration
     // end
     // end
 
-/// THE BEST ONE
-    // logic [15:0] counter;    // Counter to control the pause duration
-    // logic mux_digit_sel;
+// / THE BEST ONE
+    logic [15:0] counter;    // Counter to control the pause duration
+    logic mux_digit_sel;
 
-    // parameter MAX_COUNT = 16'd5000; // Set this to a value that gives you the desired pause duration
+    parameter MAX_COUNT = 16'd5000; // Set this to a value that gives you the desired pause duration
 
-    // always_ff @(posedge clk) begin
-    //     if (rst) begin
-    //         mux_digit_sel <= 0;
-    //         counter <= 0;
-    //     end else if (counter == MAX_COUNT) begin
-    //         // Reset counter and toggle mux_digit_sel
-    //         counter <= 0;
-    //         mux_digit_sel <= ~mux_digit_sel;
-    //     end else begin
-    //         counter <= counter + 1;
-    //     end
-    // end
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            mux_digit_sel <= 0;
+            counter <= 0;
+        end else if (counter == MAX_COUNT) begin
+            // Reset counter and toggle mux_digit_sel
+            counter <= 0;
+            mux_digit_sel <= ~mux_digit_sel;
+        end else begin
+            counter <= counter + 1;
+        end
+    end
 
-    // always_comb begin
-    //     if (mux_digit_sel == 0) begin
-    //         abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-    //         digit = 4'b0100;  // Activate lower digit (0th)
-    //     end else begin
-    //         abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-    //         digit = 4'b0001;  // Activate upper digit (1st)
-    //     end
-    // end
+    always_comb begin
+        if (mux_digit_sel == 0) begin
+            abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+            digit = 4'b0100;  // Activate lower digit (0th)
+        end else begin
+            abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+            digit = 4'b0001;  // Activate upper digit (1st)
+        end
+    end
 
 
     // assign red   = { w_red   { rgb [2] } };
