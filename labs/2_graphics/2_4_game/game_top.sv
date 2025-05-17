@@ -131,7 +131,7 @@ module game_top
         .sprite_enable_update  ( sprite_target_enable_update_1  ),
         .is_meteor             ( 1                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( shoot                          ),
+        .is_shot                 ( 0                              ),
 
         .sprite_x              ( sprite_target_x_1              ),
         .sprite_y              ( sprite_target_y_1              ),
@@ -243,7 +243,7 @@ module game_top
         .sprite_enable_update  ( sprite_target_enable_update_2  ),
         .is_meteor             ( 1                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( shoot                          ),
+        .is_shot                 ( 0                          ),
 
         .sprite_x              ( sprite_target_x_2              ),
         .sprite_y              ( sprite_target_y_2              ),
@@ -354,7 +354,7 @@ module game_top
         .sprite_enable_update  ( sprite_target_enable_update_3  ),
         .is_meteor             ( 1                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( shoot                          ),
+        .is_shot                 ( 0                          ),
 
         .sprite_x              ( sprite_target_x_3              ),
         .sprite_y              ( sprite_target_y_3              ),
@@ -450,7 +450,7 @@ module game_top
         .sprite_enable_update  ( sprite_heart_1_enable_update   ),
         .is_meteor             ( 0                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( 0                              ),
+        .is_shot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_1_x               ),
         .sprite_y              ( sprite_heart_1_y               ),
@@ -546,7 +546,7 @@ module game_top
         .sprite_enable_update  ( sprite_heart_2_enable_update   ),
         .is_meteor             ( 0                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( 0                              ),
+        .is_shot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_2_x               ),
         .sprite_y              ( sprite_heart_2_y               ),
@@ -642,7 +642,7 @@ module game_top
         .sprite_enable_update  ( sprite_heart_3_enable_update   ),
         .is_meteor             ( 0                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( 0                              ),
+        .is_shot                 ( 0                              ),
 
         .sprite_x              ( sprite_heart_3_x               ),
         .sprite_y              ( sprite_heart_3_y               ),
@@ -762,7 +762,7 @@ module game_top
         .sprite_enable_update  ( sprite_spaceship_enable_update ),
         .is_meteor             ( 0                              ),
         .is_bullet             ( 0                              ),
-        .shoot                 ( shoot                          ),
+        .is_shot                 ( 0                          ),
 
         .sprite_x              ( sprite_spaceship_x             ),
         .sprite_y              ( sprite_spaceship_y             ),
@@ -881,7 +881,7 @@ module game_top
         .sprite_enable_update  ( sprite_bullet_enable_update  ),
         .is_meteor             ( 0                            ),
         .is_bullet             ( 1                            ),
-        .shoot                 ( shoot                        ),
+        .is_shot                 ( sprite_bullet_rgb_en_fsm     ),
 
         .sprite_x              ( sprite_bullet_x              ),
         .sprite_y              ( sprite_bullet_y              ),
