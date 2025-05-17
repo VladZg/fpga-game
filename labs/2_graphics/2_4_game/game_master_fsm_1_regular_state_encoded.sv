@@ -43,7 +43,6 @@ module game_master_fsm_1_regular_state_encoded
     input      sprite_heart_1_within_screen,
     input      sprite_heart_2_within_screen,
     input      sprite_heart_3_within_screen,
-    input      sprite_torpedo_within_screen,
     input      sprite_heart_within_screen,
 
     input      collision,
@@ -114,7 +113,7 @@ module game_master_fsm_1_regular_state_encoded
           ~sprite_target_within_screen_1
         | ~sprite_target_within_screen_2
         | ~sprite_target_within_screen_3
-        | ~sprite_torpedo_within_screen
+        | ~sprite_spaceship_within_screen
         | ~sprite_bullet_within_screen;
 
     //------------------------------------------------------------------------
@@ -170,6 +169,10 @@ module game_master_fsm_1_regular_state_encoded
             d_score                     = 0;
             d_n_lifes                   = 3;
 
+            d_sprite_heart_1_write_xy   = 1'b1;
+            d_sprite_heart_2_write_xy   = 1'b1;
+            d_sprite_heart_3_write_xy   = 1'b1;
+
             d_state = STATE_START_ROUND;
         end
 
@@ -183,7 +186,7 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_write_dxy_2       = 1'b1;
             d_sprite_target_write_dxy_3       = 1'b1;
 
-            d_sprite_torpedo_write_xy         = 1'b1;
+            d_sprite_spaceship_write_xy       = 1'b1;
             d_sprite_bullet_write_xy          = 1'b1;
 
             d_round_won                       = 1'b0;
@@ -192,6 +195,8 @@ module game_master_fsm_1_regular_state_encoded
                 // d_state = STATE_END_GAME;
             // else
                 d_state = STATE_AIM;
+
+            d_score = 1;    // debug
         end
 
         STATE_AIM:
@@ -205,16 +210,24 @@ module game_master_fsm_1_regular_state_encoded
             begin
                 d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_ROUND;
+                d_score = 3;    // debug
             end
             else if (collision_bullet)
             begin
-                d_score = d_score + 1;
+                // d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
+                d_score = 3;    // debug
             end
             else if (launch_key)
+            begin
                 d_state = STATE_SHOOT;
+                d_score = 2;    // debug
+            end
             else if (round_end)
+            begin
                 d_state = STATE_END_ROUND;
+                d_score = 3;    // debug
+            end
         end
 
         STATE_SHOOT:
@@ -226,24 +239,40 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_2   = 1'b1;
             d_sprite_target_enable_update_3   = 1'b1;
 
-            d_sprite_bullet_enable_update   = 1'b1;
-            d_sprite_torpedo_enable_update  = 1'b1;
+            d_sprite_bullet_enable_update     = 1'b1;
+            d_sprite_spaceship_enable_update  = 1'b1;
 
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
             if (collision)
             begin
+                case (d_n_lifes)
+                3'd3:
+                    d_sprite_heart_1_write_xy   = 1'b0;
+                3'd2:
+                    d_sprite_heart_2_write_xy   = 1'b1;
+                3'd1:
+                    d_sprite_heart_3_write_xy   = 1'b1;
+                endcase
+
                 d_n_lifes = d_n_lifes - 1;
                 d_state = STATE_END_GAME;
+
+                d_score = 4;    // debug
             end
             else if (collision_bullet)
             begin
                 d_round_won = 1;
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
+
+                d_score = 3;    // debug
             end
             else if (round_end)
+            begin
                 d_state = STATE_END_ROUND;
+                d_score = 3;    // debug
+            end
 
         end
 
@@ -252,13 +281,20 @@ module game_master_fsm_1_regular_state_encoded
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
             if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
+            begin
                 d_state = STATE_END_GAME;
+                d_score = 4;    // debug
+            end
             else
+            begin
                 d_state = STATE_START_ROUND;
+                d_score = 0;    // debug
+            end
         end
 
         STATE_END_GAME:
         begin
+            d_score = 0;    // debug
             d_state = STATE_START_GAME;
         end
 

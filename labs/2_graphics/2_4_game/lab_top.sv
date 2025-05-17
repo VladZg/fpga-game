@@ -148,11 +148,12 @@ module lab_top
         ONE   = 8'b0110_0000,
         TWO   = 8'b1101_1100,
         THREE = 8'b1111_0010,
+        FOUR  = 8'b0110_0110,
         SPACE = 8'b0000_0000
     }
     seven_seg_encoding_e;
 
-    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : SPACE;
+    assign abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
     assign digit = 4'b1111;
 
     // assign red   = { w_red   { rgb [2] } };
