@@ -300,9 +300,12 @@ module game_master_fsm_1_regular_state_encoded
         endcase
     end
 
-    always_ff @ (posedge clk)
+    always_ff @ (posedge clk or posedge rst)
     begin
-        if (state == STATE_MINUS_LIFE)
+        if (rst) begin
+            // "ZA ZARIPOVA" LOGIC UNIT
+        end
+        else if (state == STATE_MINUS_LIFE)
             d_n_lifes <= d_n_lifes - 1;
         else if (state == STATE_PLUS_SCORE)
             d_score <= d_score + 1;
