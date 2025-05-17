@@ -41,7 +41,8 @@ module game_master_fsm_1_regular_state_encoded
     output logic end_of_game_timer_start,
     output logic game_won,
 
-    output logic [3:0] score,
+    output logic [2:0] score,
+    output logic [2:0] n_lifes,
 
     input      end_of_game_timer_running
 );
@@ -82,13 +83,13 @@ module game_master_fsm_1_regular_state_encoded
     logic d_round_won;
 
     logic d_shoot;
-    logic [3:0] d_score;
+    logic [2:0] d_score;
+    logic [2:0] d_n_lifes;
 
     //------------------------------------------------------------------------
 
-    wire game_end = collision;
-
-    wire round_won = collision_bullet;
+    // wire game_end = collision;
+    // wire round_won = collision_bullet;
 
     wire round_end =
           ~sprite_target_within_screen_1
@@ -103,6 +104,7 @@ module game_master_fsm_1_regular_state_encoded
     begin
         d_state = state;
         d_score = 0;
+        d_n_lifes = 0;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -140,6 +142,9 @@ module game_master_fsm_1_regular_state_encoded
             d_round_won                 = 1'b0;
             d_end_of_game_timer_start   = 1'b1;
 
+            d_score                     = 0;
+            d_n_lifes                   = 3;
+
             d_state = STATE_START_ROUND;
         end
 
@@ -149,12 +154,12 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_write_xy_2        = 1'b1;
             d_sprite_target_write_xy_3        = 1'b1;
 
-            d_sprite_torpedo_write_xy         = 1'b1;
-            d_sprite_bullet_write_xy          = 1'b1;
-
             d_sprite_target_write_dxy_1       = 1'b1;
             d_sprite_target_write_dxy_2       = 1'b1;
             d_sprite_target_write_dxy_3       = 1'b1;
+
+            d_sprite_torpedo_write_xy         = 1'b1;
+            d_sprite_bullet_write_xy          = 1'b1;
 
             d_round_won                       = 1'b0;
 
@@ -171,10 +176,20 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             // if (!end_of_game_timer_running || )
-            if (game_end)
-                d_state = STATE_END_GAME;
+            if (collision)
+            begin
+                d_n_lifes = d_n_lifes - 1;
+                d_state = STATE_END_ROUND;
+            end
+            else if (collision_bullet)
+            begin
+                d_score = d_score + 1;
+                d_state = STATE_END_ROUND;
+            end
             else if (launch_key)
                 d_state = STATE_SHOOT;
+            else if (round_end)
+                d_state = STATE_END_ROUND;
         end
 
         STATE_SHOOT:
@@ -187,20 +202,23 @@ module game_master_fsm_1_regular_state_encoded
             d_sprite_target_enable_update_3   = 1'b1;
 
             d_sprite_bullet_enable_update   = 1'b1;
-
             d_sprite_torpedo_enable_update  = 1'b1;
 
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
-            if (round_won)
+            if (collision)
             begin
+                d_n_lifes = d_n_lifes - 1;
+                d_state = STATE_END_GAME;
+            end
+            else if (collision_bullet)
+            begin
+                d_round_won = 1;
                 d_score = d_score + 1;
                 d_state = STATE_END_ROUND;
             end
             else if (round_end)
-                d_state = STATE_START_ROUND;
-            else if (game_end)
-                d_state = STATE_END_GAME;
+                d_state = STATE_END_ROUND;
 
         end
 
@@ -208,7 +226,7 @@ module game_master_fsm_1_regular_state_encoded
         begin
             // if (!end_of_game_timer_running)
                 // d_state = STATE_END_GAME;
-            if (d_score == 4'd3) // TODO: declare 3 as a const
+            if (d_score == 3 || d_n_lifes == 0) // TODO: declare 3 as a const
                 d_state = STATE_END_GAME;
             else
                 d_state = STATE_START_ROUND;

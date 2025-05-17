@@ -80,7 +80,8 @@ module lab_top
     //------------------------------------------------------------------------
 
     wire [`GAME_RGB_WIDTH - 1:0] rgb;
-    logic [3:0] score;
+    logic [2:0] score;
+    logic [2:0] n_lifes;
 
     game_top
     # (
@@ -105,6 +106,7 @@ module lab_top
         .y                (   y                  ),
 
         .score            ( score                ),
+        .n_lifes          ( n_lifes              ),
 
         .rgb              (   rgb                )
     );
