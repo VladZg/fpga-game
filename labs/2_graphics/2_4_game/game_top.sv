@@ -463,7 +463,7 @@ module game_top
         .sprite_out_top        ( sprite_heart_1_out_top         ),
         .sprite_out_bottom     ( sprite_heart_1_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_1_rgb_en & sprite_heart_1_rgb_en_fsm  ),
+        .rgb_en                ( sprite_heart_1_rgb_en ),
         .rgb                   ( sprite_heart_1_rgb                                 )
     );
 
@@ -561,7 +561,7 @@ module game_top
         .sprite_out_top        ( sprite_heart_2_out_top         ),
         .sprite_out_bottom     ( sprite_heart_2_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_2_rgb_en & sprite_heart_2_rgb_en_fsm  ),
+        .rgb_en                ( sprite_heart_2_rgb_en),
         .rgb                   ( sprite_heart_2_rgb                                 )
     );
 
@@ -658,7 +658,7 @@ module game_top
         .sprite_out_top        ( sprite_heart_3_out_top         ),
         .sprite_out_bottom     ( sprite_heart_3_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_3_rgb_en & sprite_heart_3_rgb_en_fsm  ),
+        .rgb_en                ( sprite_heart_3_rgb_en),
         .rgb                   ( sprite_heart_3_rgb                                 )
     );
 
@@ -853,7 +853,7 @@ module game_top
         .ROW_14 ( 64'h000000ceec000000 ),
         .ROW_15 ( 64'h0000000cc0000000 ),
 
-+
+
         .screen_width
         (screen_width),
 

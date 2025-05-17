@@ -101,9 +101,9 @@ module game_master_fsm_1_regular_state_encoded
     logic d_sprite_heart_2_enable_update;
     logic d_sprite_heart_3_enable_update;
 
-    logic d_sprite_heart_1_rgb_en_fsm,
-    logic d_sprite_heart_2_rgb_en_fsm,
-    logic d_sprite_heart_3_rgb_en_fsm,
+    logic d_sprite_heart_1_rgb_en_fsm;
+    logic d_sprite_heart_2_rgb_en_fsm;
+    logic d_sprite_heart_3_rgb_en_fsm;
 
     logic d_end_of_game_timer_start;
     logic d_game_won;
