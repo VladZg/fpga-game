@@ -151,16 +151,18 @@ module lab_top
         TWO   = 8'b1101_1010,
         THREE = 8'b1111_0010,
         FOUR  = 8'b0110_0110,
-        SPACE = 8'b0000_0000
+        SPACE = 8'b0000_0000,
+        S     = 8'b1011_0110,
+        L     = 8'b0001_1100
     }
     seven_seg_encoding_e;
 
-    logic mux_digit_sel;
+    logic [1:0] mux_digit_sel;
     always_ff @(posedge clk) begin
         if (rst)
             mux_digit_sel <= 0;
         else
-            mux_digit_sel <= ~mux_digit_sel;
+            mux_digit_sel <= mux_digit_sel + 1;
     end
 
     // logic [2:0] digit_value_0;
@@ -169,12 +171,26 @@ module lab_top
     // assign digit_value_1 = n_lifes;
 
     always_comb begin
-    if (mux_digit_sel == 0) begin
-        abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
-        digit = 4'b0100;  // активируем младший разряд (предположим 0-й)
-    end else begin
-        abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
-        digit = 4'b0001;  // активируем старший разряд (1-й)
+    case (mux_digit_sel) begin
+        2'b00: begin
+            abcdefgh = L;
+            digit = 4'b1000;
+        end
+
+        2'b01: begin
+            abcdefgh = (score == 0) ? ZERO : (score == 1) ? ONE : (score == 2) ? TWO : (score == 3) ? THREE : (score == 4) ? FOUR : SPACE;
+            digit = 4'b0100;
+        end
+
+        2'b10: begin
+            abcdefgh = S;
+            digit = 4'b0010;
+        end
+
+        2'b11: begin
+            abcdefgh = (debug == 0) ? ZERO : (debug == 1) ? ONE : (debug == 2) ? TWO : (debug == 3) ? THREE : (debug == 4) ? FOUR : SPACE;
+            digit = 4'b0001;
+        end
     end
 
     // assign red   = { w_red   { rgb [2] } };

@@ -341,7 +341,7 @@ module game_master_fsm_1_regular_state_encoded
             state                           <= d_state;
             score                           <= d_score;
             n_lifes                         <= d_n_lifes;
-            debug                           <= d_score;   //d_state
+            debug                           <= d_n_lifes;   //d_state
 
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
