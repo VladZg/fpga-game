@@ -128,9 +128,6 @@ module game_master_fsm_1_regular_state_encoded
     always_comb
     begin
         d_state   = state;
-        d_score   = score;
-        d_n_lifes = n_lifes;
-        d_debug   = n_lifes;
 
         d_sprite_target_write_xy_1        = 1'b0;
         d_sprite_target_write_xy_2        = 1'b0;
@@ -173,10 +170,6 @@ module game_master_fsm_1_regular_state_encoded
             d_game_won                  = 1'b0;
             d_round_won                 = 1'b0;
             d_end_of_game_timer_start   = 1'b1;
-
-            d_score                     = 0;
-            d_n_lifes                   = 3;
-            d_debug                     = 0;
 
             d_sprite_heart_1_write_xy   = 1'b1;
             d_sprite_heart_2_write_xy   = 1'b1;
@@ -266,13 +259,11 @@ module game_master_fsm_1_regular_state_encoded
             3'd1:
                 d_sprite_heart_3_write_xy = 1'b0;
             endcase
-            d_n_lifes = n_lifes - 1;  // FIXME: DELETE LATER
             d_state = STATE_END_ROUND;
         end
 
         STATE_PLUS_SCORE:
         begin
-            d_score = score + 1;  // FIXME: DELETE LATER
             d_state = STATE_END_ROUND;
         end
 
@@ -302,14 +293,19 @@ module game_master_fsm_1_regular_state_encoded
     begin
         if (rst) begin
             // "ZA ZARIPOVA" LOGIC UNIT
-            sasalka <= 0;
+            d_score <= 0;
+            d_n_lifes <= 3;
+            d_debug <= 0;
         end
+        else if (state == STATE_START_GAME)
+        begin
+            d_n_lifes <= 3;
+            d_score <= 0;
+        end
+        else if (state == STATE_MINUS_LIFE)
+            d_n_lifes <= d_n_lifes - 1;
         else if (state == STATE_PLUS_SCORE)
-            sasalka <= sasalka + 1;
-        // else if (state == STATE_MINUS_LIFE)
-            // d_n_lifes <= d_n_lifes - 1;
-        // else if (state == STATE_PLUS_SCORE)
-            // d_score <= d_score + 1;
+            d_score <= d_score + 1;
     end
 
     //------------------------------------------------------------------------
@@ -357,7 +353,7 @@ module game_master_fsm_1_regular_state_encoded
             state                           <= d_state;
             score                           <= d_score;
             n_lifes                         <= d_n_lifes;
-            debug                           <= sasalka;   //d_state
+            debug                           <= d_n_lifes;   //d_state
 
             sprite_target_write_xy_1        <= d_sprite_target_write_xy_1;
             sprite_target_write_xy_2        <= d_sprite_target_write_xy_2;
