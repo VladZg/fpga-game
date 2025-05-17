@@ -213,11 +213,14 @@ module game_master_fsm_1_regular_state_encoded
             begin
                 case (d_n_lifes)
                 3'd3:
-                    d_sprite_heart_1_write_xy = 1'b0;
+                    d_sprite_heart_1_write_xy       = 1'b0;
+                    d_sprite_heart_1_enable_update  = 1'b0;
                 3'd2:
-                    d_sprite_heart_2_write_xy = 1'b0;
+                    d_sprite_heart_2_write_xy       = 1'b0;
+                    d_sprite_heart_2_enable_update  = 1'b0;
                 3'd1:
-                    d_sprite_heart_3_write_xy = 1'b0;
+                    d_sprite_heart_3_write_xy       = 1'b0;
+                    d_sprite_heart_3_enable_update  = 1'b0;
                 endcase
 
                 d_n_lifes = d_n_lifes - 1;
