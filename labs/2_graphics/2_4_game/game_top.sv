@@ -390,10 +390,12 @@ module game_top
     wire  [w_y             - 1:0] sprite_heart_1_out_top;
     wire  [w_y             - 1:0] sprite_heart_1_out_bottom;
     wire                          sprite_heart_1_rgb_en;
+    wire                          sprite_heart_1_rgb_en_fsm = 1;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_1_rgb;
 
     assign sprite_heart_1_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_1_write_y  = screen_height - 65;
+    assign sprite_heart_1_rgb_en_fsm = 1;
 
     game_sprite_top
     #(
@@ -461,8 +463,8 @@ module game_top
         .sprite_out_top        ( sprite_heart_1_out_top         ),
         .sprite_out_bottom     ( sprite_heart_1_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_1_rgb_en          ),
-        .rgb                   ( sprite_heart_1_rgb             )
+        .rgb_en                ( sprite_heart_1_rgb_en & sprite_heart_1_rgb_en_fsm  ),
+        .rgb                   ( sprite_heart_1_rgb                                 )
     );
 
     //------------------------------------------------------------------------
@@ -485,10 +487,13 @@ module game_top
     wire  [w_y             - 1:0] sprite_heart_2_out_top;
     wire  [w_y             - 1:0] sprite_heart_2_out_bottom;
     wire                          sprite_heart_2_rgb_en;
+    wire                          sprite_heart_2_rgb_en_fsm = 1;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_2_rgb;
 
     assign sprite_heart_2_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_2_write_y  = screen_height - 45;
+    assign sprite_heart_2_rgb_en_fsm = 1;
+
 
     game_sprite_top
     #(
@@ -556,8 +561,8 @@ module game_top
         .sprite_out_top        ( sprite_heart_2_out_top         ),
         .sprite_out_bottom     ( sprite_heart_2_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_2_rgb_en          ),
-        .rgb                   ( sprite_heart_2_rgb             )
+        .rgb_en                ( sprite_heart_2_rgb_en & sprite_heart_2_rgb_en_fsm  ),
+        .rgb                   ( sprite_heart_2_rgb                                 )
     );
 
     //------------------------------------------------------------------------
@@ -580,10 +585,12 @@ module game_top
     wire  [w_y             - 1:0] sprite_heart_3_out_top;
     wire  [w_y             - 1:0] sprite_heart_3_out_bottom;
     wire                          sprite_heart_3_rgb_en;
+    wire                          sprite_heart_3_rgb_en_fsm;
     wire  [`GAME_RGB_WIDTH - 1:0] sprite_heart_3_rgb;
 
     assign sprite_heart_3_write_x  = screen_width * 3 / 10 - 20;
     assign sprite_heart_3_write_y  = screen_height - 25;
+    assign sprite_heart_3_rgb_en_fsm = 1;
 
     game_sprite_top
     #(
@@ -651,8 +658,8 @@ module game_top
         .sprite_out_top        ( sprite_heart_3_out_top         ),
         .sprite_out_bottom     ( sprite_heart_3_out_bottom      ),
 
-        .rgb_en                ( sprite_heart_3_rgb_en          ),
-        .rgb                   ( sprite_heart_3_rgb             )
+        .rgb_en                ( sprite_heart_3_rgb_en & sprite_heart_3_rgb_en_fsm  ),
+        .rgb                   ( sprite_heart_3_rgb                                 )
     );
 
     //------------------------------------------------------------------------
@@ -846,6 +853,7 @@ module game_top
         .ROW_14 ( 64'h000000ceec000000 ),
         .ROW_15 ( 64'h0000000cc0000000 ),
 
++
         .screen_width
         (screen_width),
 
@@ -1030,6 +1038,10 @@ module game_top
         .sprite_heart_1_within_screen   ( sprite_heart_1_within_screen   ),
         .sprite_heart_2_within_screen   ( sprite_heart_2_within_screen   ),
         .sprite_heart_3_within_screen   ( sprite_heart_3_within_screen   ),
+
+        .sprite_heart_1_rgb_en_fsm      ( sprite_heart_1_rgb_en_fsm      ),
+        .sprite_heart_2_rgb_en_fsm      ( sprite_heart_2_rgb_en_fsm      ),
+        .sprite_heart_3_rgb_en_fsm      ( sprite_heart_3_rgb_en_fsm      ),
 
         .collision                      ( collision                      ),
         .collision_bullet               ( collision_bullet               ),
